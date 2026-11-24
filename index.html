@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Ufficio — Agenda & Obiettivi</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg: #121316;
+      --card: #1b1d22;
+      --card-hover: #23262d;
+      --border: #2c303a;
+      --lilac: #b39ddb;
+      --lilac-dim: rgba(179, 157, 219, 0.14);
+      --lilac-glow: rgba(179, 157, 219, 0.35);
+      --personal: #f48fb1;
+      --text: #f1f3f5;
+      --muted: #9aa0a6;
+      --success: #81c784;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* TOP BAR */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--border);
+      background: #16181d;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      letter-spacing: 0.3px;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--lilac);
+      box-shadow: 0 0 10px var(--lilac);
+    }
+
+    .week-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .week-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      min-width: 220px;
+      text-align: center;
+      color: var(--text);
+    }
+
+    button {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    button:hover { background: var(--card-hover); border-color: var(--lilac); }
+    button.primary {
+      background: var(--lilac);
+      color: #121316;
+      border-color: var(--lilac);
+      font-weight: 600;
+    }
+    button.primary:hover { opacity: 0.9; }
+
+    /* MAIN BENTO GRID */
+    main {
+      flex: 1;
+      padding: 18px 24px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow: hidden;
+    }
+
+    .top-row {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 16px;
+      height: 44%;
+      min-height: 250px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    /* NOW & DAY DETAIL CARD */
+    .now-grid {
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: 20px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .clock-box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-right: 1px solid var(--border);
+      padding-right: 16px;
+    }
+
+    .clock-time {
+      font-size: 2.8rem;
+      font-weight: 300;
+      letter-spacing: -1px;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .clock-date {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-top: 8px;
+      text-transform: capitalize;
+    }
+
+    .next-pill {
+      margin-top: 16px;
+      background: var(--lilac-dim);
+      border: 1px solid var(--lilac-glow);
+      color: var(--lilac);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      line-height: 1.35;
+    }
+
+    .day-timeline {
+      overflow-y: auto;
+      padding-right: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 8px 12px;
+      background: #16181d;
+      border-radius: 9px;
+      border-left: 3px solid var(--lilac);
+    }
+
+    .timeline-item.personal { border-left-color: var(--personal); }
+
+    .timeline-time {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--lilac);
+      min-width: 88px;
+      flex-shrink: 0;
+    }
+
+    .timeline-item.personal .timeline-time { color: var(--personal); }
+
+    .timeline-title { font-size: 0.9rem; font-weight: 500; }
+    .timeline-note { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+
+    /* WEEKLY TASKS CARD */
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: #121316;
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: var(--lilac);
+      width: 0%;
+      transition: width 0.3s ease;
+      border-radius: 99px;
+    }
+
+    .progress-pct {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--lilac);
+      min-width: 38px;
+      text-align: right;
+    }
+
+    .add-task-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .add-task-row input {
+      flex: 1;
+      background: #121316;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .add-task-row input:focus { border-color: var(--lilac); }
+
+    .tasks-list {
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      padding-right: 4px;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 10px;
+      border-radius: 8px;
+      background: #16181d;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .task-item:hover { background: var(--card-hover); }
+
+    .task-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 2px solid var(--lilac);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+      color: #121316;
+      font-weight: 800;
+    }
+
+    .task-item.done .task-check { background: var(--lilac); }
+    .task-item.done .task-text { text-decoration: line-through; color: var(--muted); }
+    .task-text { font-size: 0.88rem; flex: 1; }
+
+    /* BOTTOM ROW: 7-DAY WEEKLY PLANNER */
+    .bottom-card {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .day-col {
+      background: #16181d;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      overflow: hidden;
+    }
+
+    .day-col:hover { border-color: #4a4f5e; background: #191c22; }
+
+    .day-col.today {
+      border-color: var(--lilac);
+      box-shadow: 0 0 16px rgba(179, 157, 219, 0.18);
+    }
+
+    .day-col.selected {
+      background: #20232b;
+      border-color: var(--lilac);
+    }
+
+    .day-col-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .today-badge {
+      background: var(--lilac);
+      color: #121316;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 800;
+    }
+
+    .day-events {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mini-ev {
+      font-size: 0.78rem;
+      padding: 5px 7px;
+      border-radius: 6px;
+      background: var(--card);
+      border-left: 2px solid var(--lilac);
+      line-height: 1.3;
+    }
+
+    .mini-ev.personal { border-left-color: var(--personal); }
+    .mini-ev-time { color: var(--lilac); font-weight: 600; font-size: 0.72rem; display: block; }
+    .mini-ev.personal .mini-ev-time { color: var(--personal); }
+
+    /* BOTTOM MODULAR DOCK (EXTENSIBLE MENU) */
+    footer.dock {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 24px;
+      background: #16181d;
+      border-top: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .dock-tabs {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .dock-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+    }
+
+    .dock-tab.active {
+      background: var(--lilac-dim);
+      border-color: var(--lilac-glow);
+      color: var(--lilac);
+      font-weight: 600;
+    }
+
+    .dock-tab.placeholder {
+      border: 1px dashed var(--border);
+      color: #6c727f;
+    }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* MODAL SETTINGS */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px;
+      width: 440px;
+      max-width: 92vw;
+    }
+
+    .modal h3 { margin-bottom: 14px; font-size: 1.05rem; }
+    .modal label { display: block; font-size: 0.82rem; color: var(--muted); margin: 10px 0 4px; }
+    .modal input {
+      width: 100%;
+      background: #121316;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+    }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-thumb { background: #333742; border-radius: 99px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <span class="brand-dot"></span>
+      <span>Dashboard Ufficio</span>
+    </div>
+
+    <div class="week-nav">
+      <button type="button" id="btnPrevWeek">← Precedente</button>
+      <span class="week-label" id="weekLabel">Settimana corrente</span>
+      <button type="button" id="btnToday">Oggi</button>
+      <button type="button" id="btnNextWeek">Successiva →</button>
+    </div>
+
+    <div style="display:flex; gap:8px;">
+      <button type="button" id="btnSync" class="primary">🔄 Sincronizza Google</button>
+      <button type="button" id="btnOpenSettings">⚙️ Impostazioni</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- RIGA SUPERIORE: DETTAGLIO GIORNO + OBIETTIVI SETTIMANALI -->
+    <div class="top-row">
+      <!-- CARD SINISTRA: ADESSO & DETTAGLIO GIORNO -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="selectedDayHeader">Dettaglio Giorno</span>
+          <span style="font-size:0.78rem; color:var(--muted);" id="dayCountLabel">0 impegni</span>
+        </div>
+        <div class="now-grid">
+          <div class="clock-box">
+            <div class="clock-time" id="liveClock">--:--</div>
+            <div class="clock-date" id="liveDate">...</div>
+            <div class="next-pill" id="nextEventBox">Collega Google per vedere il prossimo impegno.</div>
+          </div>
+          <div class="day-timeline" id="dayTimeline">
+            <p style="color:var(--muted); font-size:0.88rem;">Premi <strong>Sincronizza Google</strong> in alto a destra per caricare agenda e obiettivi.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD DESTRA: OBIETTIVI SETTIMANALI -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="tasksCardTitle">Obiettivi Settimanali</span>
+          <span style="font-size:0.78rem; color:var(--muted);" id="tasksCounter">0/0 completati</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-bar"><div class="progress-fill" id="tasksProgressFill"></div></div>
+          <span class="progress-pct" id="tasksProgressPct">0%</span>
+        </div>
+        <div class="add-task-row">
+          <input type="text" id="newTaskInput" placeholder="+ Aggiungi nuovo obiettivo settimanale...">
+          <button type="button" id="btnAddTask" class="primary">Aggiungi</button>
+        </div>
+        <div class="tasks-list" id="tasksList">
+          <p style="color:var(--muted); font-size:0.88rem;">Nessun obiettivo caricato.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGA INFERIORE: SETTIMANA A 7 COLONNE -->
+    <div class="card bottom-card">
+      <div class="card-header">
+        <span class="card-title">Panoramica Settimanale (clicca su un giorno per il dettaglio)</span>
+        <span style="font-size:0.78rem; color:var(--muted);">Bordo lilla = Ufficio · Bordo rosa = [Personale]</span>
+      </div>
+      <div class="week-grid" id="weekGrid"></div>
+    </div>
+  </main>
+
+  <!-- BARRA MODULARE INFERIORE PER SVILUPPI FUTURI -->
+  <footer class="dock">
+    <div class="dock-tabs" id="dockTabs">
+      <button type="button" class="dock-tab active">📊 Panoramica Settimana</button>
+      <button type="button" class="dock-tab placeholder" onclick="alert('Spazio riservato per moduli futuri: es. Appunti Drive, Scadenze Uffici o Archivio.')">+ Modulo Futuro 1</button>
+      <button type="button" class="dock-tab placeholder" onclick="alert('Spazio riservato per moduli futuri.')">+ Modulo Futuro 2</button>
+    </div>
+    <div class="status-text" id="statusBar">Pronto.</div>
+  </footer>
+
+  <!-- MODALE IMPOSTAZIONI -->
+  <div class="modal-backdrop" id="settingsModal">
+    <div class="modal">
+      <h3>⚙️ Configurazione Dashboard</h3>
+      <label>Google OAuth Client ID:</label>
+      <input type="text" id="cfgClientId" value="944286670464-d43mnompgnkg419s02hij2a102310is5.apps.googleusercontent.com">
+      <label>Nome Lista Google Tasks:</label>
+      <input type="text" id="cfgTasksList" value="Obiettivi Settimanali">
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+        <button type="button" id="btnCloseSettings">Chiudi</button>
+        <button type="button" id="btnSaveSettings" class="primary">Salva</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks";
+  var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
+  var MESI_BREVI = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+
+  var accessToken = null;
+  var currentMonday = getMonday(new Date());
+  var selectedDateStr = toIsoDate(new Date());
+  var weekEvents = [];
+  var tasksListId = null;
+  var weeklyTasks = [];
+
+  function getMonday(d) {
+    var date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var day = date.getDay();
+    var diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
+  }
+
+  function toIsoDate(d) {
+    var y = d.getFullYear();
+    var m = String(d.getMonth() + 1).padStart(2, "0");
+    var day = String(d.getDate()).padStart(2, "0");
+    return y + "-" + m + "-" + day;
+  }
+
+  function addDays(d, n) {
+    var res = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    res.setDate(res.getDate() + n);
+    return res;
+  }
+
+  function getWeekNumber(d) {
+    var date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  }
+
+  function updateClock() {
+    var now = new Date();
+    document.getElementById("liveClock").innerText =
+      String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    document.getElementById("liveDate").innerText =
+      now.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+    updateNextEventPill();
+  }
+
+  window.addEventListener("load", function() {
+    var savedClient = localStorage.getItem("dash_client_id");
+    var savedList = localStorage.getItem("dash_tasks_list");
+    if (savedClient) document.getElementById("cfgClientId").value = savedClient;
+    if (savedList) document.getElementById("cfgTasksList").value = savedList;
+
+    updateClock();
+    setInterval(updateClock, 15000);
+    renderEmptyWeek();
+
+    document.getElementById("btnPrevWeek").onclick = function() {
+      currentMonday = addDays(currentMonday, -7);
+      selectedDateStr = toIsoDate(currentMonday);
+      if (accessToken) loadAllData(); else renderEmptyWeek();
+    };
+    document.getElementById("btnNextWeek").onclick = function() {
+      currentMonday = addDays(currentMonday, 7);
+      selectedDateStr = toIsoDate(currentMonday);
+      if (accessToken) loadAllData(); else renderEmptyWeek();
+    };
+    document.getElementById("btnToday").onclick = function() {
+      var today = new Date();
+      currentMonday = getMonday(today);
+      selectedDateStr = toIsoDate(today);
+      if (accessToken) loadAllData(); else renderEmptyWeek();
+    };
+
+    document.getElementById("btnSync").onclick = connectGoogle;
+    document.getElementById("btnOpenSettings").onclick = function() {
+      document.getElementById("settingsModal").style.display = "flex";
+    };
+    document.getElementById("btnCloseSettings").onclick = function() {
+      document.getElementById("settingsModal").style.display = "none";
+    };
+    document.getElementById("btnSaveSettings").onclick = function() {
+      localStorage.setItem("dash_client_id", document.getElementById("cfgClientId").value.trim());
+      localStorage.setItem("dash_tasks_list", document.getElementById("cfgTasksList").value.trim() || "Obiettivi Settimanali");
+      document.getElementById("settingsModal").style.display = "none";
+      if (accessToken) loadAllData();
+    };
+
+    document.getElementById("btnAddTask").onclick = addNewTask;
+    document.getElementById("newTaskInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addNewTask();
+    });
+  });
+
+  function connectGoogle() {
+    var clientId = document.getElementById("cfgClientId").value.trim();
+    if (!clientId) { alert("Inserisci il Client ID nelle Impostazioni."); return; }
+
+    var client = google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: SCOPES,
+      callback: function(resp) {
+        if (resp.access_token) {
+          accessToken = resp.access_token;
+          loadAllData();
+        }
+      }
+    });
+    client.requestAccessToken();
+  }
+
+  async function loadAllData() {
+    setStatus("Sincronizzazione con Google Calendar e Google Tasks...");
+    try {
+      await Promise.all([loadWeekEvents(), loadWeeklyTasks()]);
+      renderWeekGrid();
+      renderDayDetail();
+      renderTasks();
+      setStatus("Ultimo aggiornamento: " + new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" }));
+    } catch (err) {
+      setStatus("Errore: " + err.message);
+    }
+  }
+
+  function setStatus(msg) {
+    document.getElementById("statusBar").innerText = msg;
+  }
+
+  async function loadWeekEvents() {
+    var sunday = addDays(currentMonday, 6);
+    var timeMin = encodeURIComponent(toIsoDate(currentMonday) + "T00:00:00Z");
+    var timeMax = encodeURIComponent(toIsoDate(addDays(sunday, 1)) + "T23:59:59Z");
+    var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=" + timeMin + "&timeMax=" + timeMax + "&singleEvents=true&orderBy=startTime";
+
+    var res = await fetch(url, { headers: { "Authorization": "Bearer " + accessToken } });
+    if (!res.ok) throw new Error("Errore lettura Calendar (" + res.status + ")");
+    var data = await res.json();
+
+    weekEvents = (data.items || []).map(function(item) {
+      var isAllDay = !!(item.start && item.start.date);
+      var dateStr = isAllDay ? item.start.date : item.start.dateTime.slice(0, 10);
+      var startTime = isAllDay ? "Tutto il giorno" : item.start.dateTime.slice(11, 16);
+      var endTime = isAllDay ? "" : item.end.dateTime.slice(11, 16);
+      var rawTitle = item.summary || "(Senza titolo)";
+      var isPersonal = /^\[personale\]/i.test(rawTitle);
+      return {
+        id: item.id,
+        date: dateStr,
+        isAllDay: isAllDay,
+        startTime: startTime,
+        endTime: endTime,
+        startIso: isAllDay ? null : item.start.dateTime,
+        title: rawTitle.replace(/^\[personale\]\s*/i, ""),
+        isPersonal: isPersonal,
+        description: item.description || ""
+      };
+    });
+  }
+
+  async function loadWeeklyTasks() {
+    var listName = document.getElementById("cfgTasksList").value.trim() || "Obiettivi Settimanali";
+    document.getElementById("tasksCardTitle").innerText = listName;
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/users/@me/lists", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    if (!res.ok) throw new Error("Errore lettura liste Tasks (" + res.status + ")");
+    var data = await res.json();
+    var lists = data.items || [];
+    tasksListId = null;
+
+    for (var i = 0; i < lists.length; i++) {
+      if ((lists[i].title || "").toLowerCase().trim() === listName.toLowerCase().trim()) {
+        tasksListId = lists[i].id;
+        break;
+      }
+    }
+
+    if (!tasksListId) {
+      var createRes = await fetch("https://tasks.googleapis.com/tasks/v1/users/@me/lists", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ title: listName })
+      });
+      var created = await createRes.json();
+      tasksListId = created.id;
+    }
+
+    var tRes = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks?showCompleted=true&showHidden=true", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var tData = await tRes.json();
+    weeklyTasks = (tData.items || []).filter(function(t) { return (t.title || "").trim() !== ""; });
+  }
+
+  function renderEmptyWeek() {
+    weekEvents = [];
+    renderWeekGrid();
+    renderDayDetail();
+  }
+
+  function renderWeekGrid() {
+    var sunday = addDays(currentMonday, 6);
+    var wkNum = getWeekNumber(currentMonday);
+    document.getElementById("weekLabel").innerText =
+      "Settimana " + wkNum + " (" + currentMonday.getDate() + " " + MESI_BREVI[currentMonday.getMonth()] +
+      " – " + sunday.getDate() + " " + MESI_BREVI[sunday.getMonth()] + ")";
+
+    var todayStr = toIsoDate(new Date());
+    var grid = document.getElementById("weekGrid");
+    grid.innerHTML = "";
+
+    for (var i = 0; i < 7; i++) {
+      (function(idx) {
+        var d = addDays(currentMonday, idx);
+        var dStr = toIsoDate(d);
+        var dayEvs = weekEvents.filter(function(e) { return e.date === dStr; });
+
+        var col = document.createElement("div");
+        col.className = "day-col" + (dStr === todayStr ? " today" : "") + (dStr === selectedDateStr ? " selected" : "");
+        col.onclick = function() {
+          selectedDateStr = dStr;
+          renderWeekGrid();
+          renderDayDetail();
+        };
+
+        var badge = (dStr === todayStr) ? '<span class="today-badge">OGGI</span>' : "";
+        var evHtml = dayEvs.length === 0
+          ? '<span style="color:#555a66; font-size:0.76rem;">Nessun impegno</span>'
+          : dayEvs.map(function(ev) {
+              var timeTxt = ev.isAllDay ? "Tutto il giorno" : ev.startTime;
+              return '<div class="mini-ev' + (ev.isPersonal ? " personal" : "") + '">' +
+                '<span class="mini-ev-time">' + timeTxt + '</span>' +
+                escapeHtml(ev.title) +
+              '</div>';
+            }).join("");
+
+        col.innerHTML =
+          '<div class="day-col-header">' +
+            '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
+            badge +
+          '</div>' +
+          '<div class="day-events">' + evHtml + '</div>';
+
+        grid.appendChild(col);
+      })(i);
+    }
+  }
+
+  function renderDayDetail() {
+    var parts = selectedDateStr.split("-");
+    var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    var label = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+    document.getElementById("selectedDayHeader").innerText = "Dettaglio: " + label;
+
+    var dayEvs = weekEvents.filter(function(e) { return e.date === selectedDateStr; });
+    document.getElementById("dayCountLabel").innerText = dayEvs.length + (dayEvs.length === 1 ? " impegno" : " impegni");
+
+    var container = document.getElementById("dayTimeline");
+    if (dayEvs.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.88rem;">Nessun impegno in programma per questa giornata.</p>';
+      return;
+    }
+
+    container.innerHTML = dayEvs.map(function(ev) {
+      var timeRange = ev.isAllDay ? "Tutto il giorno" : (ev.startTime + (ev.endTime ? " – " + ev.endTime : ""));
+      var noteHtml = ev.description ? '<div class="timeline-note">' + escapeHtml(ev.description) + '</div>' : "";
+      return '<div class="timeline-item' + (ev.isPersonal ? " personal" : "") + '">' +
+        '<div class="timeline-time">' + timeRange + '</div>' +
+        '<div>' +
+          '<div class="timeline-title">' + escapeHtml(ev.title) + '</div>' +
+          noteHtml +
+        '</div>' +
+      '</div>';
+    }).join("");
+
+    updateNextEventPill();
+  }
+
+  function updateNextEventPill() {
+    var box = document.getElementById("nextEventBox");
+    if (!accessToken) return;
+    var now = new Date();
+    var todayStr = toIsoDate(now);
+    var upcoming = weekEvents.filter(function(e) {
+      return e.date === todayStr && !e.isAllDay && e.startIso && new Date(e.startIso) > now;
+    });
+
+    if (upcoming.length === 0) {
+      box.innerText = "Nessun altro appuntamento orario previsto per oggi.";
+      return;
+    }
+    var next = upcoming[0];
+    var diffMin = Math.round((new Date(next.startIso) - now) / 60000);
+    var timeStr = diffMin < 60 ? ("tra " + diffMin + " min") : ("alle " + next.startTime);
+    box.innerHTML = "Prossimo (" + timeStr + "):<br><strong>" + escapeHtml(next.title) + "</strong>";
+  }
+
+  function renderTasks() {
+    var listEl = document.getElementById("tasksList");
+    var total = weeklyTasks.length;
+    var doneCount = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
+    var pct = total === 0 ? 0 : Math.round((doneCount / total) * 100);
+
+    document.getElementById("tasksCounter").innerText = doneCount + "/" + total + " completati";
+    document.getElementById("tasksProgressFill").style.width = pct + "%";
+    document.getElementById("tasksProgressPct").innerText = pct + "%";
+
+    if (total === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.88rem;">Nessun obiettivo in lista. Aggiungine uno qui sopra o dallo scanner.</p>';
+      return;
+    }
+
+    // Ordina prima quelli da fare, poi quelli completati
+    var sorted = weeklyTasks.slice().sort(function(a, b) {
+      if (a.status === b.status) return 0;
+      return a.status === "completed" ? 1 : -1;
+    });
+
+    listEl.innerHTML = sorted.map(function(t) {
+      var isDone = (t.status === "completed");
+      return '<div class="task-item' + (isDone ? " done" : "") + '" onclick="toggleTask(\'' + t.id + '\')">' +
+        '<div class="task-check">' + (isDone ? "✓" : "") + '</div>' +
+        '<div class="task-text">' + escapeHtml(t.title) + '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  async function toggleTask(taskId) {
+    if (!accessToken || !tasksListId) return;
+    var task = weeklyTasks.find(function(t) { return t.id === taskId; });
+    if (!task) return;
+
+    var newStatus = (task.status === "completed") ? "needsAction" : "completed";
+    task.status = newStatus;
+    renderTasks();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks/" + encodeURIComponent(taskId), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: taskId, status: newStatus })
+    });
+  }
+
+  async function addNewTask() {
+    var input = document.getElementById("newTaskInput");
+    var title = input.value.trim();
+    if (!title) return;
+    if (!accessToken || !tasksListId) {
+      alert("Premi prima 'Sincronizza Google' in alto a destra.");
+      return;
+    }
+    input.value = "";
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title })
+    });
+    if (res.ok) {
+      await loadWeeklyTasks();
+      renderTasks();
+    }
+  }
+
+  function escapeHtml(str) {
+    return (str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+</script>
+</body>
+</html>
