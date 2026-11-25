@@ -52,7 +52,7 @@
       gap: 14px;
     }
 
-    /* LOGO PIKDASH */
+    /* LOGO PIKDASH (IN ALTO A SINISTRA) */
     .brand-col {
       display: flex;
       align-items: center;
@@ -88,12 +88,12 @@
     }
 
     .brand-title .brand-dash { color: var(--lilac); }
-    .brand-sub { font-size: 0.7rem; color: var(--muted); line-height: 1; }
+    .brand-sub { font-size: 0.71rem; color: var(--muted); line-height: 1; }
 
     /* TILE TABS (5 SCHEDE) */
     .tile-nav {
       display: grid;
-      grid-template-columns: repeat(5, minmax(122px, 160px));
+      grid-template-columns: repeat(5, minmax(122px, 162px));
       gap: 7px;
       background: var(--bg);
       padding: 5px;
@@ -116,14 +116,24 @@
       gap: 2px;
     }
 
-    .tile-tab:hover { background: var(--card-hover); border-color: #3a3f4d; }
+    .tile-tab:hover {
+      background: var(--card-hover);
+      border-color: #3a3f4d;
+    }
+
     .tile-tab.active {
       background: var(--lilac-tile);
       border-color: var(--lilac-glow);
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     }
 
-    .tile-icon { font-size: 1.05rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
+    .tile-icon {
+      font-size: 1.05rem;
+      line-height: 1;
+      margin-bottom: 1px;
+      color: var(--text);
+    }
+
     .tile-tab.active .tile-icon { color: var(--lilac); }
     .tile-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
     .tile-sub { font-size: 0.68rem; color: var(--muted); }
@@ -133,16 +143,20 @@
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 6px;
-      min-width: 190px;
+      gap: 5px;
+      min-width: 185px;
     }
 
-    .header-actions-row { display: flex; align-items: center; gap: 7px; }
+    .header-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
 
     .sync-badge {
       font-size: 0.72rem;
       color: var(--muted);
-      padding: 3px 10px;
+      padding: 2px 9px;
       background: var(--bg);
       border-radius: 99px;
       border: 1px solid var(--border);
@@ -182,7 +196,7 @@
     /* VIEWS CONTAINER */
     .view-section {
       flex: 1;
-      padding: 14px 24px 16px;
+      padding: 14px 22px 16px;
       display: none;
       flex-direction: column;
       gap: 14px;
@@ -203,8 +217,21 @@
       flex-shrink: 0;
     }
 
-    .summary-left-meta { display: flex; flex-direction: column; gap: 4px; min-width: 155px; }
-    .summary-heading { font-size: 0.77rem; font-weight: 800; letter-spacing: 0.9px; text-transform: uppercase; color: var(--text); }
+    .summary-left-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 155px;
+    }
+
+    .summary-heading {
+      font-size: 0.77rem;
+      font-weight: 800;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
     .summary-pill {
       display: inline-block;
       width: fit-content;
@@ -216,7 +243,13 @@
       color: var(--dash-event);
     }
 
-    .summary-kpis { flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .summary-kpis {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+    }
+
     .kpi-box { display: flex; flex-direction: column; gap: 2px; }
     .kpi-num { font-size: 1.85rem; font-weight: 600; line-height: 1.05; color: var(--text); }
     .kpi-num.cyan { color: var(--dash-event); }
@@ -253,13 +286,25 @@
       gap: 10px;
     }
 
-    .card-title { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
+    .card-title {
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      font-weight: 700;
+    }
 
     .week-nav-inline { display: flex; align-items: center; gap: 6px; }
     .week-nav-inline button { padding: 4px 10px; font-size: 0.76rem; }
     .week-label-inline { font-size: 0.84rem; font-weight: 600; color: var(--lilac); min-width: 190px; text-align: center; }
 
-    .now-grid { display: grid; grid-template-columns: 195px 1fr; gap: 16px; flex: 1; overflow: hidden; }
+    .now-grid {
+      display: grid;
+      grid-template-columns: 195px 1fr;
+      gap: 16px;
+      flex: 1;
+      overflow: hidden;
+    }
 
     .clock-box {
       display: flex;
@@ -446,7 +491,7 @@
     .legend-row { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; color: var(--muted); }
     .leg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
 
-    /* ================= VISTA 2: PROMEMORIA ================= */
+    /* ================= VISTA 2: PROMEMORIA & CONTATTI ================= */
     .quick-memo-bar {
       background: var(--card);
       border: 1px solid var(--border);
@@ -519,8 +564,22 @@
       overflow: hidden;
     }
 
-    .proj-filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
-    .proj-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-right: 4px; }
+    .proj-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .proj-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding-right: 4px;
+    }
 
     .proj-card {
       background: var(--surface);
@@ -537,7 +596,12 @@
     .proj-card:hover { background: var(--card-hover); border-color: #4a4f5e; }
     .proj-card.active { background: #222631; border-color: var(--lilac); }
 
-    .proj-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
+    .proj-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
     .proj-card-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
     .proj-dept-pill {
       font-size: 0.68rem;
@@ -549,9 +613,26 @@
       white-space: nowrap;
     }
 
-    .proj-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
-    .proj-mini-bar { height: 5px; background: var(--bg); border-radius: 99px; overflow: hidden; }
-    .proj-mini-fill { height: 100%; background: var(--proj-color, var(--lilac)); border-radius: 99px; transition: width 0.25s ease; }
+    .proj-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .proj-mini-bar {
+      height: 5px;
+      background: var(--bg);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .proj-mini-fill {
+      height: 100%;
+      background: var(--proj-color, var(--lilac));
+      border-radius: 99px;
+      transition: width 0.25s ease;
+    }
 
     .proj-detail-empty {
       flex: 1;
@@ -564,7 +645,13 @@
       padding: 24px;
     }
 
-    .proj-detail-wrap { flex: 1; display: none; flex-direction: column; gap: 12px; overflow: hidden; }
+    .proj-detail-wrap {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
 
     .proj-status-box {
       background: var(--surface);
@@ -614,8 +701,21 @@
     .proj-step-actions { display: flex; gap: 5px; align-items: center; }
 
     /* ================= VISTA 4: APPUNTI DRIVE ================= */
-    .drive-layout { flex: 1; display: grid; grid-template-columns: 430px 1fr; gap: 14px; overflow: hidden; }
-    .folders-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
+    .drive-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .folders-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
 
     .folder-chip {
       display: inline-flex;
@@ -639,8 +739,22 @@
       font-weight: 600;
     }
 
-    .folder-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--chip-color, var(--lilac)); flex-shrink: 0; }
-    .folder-mini-btn { background: transparent; border: none; color: var(--muted); padding: 0 2px; font-size: 0.72rem; cursor: pointer; }
+    .folder-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--chip-color, var(--lilac));
+      flex-shrink: 0;
+    }
+
+    .folder-mini-btn {
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: 0 2px;
+      font-size: 0.72rem;
+      cursor: pointer;
+    }
     .folder-mini-btn:hover { color: var(--text); background: transparent; }
 
     .drive-search {
@@ -657,7 +771,14 @@
     }
     .drive-search:focus { border-color: var(--lilac); }
 
-    .drive-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+    .drive-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-right: 4px;
+    }
 
     .drive-file-card {
       padding: 10px 13px;
@@ -676,15 +797,44 @@
     .drive-file-card.active { border-color: var(--lilac); background: #222631; }
 
     .drive-file-info { min-width: 0; flex: 1; }
-    .drive-file-title { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .drive-file-meta { display: flex; align-items: center; gap: 8px; font-size: 0.73rem; color: var(--muted); }
-    .file-folder-tag { padding: 1px 7px; border-radius: 5px; font-weight: 600; font-size: 0.69rem; background: rgba(255,255,255,0.06); color: var(--file-color, var(--lilac)); }
+    .drive-file-title {
+      font-size: 0.87rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .drive-file-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.73rem;
+      color: var(--muted);
+    }
+    .file-folder-tag {
+      padding: 1px 7px;
+      border-radius: 5px;
+      font-weight: 600;
+      font-size: 0.69rem;
+      background: rgba(255,255,255,0.06);
+      color: var(--file-color, var(--lilac));
+    }
 
     .file-actions { display: flex; gap: 4px; flex-shrink: 0; }
-    .file-icon-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 5px 8px; border-radius: 6px; font-size: 0.75rem; }
+    .file-icon-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+    }
     .file-icon-btn:hover { color: var(--text); border-color: var(--lilac); }
 
     .drive-preview-header-actions { display: flex; align-items: center; gap: 8px; }
+
     .drive-preview-body {
       flex: 1;
       overflow-y: auto;
@@ -697,237 +847,191 @@
       color: #e2e5e9;
     }
 
-    /* ================= VISTA 5: PORTALI, APP & MODULI (ISPIRATA ALLO SCREENSHOT) ================= */
-    .launcher-layout {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 235px 1fr;
-      gap: 16px;
-      overflow: hidden;
-    }
-
-    .launcher-sidebar {
+    /* ================= VISTA 5: LAUNCHER PORTALI, APP & MODULI PDF ================= */
+    .launcher-toolbar {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      overflow-y: auto;
-    }
-
-    .launcher-side-title {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted);
-      font-weight: 700;
-      margin-bottom: 4px;
-      padding-left: 4px;
-    }
-
-    .cat-nav-btn {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 11px 14px;
-      border-radius: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-align: left;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .cat-nav-btn:hover {
-      background: var(--card-hover);
-      border-color: var(--dash-event);
-    }
-
-    .cat-nav-btn.active {
-      background: rgba(79, 195, 247, 0.16);
-      border-color: var(--dash-event);
-      color: var(--dash-event);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    }
-
-    .cat-nav-left {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-    }
-
-    .cat-active-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: var(--dash-event);
-      opacity: 0;
-    }
-    .cat-nav-btn.active .cat-active-dot { opacity: 1; }
-
-    .cat-count-pill {
-      font-size: 0.72rem;
-      padding: 2px 7px;
-      border-radius: 99px;
-      background: var(--bg);
-      color: var(--muted);
-    }
-    .cat-nav-btn.active .cat-count-pill {
-      background: rgba(79, 195, 247, 0.2);
-      color: var(--dash-event);
-    }
-
-    .launcher-main {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      overflow: hidden;
-    }
-
-    .launcher-topbar {
+      padding: 12px 18px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 14px;
       flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .launcher-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      align-items: center;
+    }
+
+    .launcher-right-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
     .launcher-search {
-      width: 340px;
-      max-width: 100%;
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 9px 14px;
-      border-radius: 10px;
-      font-size: 0.88rem;
+      padding: 7px 12px;
+      border-radius: 8px;
+      font-size: 0.84rem;
+      width: 220px;
       outline: none;
     }
-    .launcher-search:focus { border-color: var(--dash-event); }
+    .launcher-search:focus { border-color: var(--lilac); }
 
-    .launcher-grid {
+    .launcher-scroll-area {
       flex: 1;
       overflow-y: auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-      grid-auto-rows: 175px;
-      gap: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
       padding-right: 4px;
     }
 
-    .tile-launcher-card {
-      position: relative;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 16px 14px;
+    .launcher-theme-section {
       display: flex;
       flex-direction: column;
+      gap: 10px;
+    }
+
+    .launcher-theme-header {
+      display: flex;
       align-items: center;
-      justify-content: center;
-      text-align: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--muted);
+      padding-bottom: 4px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .launcher-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 12px;
+    }
+
+    .launch-tile {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--tile-accent, var(--lilac));
+      border-radius: 12px;
+      padding: 14px 15px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       gap: 10px;
       cursor: pointer;
       transition: all 0.16s ease;
+      position: relative;
       text-decoration: none;
       color: var(--text);
     }
 
-    .tile-launcher-card:hover {
+    .launch-tile:hover {
       background: var(--card-hover);
-      border-color: var(--tile-accent, var(--dash-event));
+      border-color: var(--tile-accent, var(--lilac));
       transform: translateY(-2px);
       box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
     }
 
-    .tile-badge-circle {
-      width: 54px;
-      height: 54px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    .launch-tile-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .launch-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.55rem;
-      font-weight: 800;
-      color: var(--tile-accent, var(--dash-event));
+      font-size: 1.45rem;
       flex-shrink: 0;
     }
 
-    .tile-launcher-name {
+    .launch-tile-actions {
+      display: flex;
+      gap: 4px;
+      opacity: 0.35;
+      transition: opacity 0.15s;
+    }
+    .launch-tile:hover .launch-tile-actions { opacity: 1; }
+
+    .launch-mini-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 3px 6px;
+      border-radius: 5px;
+      font-size: 0.72rem;
+    }
+    .launch-mini-btn:hover { color: var(--text); border-color: var(--lilac); }
+
+    .launch-title {
       font-size: 0.94rem;
       font-weight: 700;
       color: var(--text);
       line-height: 1.25;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    }
+
+    .launch-desc {
+      font-size: 0.77rem;
+      color: var(--muted);
+      line-height: 1.35;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
-    }
-
-    .tile-launcher-sub {
-      font-size: 0.72rem;
-      color: var(--muted);
-      white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
     }
 
-    .tile-card-controls {
-      position: absolute;
-      top: 8px;
-      right: 8px;
+    .launch-footer {
       display: flex;
-      gap: 4px;
-      opacity: 0;
-      transition: opacity 0.15s;
-    }
-    .tile-launcher-card:hover .tile-card-controls { opacity: 1; }
-
-    .tile-ctrl-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      width: 24px;
-      height: 24px;
-      padding: 0;
-      border-radius: 6px;
-      font-size: 0.72rem;
-      display: flex;
+      justify-content: space-between;
       align-items: center;
-      justify-content: center;
+      font-size: 0.7rem;
+      color: var(--tile-accent, var(--lilac));
+      font-weight: 600;
+      margin-top: 2px;
     }
-    .tile-ctrl-btn:hover { color: var(--text); border-color: var(--lilac); }
 
-    .icon-presets-row {
-      display: flex;
-      flex-wrap: wrap;
+    /* ICON PICKER GRID IN MODAL */
+    .emoji-picker-grid {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
       gap: 6px;
       margin-top: 6px;
-    }
-    .icon-preset-btn {
       background: var(--bg);
+      padding: 8px;
+      border-radius: 8px;
       border: 1px solid var(--border);
-      padding: 5px 9px;
-      border-radius: 7px;
-      font-size: 0.95rem;
+    }
+
+    .emoji-opt {
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 6px;
+      padding: 5px 0;
+      text-align: center;
+      font-size: 1.15rem;
       cursor: pointer;
     }
-    .icon-preset-btn:hover { border-color: var(--dash-event); background: var(--card-hover); }
+    .emoji-opt:hover { background: var(--card-hover); border-color: var(--lilac); }
+    .emoji-opt.selected { background: var(--lilac-tile); border-color: var(--lilac); }
 
     /* MODALS */
     .modal-backdrop {
@@ -944,7 +1048,7 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 22px;
-      width: 470px;
+      width: 480px;
       max-width: 94vw;
     }
     .modal.wide { width: 620px; }
@@ -1025,7 +1129,7 @@
       <button type="button" class="tile-tab" data-view="viewPortali">
         <span class="tile-icon">🚀</span>
         <span class="tile-title">Portali & App</span>
-        <span class="tile-sub">Link, moduli e tool</span>
+        <span class="tile-sub">Siti, app e moduli PDF</span>
       </button>
     </nav>
 
@@ -1188,7 +1292,9 @@
           <span class="card-title">📂 Progetti & Pratiche Complesse</span>
           <button type="button" id="btnNewProject" class="primary" style="padding:5px 11px; font-size:0.78rem;">+ Nuovo Progetto</button>
         </div>
+
         <div class="proj-filter-bar" id="projDeptFilterBar"></div>
+
         <div class="proj-list" id="projectsListContainer">
           <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza o crea un nuovo progetto per iniziare.</p>
         </div>
@@ -1270,61 +1376,66 @@
 
   <!-- ==================== VISTA 5: PORTALI, APP & MODULI PDF ==================== -->
   <section id="viewPortali" class="view-section">
-    <div class="launcher-layout">
-      <!-- COLONNA SINISTRA: TEMI / CATEGORIE -->
-      <aside class="launcher-sidebar">
-        <span class="launcher-side-title">Temi & Funzionalità</span>
-        <div id="launcherCategoriesList" style="display:flex; flex-direction:column; gap:8px;"></div>
-        <button type="button" id="btnAddLauncherCategory" style="margin-top:auto; width:100%; font-size:0.78rem; color:var(--lilac);">+ Nuova Categoria</button>
-      </aside>
-
-      <!-- AREA PRINCIPALE DESTRA: RICERCA + PULSANTE AGGIUNGI + GRIGLIA PULSANTI -->
-      <div class="launcher-main">
-        <div class="launcher-topbar">
-          <input type="text" id="launcherSearchInput" class="launcher-search" placeholder="🔎 Filtra portali, app o moduli...">
-          <button type="button" id="btnNewLauncherItem" class="primary" style="padding:9px 18px; font-size:0.88rem;">+ Aggiungi</button>
-        </div>
-        <div class="launcher-grid" id="launcherTilesGrid"></div>
+    <div class="launcher-toolbar">
+      <div class="launcher-filters" id="launcherThemeFilterBar"></div>
+      <div class="launcher-right-tools">
+        <input type="text" id="launcherSearchInput" class="launcher-search" placeholder="🔎 Cerca portale, app o PDF...">
+        <button type="button" id="btnNewLauncherItem" class="primary">+ Nuovo Pulsante</button>
       </div>
     </div>
+
+    <div class="launcher-scroll-area" id="launcherGridContainer"></div>
   </section>
 
-  <!-- MODALE CREA / MODIFICA PULSANTE PORTALE / APP / MODULO -->
+  <!-- MODALE AGGIUNGI / MODIFICA PULSANTE PORTALE / APP / MODULO PDF -->
   <div class="modal-backdrop" id="launcherModal">
     <div class="modal">
       <h3 id="launcherModalTitle">🚀 Nuovo Pulsante Rapido</h3>
-      <label>Nome Pulsante:</label>
-      <input type="text" id="lnTitleInput" placeholder="Es. HYPERSIC, ANSA, Modulo Determina, AUDPIK...">
-
-      <label>Indirizzo Web / Link Drive PDF / Comando App:</label>
-      <input type="text" id="lnUrlInput" placeholder="Es. https://... oppure https://drive.google.com/...">
 
       <div class="modal-row-2">
         <div>
-          <label>Tema / Categoria:</label>
-          <select id="lnCategorySelect"></select>
+          <label>Nome Pulsante:</label>
+          <input type="text" id="lncTitleInput" placeholder="Es. Portale ANPR, Modulo Ferie PDF...">
         </div>
         <div>
-          <label>Sottotitolo / Nota breve:</label>
-          <input type="text" id="lnSubInput" placeholder="Es. Edge, Portale PA, PDF...">
+          <label>Tema / Categoria:</label>
+          <input type="text" id="lncThemeInput" list="lncThemesDatalist" placeholder="Es. Portali PA, Moduli PDF, App...">
+          <datalist id="lncThemesDatalist">
+            <option value="Portali PA & Enti">
+            <option value="Servizi Sociali & Anagrafe">
+            <option value="Moduli PDF & Documenti">
+            <option value="Web App & Strumenti">
+          </datalist>
         </div>
       </div>
 
-      <label>Icona o Lettera (puoi scrivere 1-2 lettere o scegliere un'icona):</label>
-      <input type="text" id="lnIconInput" maxlength="4" placeholder="Es. H, 📄, 🏛️, 📁...">
-      <div class="icon-presets-row">
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('🏛️')">🏛️</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('📄')">📄</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('📁')">📁</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('🌐')">🌐</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('⚙️')">⚙️</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('📊')">📊</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('✍️')">✍️</button>
-        <button type="button" class="icon-preset-btn" onclick="setLnIcon('🎵')">🎵</button>
+      <label>Indirizzo Web, Link PDF o Comando App:</label>
+      <input type="text" id="lncUrlInput" placeholder="https://... (oppure link Google Drive / file PDF)">
+
+      <div class="modal-row-2">
+        <div>
+          <label>Tipo Risorsa (Etichetta):</label>
+          <select id="lncTypeInput">
+            <option value="Portale Web">🌐 Portale Web</option>
+            <option value="Modulo PDF">📕 Modulo PDF</option>
+            <option value="Web App">⚡ Web App</option>
+            <option value="Documento / Cartella">📁 Documento / Cartella</option>
+          </select>
+        </div>
+        <div>
+          <label>Icona Personalizzata (Emoji):</label>
+          <input type="text" id="lncIconInput" value="🌐" maxlength="4" style="text-align:center; font-size:1.1rem;">
+        </div>
       </div>
 
-      <label>Colore Accento Pulsante:</label>
-      <div class="color-swatches" id="lnColorSwatches"></div>
+      <label>Scegli icona rapida:</label>
+      <div class="emoji-picker-grid" id="lncEmojiPicker"></div>
+
+      <label>Colore Accento Scheda:</label>
+      <div class="color-swatches" id="lncColorSwatches"></div>
+
+      <label>Descrizione breve (facoltativa):</label>
+      <input type="text" id="lncDescInput" placeholder="Es. Accesso SPID/CIE per certificati anagrafici">
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
         <button type="button" id="btnCancelLauncherModal">Annulla</button>
@@ -1486,8 +1597,6 @@
       <input type="text" id="cfgMemoList" value="Dashboard Promemoria">
       <label>Lista Tasks — Progetti:</label>
       <input type="text" id="cfgProjectsList" value="Dashboard Progetti">
-      <label>Lista Tasks — Portali & App:</label>
-      <input type="text" id="cfgPortalsList" value="Dashboard Portali">
       <label>Cartella Principale Google Drive:</label>
       <input type="text" id="cfgDriveFolder" value="Appunti Scanner">
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
@@ -1502,12 +1611,16 @@
   var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
   var MESI_BREVI = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
   var FOLDER_PALETTE = [
-    { name: "Azzurro", hex: "#4fc3f7" },
     { name: "Lilla", hex: "#b39ddb" },
-    { name: "Ambra", hex: "#ffb74d" },
+    { name: "Azzurro", hex: "#64b5f6" },
     { name: "Verde", hex: "#81c784" },
+    { name: "Ambra", hex: "#ffb74d" },
     { name: "Rosa", hex: "#f48fb1" },
     { name: "Corallo", hex: "#e57373" }
+  ];
+  var LAUNCHER_EMOJIS = [
+    "🏛️", "🌐", "📕", "📄", "📋", "🧾", "🪪", "👨‍👩‍👧", "📚", "⚖️",
+    "💶", "🔐", "📊", "📁", "✉️", "📞", "🖥️", "📱", "🎵", "⚡"
   ];
   var DEPT_COLORS = {
     "Servizi Sociali": "#64b5f6",
@@ -1516,9 +1629,2016 @@
     "Anagrafe": "#ffb74d",
     "Generale": "#f48fb1"
   };
-  var DEFAULT_LAUNCHER_CATS = ["Lavoro", "Strumenti", "Moduli", "Personale"];
   var DEFAULT_LAUNCHER_ITEMS = [
-    { id: "def-1", title: "HYPERSIC", url: "https://www.google.com/search?q=hypersic", category: "Lavoro", sub: "Gestionale PA", icon: "H", color: "#4fc3f7", isLocal: true },
-    { id: "def-2", title: "ANSA", url: "https://www.ansa.it", category: "Lavoro", sub: "Notizie · Web", icon: "A", color: "#4fc3f7", isLocal: true },
-    { id: "def-3", title: "Google Drive", url: "https://drive.google.com", category: "Strumenti", sub: "Archivio Cloud", icon: "📁", color: "#ffb74d", isLocal: true },
-    { id: "def-4", title: "AUDPIK", url: "https://pikke71.github.io/AUDPIK/", category: "Personale", sub: "Musica Drive", icon: "🎵", color: "#b3
+    { id: "lnc_1", title: "Comune San Martino di Venezze", theme: "Portali PA & Enti", type: "Portale Web", icon: "🏛️", color: "#b39ddb", url: "https://www.comune.sanmartinodivenezze.ro.it", desc: "Sito istituzionale, albo pretorio e amministrazione trasparente" },
+    { id: "lnc_2", title: "ANPR — Anagrafe Nazionale", theme: "Servizi Sociali & Anagrafe", type: "Portale Web", icon: "🪪", color: "#64b5f6", url: "https://www.anagrafenazionale.interno.it", desc: "Portale servizi demografici e stato civile" },
+    { id: "lnc_3", title: "INPS — Servizi Enti / SIUSS", theme: "Servizi Sociali & Anagrafe", type: "Portale Web", icon: "👨‍👩‍👧", color: "#81c784", url: "https://www.inps.it", desc: "Consultazione ISEE, assegni e prestazioni sociali" },
+    { id: "lnc_4", title: "Scanner Agenda Mobile", theme: "Web App & Strumenti", type: "Web App", icon: "📱", color: "#4fc3f7", url: "https://pikke71.github.io/APPAGENDA/", desc: "Acquisizione pagine planner e-ink e OCR appunti" },
+    { id: "lnc_5", title: "AUDPIK Music Player", theme: "Web App & Strumenti", type: "Web App", icon: "🎵", color: "#f48fb1", url: "https://pikke71.github.io/AUDPIK/", desc: "Streaming libreria musicale da Google Drive" }
+  ];
+  var AUTO_SYNC_MS = 5 * 60 * 1000;
+
+  var accessToken = null;
+  var tokenClient = null;
+  var currentMonday = getMonday(new Date());
+  var selectedDateStr = toIsoDate(new Date());
+
+  var weekEvents = [];
+  var editingEventId = null;
+
+  var tasksListId = null;
+  var weeklyTasks = [];
+
+  var memoListId = null;
+  var memoItems = [];
+
+  var projectsListId = null;
+  var projectsData = [];
+  var activeDeptFilter = "ALL";
+  var selectedProjectId = null;
+  var editingProjectId = null;
+
+  var rootDriveFolderId = null;
+  var driveSubfolders = [];
+  var driveFiles = [];
+  var activeFolderFilter = "ALL";
+  var selectedDriveFileId = null;
+
+  var editingFolderId = null;
+  var selectedSwatchColor = FOLDER_PALETTE[0].hex;
+  var movingDocId = null;
+
+  // Stato Launcher Portali & App
+  var launcherItems = [];
+  var launcherDriveConfigFileId = null;
+  var activeLauncherTheme = "ALL";
+  var editingLauncherId = null;
+  var selectedLauncherColor = FOLDER_PALETTE[0].hex;
+
+  function getMonday(d) {
+    var date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var day = date.getDay();
+    var diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
+  }
+
+  function toIsoDate(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  function addDays(d, n) {
+    var res = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    res.setDate(res.getDate() + n);
+    return res;
+  }
+
+  function getWeekNumber(d) {
+    var date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  }
+
+  function updateClock() {
+    var now = new Date();
+    document.getElementById("liveClock").innerText =
+      String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    document.getElementById("liveDate").innerText =
+      now.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+    updateNextEventPill();
+  }
+
+  function setSyncBadge(text, isLive) {
+    var el = document.getElementById("syncBadge");
+    el.innerText = text;
+    if (isLive) el.classList.add("live"); else el.classList.remove("live");
+  }
+
+  function switchMainView(viewId) {
+    document.querySelectorAll(".tile-tab").forEach(function(t) {
+      if (t.getAttribute("data-view") === viewId) t.classList.add("active");
+      else t.classList.remove("active");
+    });
+    document.querySelectorAll(".view-section").forEach(function(sec) { sec.classList.remove("active"); });
+    document.getElementById(viewId).classList.add("active");
+  }
+
+  function getFolderColorsMap() {
+    try { return JSON.parse(localStorage.getItem("dash_folder_colors") || "{}"); } catch (e) { return {}; }
+  }
+
+  function saveFolderColor(folderId, hexColor) {
+    var map = getFolderColorsMap();
+    map[folderId] = hexColor;
+    localStorage.setItem("dash_folder_colors", JSON.stringify(map));
+  }
+
+  function updateSummaryKpis() {
+    var totalWeekEvents = weekEvents.length;
+    var activeProjCount = projectsData.filter(function(p) { return !p.done; }).length;
+    var urgentMemos = memoItems.filter(function(m) { return !m.done && m.priority === "high"; }).length;
+    var completedTasks = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
+    var pendingTasks = weeklyTasks.filter(function(t) { return t.status !== "completed"; }).length;
+    var pendingMemos = memoItems.filter(function(m) { return !m.done; }).length;
+
+    document.getElementById("kpiWeekEvents").innerText = totalWeekEvents;
+    document.getElementById("kpiActiveProjects").innerText = activeProjCount;
+    document.getElementById("kpiUrgent").innerText = urgentMemos;
+    document.getElementById("kpiCompleted").innerText = completedTasks;
+    document.getElementById("kpiPending").innerText = pendingTasks + pendingMemos;
+  }
+
+  function loadCachedSnapshot() {
+    try {
+      var cachedEv = JSON.parse(localStorage.getItem("dash_cache_events") || "[]");
+      var cachedTasks = JSON.parse(localStorage.getItem("dash_cache_tasks") || "[]");
+      var cachedMemos = JSON.parse(localStorage.getItem("dash_cache_memos") || "[]");
+      var cachedProjs = JSON.parse(localStorage.getItem("dash_cache_projects") || "[]");
+      var cachedFolders = JSON.parse(localStorage.getItem("dash_cache_folders") || "[]");
+      var cachedDrive = JSON.parse(localStorage.getItem("dash_cache_drive") || "[]");
+      var cachedLauncher = JSON.parse(localStorage.getItem("dash_cache_launcher") || "null");
+
+      if (cachedEv.length) weekEvents = cachedEv;
+      if (cachedTasks.length) weeklyTasks = cachedTasks;
+      if (cachedMemos.length) memoItems = cachedMemos;
+      if (cachedProjs.length) projectsData = cachedProjs;
+      if (cachedFolders.length) driveSubfolders = cachedFolders;
+      if (cachedDrive.length) driveFiles = cachedDrive;
+      launcherItems = Array.isArray(cachedLauncher) ? cachedLauncher : DEFAULT_LAUNCHER_ITEMS.slice();
+    } catch (e) {
+      launcherItems = DEFAULT_LAUNCHER_ITEMS.slice();
+    }
+
+    renderWeekGrid();
+    renderDayDetail();
+    renderTasks();
+    renderAllMemos();
+    renderProjFilterBar();
+    renderProjectsList();
+    renderProjectDetail();
+    renderDriveFoldersBar();
+    renderDriveList();
+    renderLauncherThemeBar();
+    renderLauncherGrid();
+    updateSummaryKpis();
+  }
+
+  function saveCachedSnapshot() {
+    try {
+      localStorage.setItem("dash_cache_events", JSON.stringify(weekEvents));
+      localStorage.setItem("dash_cache_tasks", JSON.stringify(weeklyTasks));
+      localStorage.setItem("dash_cache_memos", JSON.stringify(memoItems));
+      localStorage.setItem("dash_cache_projects", JSON.stringify(projectsData));
+      localStorage.setItem("dash_cache_folders", JSON.stringify(driveSubfolders));
+      localStorage.setItem("dash_cache_drive", JSON.stringify(driveFiles));
+      localStorage.setItem("dash_cache_launcher", JSON.stringify(launcherItems));
+    } catch (e) {}
+    updateSummaryKpis();
+  }
+
+  window.addEventListener("load", function() {
+    var sHint = localStorage.getItem("dash_login_hint");
+    var sClient = localStorage.getItem("dash_client_id");
+    var sList = localStorage.getItem("dash_tasks_list");
+    var sMemo = localStorage.getItem("dash_memo_list");
+    var sProj = localStorage.getItem("dash_projects_list");
+    var sDrive = localStorage.getItem("dash_drive_folder");
+
+    if (sHint) document.getElementById("cfgLoginHint").value = sHint;
+    if (sClient) document.getElementById("cfgClientId").value = sClient;
+    if (sList) document.getElementById("cfgTasksList").value = sList;
+    if (sMemo) document.getElementById("cfgMemoList").value = sMemo;
+    if (sProj) document.getElementById("cfgProjectsList").value = sProj;
+    if (sDrive) document.getElementById("cfgDriveFolder").value = sDrive;
+
+    updateClock();
+    setInterval(updateClock, 15000);
+    loadCachedSnapshot();
+
+    document.querySelectorAll(".tile-tab").forEach(function(tab) {
+      tab.onclick = function() {
+        switchMainView(tab.getAttribute("data-view"));
+      };
+    });
+
+    document.getElementById("btnPrevWeek").onclick = function() {
+      currentMonday = addDays(currentMonday, -7);
+      selectedDateStr = toIsoDate(currentMonday);
+      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); updateSummaryKpis(); }
+    };
+    document.getElementById("btnNextWeek").onclick = function() {
+      currentMonday = addDays(currentMonday, 7);
+      selectedDateStr = toIsoDate(currentMonday);
+      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); updateSummaryKpis(); }
+    };
+    document.getElementById("btnToday").onclick = function() {
+      var today = new Date();
+      currentMonday = getMonday(today);
+      selectedDateStr = toIsoDate(today);
+      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); updateSummaryKpis(); }
+    };
+
+    document.getElementById("btnSync").onclick = function() { requestAuth(false); };
+    document.getElementById("btnRefreshDrive").onclick = function() {
+      if (accessToken) refreshDriveOnly(); else requestAuth(false);
+    };
+
+    document.getElementById("btnNewEventTop").onclick = function() { openEventModal(null, selectedDateStr, ""); };
+    document.getElementById("btnAddEventSelectedDay").onclick = function() { openEventModal(null, selectedDateStr, ""); };
+    document.getElementById("evAllDayInput").onchange = function() {
+      document.getElementById("evTimesRow").style.display = this.checked ? "none" : "grid";
+    };
+    document.getElementById("btnCancelEventModal").onclick = function() {
+      document.getElementById("eventModal").style.display = "none";
+    };
+    document.getElementById("btnSaveEventModal").onclick = saveEventFromModal;
+    document.getElementById("btnDeleteEventModal").onclick = deleteEventFromModal;
+
+    document.getElementById("btnNewProject").onclick = function() { openProjectModal(null); };
+    document.getElementById("btnEditProject").onclick = function() {
+      if (selectedProjectId) openProjectModal(selectedProjectId);
+    };
+    document.getElementById("btnDeleteProject").onclick = deleteSelectedProject;
+    document.getElementById("btnCancelProjectModal").onclick = function() {
+      document.getElementById("projectModal").style.display = "none";
+    };
+    document.getElementById("btnSaveProjectModal").onclick = saveProjectModal;
+    document.getElementById("btnSaveProjStatusNote").onclick = saveProjectStatusNote;
+    document.getElementById("btnAddProjStep").onclick = addProjectStep;
+    document.getElementById("newProjStepInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addProjectStep();
+    });
+    document.getElementById("btnOpenProjDriveFolder").onclick = function() {
+      var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+      if (!proj || !proj.driveFolderId) return;
+      activeFolderFilter = proj.driveFolderId;
+      switchMainView("viewAppunti");
+      renderDriveFoldersBar();
+      renderDriveList();
+    };
+
+    document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
+    document.getElementById("btnCancelFreeNote").onclick = function() {
+      document.getElementById("freeNoteModal").style.display = "none";
+    };
+    document.getElementById("btnSaveFreeNote").onclick = saveFreeNoteToDrive;
+
+    document.getElementById("btnOpenSettings").onclick = function() {
+      document.getElementById("settingsModal").style.display = "flex";
+    };
+    document.getElementById("btnCloseSettings").onclick = function() {
+      document.getElementById("settingsModal").style.display = "none";
+    };
+    document.getElementById("btnSaveSettings").onclick = function() {
+      localStorage.setItem("dash_login_hint", document.getElementById("cfgLoginHint").value.trim());
+      localStorage.setItem("dash_client_id", document.getElementById("cfgClientId").value.trim());
+      localStorage.setItem("dash_tasks_list", document.getElementById("cfgTasksList").value.trim() || "Obiettivi Settimanali");
+      localStorage.setItem("dash_memo_list", document.getElementById("cfgMemoList").value.trim() || "Dashboard Promemoria");
+      localStorage.setItem("dash_projects_list", document.getElementById("cfgProjectsList").value.trim() || "Dashboard Progetti");
+      localStorage.setItem("dash_drive_folder", document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner");
+      document.getElementById("settingsModal").style.display = "none";
+      if (accessToken) loadAllData();
+    };
+
+    document.getElementById("btnNewFolder").onclick = function() { openFolderModal(null); };
+    document.getElementById("btnCancelFolder").onclick = function() {
+      document.getElementById("folderModal").style.display = "none";
+    };
+    document.getElementById("btnSaveFolder").onclick = saveFolderModal;
+
+    document.getElementById("btnCancelMoveDoc").onclick = function() {
+      document.getElementById("moveDocModal").style.display = "none";
+    };
+    document.getElementById("btnConfirmMoveDoc").onclick = confirmMoveDocument;
+
+    document.getElementById("btnRenameSelectedDoc").onclick = function() {
+      if (selectedDriveFileId) renameDriveFile(selectedDriveFileId);
+    };
+    document.getElementById("btnMoveSelectedDoc").onclick = function() {
+      if (selectedDriveFileId) openMoveDocModal(selectedDriveFileId);
+    };
+
+    // Launcher Portali & App
+    document.getElementById("btnNewLauncherItem").onclick = function() { openLauncherModal(null); };
+    document.getElementById("btnCancelLauncherModal").onclick = function() {
+      document.getElementById("launcherModal").style.display = "none";
+    };
+    document.getElementById("btnSaveLauncherModal").onclick = saveLauncherModal;
+    document.getElementById("launcherSearchInput").addEventListener("input", renderLauncherGrid);
+
+    document.getElementById("btnAddTask").onclick = addNewTask;
+    document.getElementById("newTaskInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addNewTask();
+    });
+
+    document.getElementById("btnAddMemo").onclick = addNewMemo;
+    document.getElementById("memoInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addNewMemo();
+    });
+
+    document.getElementById("driveSearchInput").addEventListener("input", renderDriveList);
+
+    initAutoSync();
+
+    setInterval(function() {
+      if (accessToken) {
+        var exp = parseInt(localStorage.getItem("dash_token_exp") || "0", 10);
+        if (Date.now() < exp - 60000) loadAllData();
+        else requestAuth(true);
+      }
+    }, AUTO_SYNC_MS);
+  });
+
+  // ==================== OAUTH & SYNC ====================
+  function initAutoSync() {
+    var savedToken = localStorage.getItem("dash_access_token");
+    var savedExp = parseInt(localStorage.getItem("dash_token_exp") || "0", 10);
+
+    if (savedToken && Date.now() < savedExp - 60000) {
+      accessToken = savedToken;
+      loadAllData();
+      return;
+    }
+
+    var attempts = 0;
+    var waitGsi = setInterval(function() {
+      attempts++;
+      if (window.google && google.accounts && google.accounts.oauth2) {
+        clearInterval(waitGsi);
+        requestAuth(true);
+      } else if (attempts > 25) {
+        clearInterval(waitGsi);
+        setSyncBadge("Clicca Sincronizza", false);
+      }
+    }, 200);
+  }
+
+  function requestAuth(silent) {
+    var clientId = document.getElementById("cfgClientId").value.trim();
+    var loginHint = document.getElementById("cfgLoginHint").value.trim();
+    if (!clientId) return;
+
+    if (!silent) setSyncBadge("Connessione...", false);
+
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: SCOPES,
+      hint: loginHint || undefined,
+      callback: function(resp) {
+        if (resp && resp.access_token) {
+          accessToken = resp.access_token;
+          var expiresInSec = parseInt(resp.expires_in || "3500", 10);
+          localStorage.setItem("dash_access_token", accessToken);
+          localStorage.setItem("dash_token_exp", String(Date.now() + expiresInSec * 1000));
+          loadAllData();
+        } else if (silent) {
+          setSyncBadge("Clicca Sincronizza", false);
+        }
+      },
+      error_callback: function() {
+        setSyncBadge(silent ? "Clicca Sincronizza" : "Accesso annullato", false);
+      }
+    });
+
+    if (silent) tokenClient.requestAccessToken({ prompt: "none" });
+    else tokenClient.requestAccessToken();
+  }
+
+  async function loadAllData() {
+    setSyncBadge("Aggiornamento...", false);
+    try {
+      await Promise.all([
+        loadWeekEvents(),
+        loadWeeklyTasks(),
+        loadMemosFromTasks(),
+        loadProjectsFromTasks(),
+        loadDriveNotesAndFolders()
+      ]);
+      await loadLauncherConfigFromDrive();
+      saveCachedSnapshot();
+      renderWeekGrid();
+      renderDayDetail();
+      renderTasks();
+      renderAllMemos();
+      renderProjFilterBar();
+      renderProjectsList();
+      renderProjectDetail();
+      renderDriveFoldersBar();
+      renderDriveList();
+      renderLauncherThemeBar();
+      renderLauncherGrid();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      if (String(err.message).indexOf("401") !== -1) {
+        localStorage.removeItem("dash_access_token");
+        accessToken = null;
+        setSyncBadge("Sessione scaduta", false);
+      } else {
+        setSyncBadge("Errore sync (" + err.message + ")", false);
+      }
+    }
+  }
+
+  async function refreshDriveOnly() {
+    setSyncBadge("Aggiornamento Drive...", false);
+    try {
+      await loadDriveNotesAndFolders();
+      saveCachedSnapshot();
+      renderDriveFoldersBar();
+      renderDriveList();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      if (String(err.message).indexOf("403") !== -1) requestAuth(false);
+      else setSyncBadge("Errore Drive", false);
+    }
+  }
+
+  // ==================== 1. GOOGLE CALENDAR ====================
+  async function loadWeekEvents() {
+    var sunday = addDays(currentMonday, 6);
+    var timeMin = encodeURIComponent(toIsoDate(currentMonday) + "T00:00:00Z");
+    var timeMax = encodeURIComponent(toIsoDate(addDays(sunday, 1)) + "T23:59:59Z");
+    var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=" + timeMin + "&timeMax=" + timeMax + "&singleEvents=true&orderBy=startTime";
+
+    var res = await fetch(url, { headers: { "Authorization": "Bearer " + accessToken } });
+    if (!res.ok) throw new Error("Calendar " + res.status);
+    var data = await res.json();
+
+    weekEvents = (data.items || []).map(function(item) {
+      var isAllDay = !!(item.start && item.start.date);
+      var dateStr = isAllDay ? item.start.date : item.start.dateTime.slice(0, 10);
+      var startTime = isAllDay ? "Tutto il giorno" : item.start.dateTime.slice(11, 16);
+      var endTime = isAllDay ? "" : item.end.dateTime.slice(11, 16);
+      var rawTitle = item.summary || "(Senza titolo)";
+      var isPersonal = /^\[personale\]/i.test(rawTitle);
+      var privProps = (item.extendedProperties && item.extendedProperties.private) || {};
+      var isFromDashboard = (privProps.source === "dashboard");
+
+      return {
+        id: item.id,
+        date: dateStr,
+        isAllDay: isAllDay,
+        startTime: startTime,
+        endTime: endTime,
+        startIso: isAllDay ? null : item.start.dateTime,
+        title: rawTitle.replace(/^\[personale\]\s*/i, ""),
+        isPersonal: isPersonal,
+        isFromDashboard: isFromDashboard,
+        description: item.description || ""
+      };
+    });
+  }
+
+  function openEventModal(eventId, defaultDate, prefillTitle) {
+    if (!accessToken) { requestAuth(false); return; }
+    editingEventId = eventId;
+    var modalTitle = document.getElementById("eventModalTitle");
+    var titleInput = document.getElementById("evTitleInput");
+    var dateInput = document.getElementById("evDateInput");
+    var catInput = document.getElementById("evCategoryInput");
+    var allDayInput = document.getElementById("evAllDayInput");
+    var startInput = document.getElementById("evStartInput");
+    var endInput = document.getElementById("evEndInput");
+    var descInput = document.getElementById("evDescInput");
+    var delBtn = document.getElementById("btnDeleteEventModal");
+
+    if (eventId) {
+      var ev = weekEvents.find(function(e) { return e.id === eventId; });
+      if (!ev) return;
+      modalTitle.innerText = "📅 Riprogramma / Modifica Appuntamento";
+      titleInput.value = ev.title;
+      dateInput.value = ev.date;
+      catInput.value = ev.isPersonal ? "personal" : "office";
+      allDayInput.checked = ev.isAllDay;
+      startInput.value = ev.isAllDay ? "09:00" : ev.startTime;
+      endInput.value = (ev.isAllDay || !ev.endTime) ? "10:00" : ev.endTime;
+      descInput.value = ev.description || "";
+      delBtn.style.display = "inline-block";
+    } else {
+      modalTitle.innerText = "📅 Nuovo Appuntamento da Dashboard";
+      titleInput.value = prefillTitle || "";
+      dateInput.value = defaultDate || selectedDateStr;
+      catInput.value = "office";
+      allDayInput.checked = false;
+      startInput.value = "09:00";
+      endInput.value = "10:00";
+      descInput.value = "";
+      delBtn.style.display = "none";
+    }
+
+    document.getElementById("evTimesRow").style.display = allDayInput.checked ? "none" : "grid";
+    document.getElementById("eventModal").style.display = "flex";
+    titleInput.focus();
+  }
+
+  async function saveEventFromModal() {
+    var rawTitle = document.getElementById("evTitleInput").value.trim();
+    var dateVal = document.getElementById("evDateInput").value;
+    if (!rawTitle || !dateVal || !accessToken) return;
+
+    var isPersonal = (document.getElementById("evCategoryInput").value === "personal");
+    var isAllDay = document.getElementById("evAllDayInput").checked;
+    var startVal = document.getElementById("evStartInput").value || "09:00";
+    var endVal = document.getElementById("evEndInput").value || "10:00";
+    var descVal = document.getElementById("evDescInput").value.trim();
+
+    var finalSummary = isPersonal ? ("[Personale] " + rawTitle) : rawTitle;
+    var existingEv = editingEventId ? weekEvents.find(function(e) { return e.id === editingEventId; }) : null;
+    var preserveDashboardTag = existingEv ? existingEv.isFromDashboard : true;
+
+    var bodyPayload = {
+      summary: finalSummary,
+      description: descVal
+    };
+
+    if (preserveDashboardTag) {
+      bodyPayload.extendedProperties = { private: { source: "dashboard" } };
+    }
+
+    if (isAllDay) {
+      var parts = dateVal.split("-");
+      var nextD = addDays(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)), 1);
+      bodyPayload.start = { date: dateVal };
+      bodyPayload.end = { date: toIsoDate(nextD) };
+    } else {
+      bodyPayload.start = { dateTime: dateVal + "T" + startVal + ":00", timeZone: "Europe/Rome" };
+      bodyPayload.end = { dateTime: dateVal + "T" + endVal + ":00", timeZone: "Europe/Rome" };
+    }
+
+    document.getElementById("eventModal").style.display = "none";
+    setSyncBadge("Salvataggio su Calendar...", false);
+
+    try {
+      var url = editingEventId
+        ? ("https://www.googleapis.com/calendar/v3/calendars/primary/events/" + encodeURIComponent(editingEventId))
+        : "https://www.googleapis.com/calendar/v3/calendars/primary/events";
+      var method = editingEventId ? "PATCH" : "POST";
+
+      var res = await fetch(url, {
+        method: method,
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify(bodyPayload)
+      });
+      if (!res.ok) throw new Error("Calendar " + res.status);
+
+      selectedDateStr = dateVal;
+      await loadWeekEvents();
+      saveCachedSnapshot();
+      renderWeekGrid();
+      renderDayDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore salvataggio appuntamento: " + err.message);
+    }
+  }
+
+  async function deleteEventFromModal() {
+    if (!editingEventId || !accessToken) return;
+    if (!confirm("Vuoi eliminare questo appuntamento da Google Calendar?")) return;
+
+    document.getElementById("eventModal").style.display = "none";
+    setSyncBadge("Eliminazione...", false);
+
+    try {
+      var res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events/" + encodeURIComponent(editingEventId), {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      if (!res.ok && res.status !== 204) throw new Error("Calendar " + res.status);
+
+      await loadWeekEvents();
+      saveCachedSnapshot();
+      renderWeekGrid();
+      renderDayDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore eliminazione: " + err.message);
+    }
+  }
+
+  function renderWeekGrid() {
+    var sunday = addDays(currentMonday, 6);
+    var wkNum = getWeekNumber(currentMonday);
+    document.getElementById("weekLabel").innerText =
+      "Sett. " + wkNum + " (" + currentMonday.getDate() + " " + MESI_BREVI[currentMonday.getMonth()] +
+      " – " + sunday.getDate() + " " + MESI_BREVI[sunday.getMonth()] + ")";
+
+    var todayStr = toIsoDate(new Date());
+    var grid = document.getElementById("weekGrid");
+    grid.innerHTML = "";
+
+    for (var i = 0; i < 7; i++) {
+      (function(idx) {
+        var d = addDays(currentMonday, idx);
+        var dStr = toIsoDate(d);
+        var dayEvs = weekEvents.filter(function(e) { return e.date === dStr; });
+
+        var col = document.createElement("div");
+        col.className = "day-col" + (dStr === todayStr ? " today" : "") + (dStr === selectedDateStr ? " selected" : "");
+        col.onclick = function() {
+          selectedDateStr = dStr;
+          renderWeekGrid();
+          renderDayDetail();
+        };
+
+        var badge = (dStr === todayStr) ? '<span class="today-badge">OGGI</span>' : "";
+        var evHtml = dayEvs.length === 0
+          ? '<span style="color:#555a66; font-size:0.74rem;">Nessun impegno</span>'
+          : dayEvs.map(function(ev) {
+              var timeTxt = ev.isAllDay ? "Tutto il giorno" : ev.startTime;
+              var cls = ev.isPersonal ? " personal" : (ev.isFromDashboard ? " from-dash" : "");
+              return '<div class="mini-ev' + cls + '">' +
+                '<span class="mini-ev-time">' + timeTxt + '</span>' +
+                escapeHtml(ev.title) +
+              '</div>';
+            }).join("");
+
+        col.innerHTML =
+          '<div class="day-col-header">' +
+            '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
+            '<div class="day-header-right">' +
+              badge +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\', \'\')">+</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="day-events">' + evHtml + '</div>';
+
+        grid.appendChild(col);
+      })(i);
+    }
+  }
+
+  function renderDayDetail() {
+    var parts = selectedDateStr.split("-");
+    var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    var label = d.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+    document.getElementById("selectedDayHeader").innerText = "Dettaglio: " + label;
+
+    var dayEvs = weekEvents.filter(function(e) { return e.date === selectedDateStr; });
+    document.getElementById("dayCountLabel").innerText = dayEvs.length + (dayEvs.length === 1 ? " impegno" : " impegni");
+
+    var container = document.getElementById("dayTimeline");
+    if (dayEvs.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun impegno in programma per questa giornata.</p>';
+      return;
+    }
+
+    container.innerHTML = dayEvs.map(function(ev) {
+      var timeRange = ev.isAllDay ? "Tutto il giorno" : (ev.startTime + (ev.endTime ? " – " + ev.endTime : ""));
+      var cls = ev.isPersonal ? " personal" : (ev.isFromDashboard ? " from-dash" : "");
+      var sourceBadge = ev.isPersonal
+        ? '<span class="source-tag pers">Personale</span>'
+        : (ev.isFromDashboard ? '<span class="source-tag dash">Dashboard</span>' : '<span class="source-tag eink">E-Ink</span>');
+      var noteHtml = ev.description ? '<div class="timeline-note">' + escapeHtml(ev.description) + '</div>' : "";
+
+      return '<div class="timeline-item' + cls + '">' +
+        '<div class="timeline-left">' +
+          '<div class="timeline-time">' + timeRange + '</div>' +
+          '<div>' +
+            '<div class="timeline-title">' + escapeHtml(ev.title) + sourceBadge + '</div>' +
+            noteHtml +
+          '</div>' +
+        '</div>' +
+        '<button type="button" class="resched-btn" title="Riprogramma o modifica" onclick="openEventModal(\'' + ev.id + '\')">📅 Riprogramma</button>' +
+      '</div>';
+    }).join("");
+
+    updateNextEventPill();
+  }
+
+  function updateNextEventPill() {
+    var box = document.getElementById("nextEventBox");
+    var now = new Date();
+    var todayStr = toIsoDate(now);
+    var upcoming = weekEvents.filter(function(e) {
+      return e.date === todayStr && !e.isAllDay && e.startIso && new Date(e.startIso) > now;
+    });
+
+    if (upcoming.length === 0) {
+      box.innerText = "Nessun altro appuntamento orario previsto per oggi.";
+      return;
+    }
+    var next = upcoming[0];
+    var diffMin = Math.round((new Date(next.startIso) - now) / 60000);
+    var timeStr = diffMin < 60 ? ("tra " + diffMin + " min") : ("alle " + next.startTime);
+    box.innerHTML = "Prossimo (" + timeStr + "):<br><strong>" + escapeHtml(next.title) + "</strong>";
+  }
+
+  // ==================== 2. OBIETTIVI SETTIMANALI (TASKS) ====================
+  async function getOrCreateListId(listName) {
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/users/@me/lists", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    if (!res.ok) throw new Error("Tasks " + res.status);
+    var data = await res.json();
+    var lists = data.items || [];
+    for (var i = 0; i < lists.length; i++) {
+      if ((lists[i].title || "").toLowerCase().trim() === listName.toLowerCase().trim()) {
+        return lists[i].id;
+      }
+    }
+    var createRes = await fetch("https://tasks.googleapis.com/tasks/v1/users/@me/lists", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: listName })
+    });
+    var created = await createRes.json();
+    return created.id;
+  }
+
+  async function loadWeeklyTasks() {
+    var listName = document.getElementById("cfgTasksList").value.trim() || "Obiettivi Settimanali";
+    document.getElementById("tasksCardTitle").innerText = listName;
+    tasksListId = await getOrCreateListId(listName);
+
+    var tRes = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks?showCompleted=true&showHidden=true", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var tData = await tRes.json();
+    weeklyTasks = (tData.items || []).filter(function(t) { return (t.title || "").trim() !== ""; });
+  }
+
+  function renderTasks() {
+    var listEl = document.getElementById("tasksList");
+    var total = weeklyTasks.length;
+    var doneCount = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
+    var pct = total === 0 ? 0 : Math.round((doneCount / total) * 100);
+
+    document.getElementById("tasksCounter").innerText = doneCount + "/" + total + " completati";
+    document.getElementById("tasksProgressFill").style.width = pct + "%";
+    document.getElementById("tasksProgressPct").innerText = pct + "%";
+
+    if (total === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun obiettivo in lista.</p>';
+      return;
+    }
+
+    var sorted = weeklyTasks.slice().sort(function(a, b) {
+      if (a.status === b.status) return 0;
+      return a.status === "completed" ? 1 : -1;
+    });
+
+    listEl.innerHTML = sorted.map(function(t) {
+      var isDone = (t.status === "completed");
+      return '<div class="task-item' + (isDone ? " done" : "") + '" onclick="toggleTask(\'' + t.id + '\')">' +
+        '<div class="task-check">' + (isDone ? "✓" : "") + '</div>' +
+        '<div class="task-text">' + escapeHtml(t.title) + '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  async function toggleTask(taskId) {
+    if (!accessToken || !tasksListId) return;
+    var task = weeklyTasks.find(function(t) { return t.id === taskId; });
+    if (!task) return;
+
+    var newStatus = (task.status === "completed") ? "needsAction" : "completed";
+    task.status = newStatus;
+    renderTasks();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks/" + encodeURIComponent(taskId), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: taskId, status: newStatus })
+    });
+  }
+
+  async function addNewTask() {
+    var input = document.getElementById("newTaskInput");
+    var title = input.value.trim();
+    if (!title) return;
+    if (!accessToken || !tasksListId) { requestAuth(false); return; }
+
+    input.value = "";
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title })
+    });
+    if (res.ok) {
+      await loadWeeklyTasks();
+      renderTasks();
+      saveCachedSnapshot();
+    }
+  }
+
+  // ==================== 3. PROMEMORIA & CONTATTI ====================
+  function parseMemoTitle(rawTitle) {
+    var match = (rawTitle || "").match(/^\[(TELEFONATE|PERSONE|VERIFICARE|IDEE)\|(high|med|low)\]\s*(.*)$/i);
+    if (match) {
+      return {
+        category: match[1].toUpperCase(),
+        priority: match[2].toLowerCase(),
+        title: match[3]
+      };
+    }
+    return { category: "IDEE", priority: "low", title: rawTitle };
+  }
+
+  async function loadMemosFromTasks() {
+    var memoListName = document.getElementById("cfgMemoList").value.trim() || "Dashboard Promemoria";
+    memoListId = await getOrCreateListId(memoListName);
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(memoListId) + "/tasks?showCompleted=true&showHidden=true", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var data = await res.json();
+    memoItems = (data.items || [])
+      .filter(function(t) { return (t.title || "").trim() !== ""; })
+      .map(function(t) {
+        var parsed = parseMemoTitle(t.title);
+        return {
+          id: t.id,
+          category: parsed.category,
+          priority: parsed.priority,
+          title: parsed.title,
+          done: (t.status === "completed")
+        };
+      });
+  }
+
+  function renderAllMemos() {
+    var cats = ["TELEFONATE", "PERSONE", "VERIFICARE", "IDEE"];
+    var prioWeight = { high: 1, med: 2, low: 3 };
+    var prioLabels = { high: "Urgente", med: "Media", low: "Normale" };
+
+    cats.forEach(function(cat) {
+      var listEl = document.getElementById("list-" + cat);
+      var cntEl = document.getElementById("cnt-" + cat);
+      var items = memoItems
+        .filter(function(m) { return m.category === cat; })
+        .sort(function(a, b) {
+          if (a.done !== b.done) return a.done ? 1 : -1;
+          return (prioWeight[a.priority] || 3) - (prioWeight[b.priority] || 3);
+        });
+
+      var activeCount = items.filter(function(m) { return !m.done; }).length;
+      cntEl.innerText = activeCount + " attivi";
+
+      if (items.length === 0) {
+        listEl.innerHTML = '<p style="color:#555a66; font-size:0.82rem;">Nessuna voce inserita.</p>';
+        return;
+      }
+
+      listEl.innerHTML = items.map(function(m) {
+        return '<div class="memo-item prio-' + m.priority + (m.done ? " done" : "") + '">' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleMemo(\'' + m.id + '\')">' + (m.done ? "✓" : "") + '</div>' +
+          '<span class="prio-pill ' + m.priority + '">' + prioLabels[m.priority] + '</span>' +
+          '<span class="memo-title" style="cursor:pointer;" onclick="toggleMemo(\'' + m.id + '\')">' + escapeHtml(m.title) + '</span>' +
+          '<button type="button" class="memo-del" title="Elimina" onclick="deleteMemo(\'' + m.id + '\')">✕</button>' +
+        '</div>';
+      }).join("");
+    });
+  }
+
+  async function addNewMemo() {
+    var input = document.getElementById("memoInput");
+    var text = input.value.trim();
+    if (!text) return;
+
+    var category = document.getElementById("memoCategory").value;
+    var priority = document.getElementById("memoPriority").value;
+    var encodedTitle = "[" + category + "|" + priority + "] " + text;
+
+    input.value = "";
+    if (!accessToken || !memoListId) { requestAuth(false); return; }
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(memoListId) + "/tasks", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: encodedTitle })
+    });
+    if (res.ok) {
+      await loadMemosFromTasks();
+      renderAllMemos();
+      saveCachedSnapshot();
+    }
+  }
+
+  async function toggleMemo(memoId) {
+    var item = memoItems.find(function(m) { return m.id === memoId; });
+    if (!item || !accessToken || !memoListId) return;
+
+    item.done = !item.done;
+    renderAllMemos();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(memoListId) + "/tasks/" + encodeURIComponent(memoId), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: memoId, status: item.done ? "completed" : "needsAction" })
+    });
+  }
+
+  async function deleteMemo(memoId) {
+    if (!accessToken || !memoListId) return;
+    memoItems = memoItems.filter(function(m) { return m.id !== memoId; });
+    renderAllMemos();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(memoListId) + "/tasks/" + encodeURIComponent(memoId), {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+  }
+
+  // ==================== 4. PROGETTI ====================
+  function parseProjectHeader(rawTitle) {
+    var m = (rawTitle || "").match(/^\[([^\]]+)\]\s*(.*)$/);
+    if (m) return { dept: m[1].trim(), title: m[2].trim() };
+    return { dept: "Generale", title: rawTitle };
+  }
+
+  function parseProjectNotes(rawNotes) {
+    if (!rawNotes) return { driveFolderId: "", statusNote: "" };
+    try {
+      var obj = JSON.parse(rawNotes);
+      return {
+        driveFolderId: obj.driveFolderId || "",
+        statusNote: obj.statusNote || ""
+      };
+    } catch (e) {
+      return { driveFolderId: "", statusNote: rawNotes };
+    }
+  }
+
+  async function loadProjectsFromTasks() {
+    var projListName = document.getElementById("cfgProjectsList").value.trim() || "Dashboard Progetti";
+    projectsListId = await getOrCreateListId(projListName);
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks?showCompleted=true&showHidden=true&maxResults=100", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var data = await res.json();
+    var allItems = (data.items || []).filter(function(t) { return (t.title || "").trim() !== ""; });
+
+    var topProjects = allItems.filter(function(t) { return !t.parent; });
+    var subSteps = allItems.filter(function(t) { return !!t.parent; });
+
+    projectsData = topProjects.map(function(p) {
+      var parsedTitle = parseProjectHeader(p.title);
+      var parsedNotes = parseProjectNotes(p.notes);
+      var dueStr = p.due ? p.due.slice(0, 10) : "";
+      var mySteps = subSteps
+        .filter(function(s) { return s.parent === p.id; })
+        .sort(function(a, b) { return (a.position || "").localeCompare(b.position || ""); })
+        .map(function(s) {
+          return {
+            id: s.id,
+            title: s.title,
+            done: (s.status === "completed")
+          };
+        });
+
+      return {
+        id: p.id,
+        title: parsedTitle.title,
+        dept: parsedTitle.dept,
+        due: dueStr,
+        driveFolderId: parsedNotes.driveFolderId,
+        statusNote: parsedNotes.statusNote,
+        done: (p.status === "completed"),
+        steps: mySteps
+      };
+    });
+
+    if (selectedProjectId && !projectsData.some(function(p) { return p.id === selectedProjectId; })) {
+      selectedProjectId = null;
+    }
+    if (!selectedProjectId && projectsData.length > 0) {
+      selectedProjectId = projectsData[0].id;
+    }
+  }
+
+  function renderProjFilterBar() {
+    var bar = document.getElementById("projDeptFilterBar");
+    var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Generale"];
+    var html = '<div class="folder-chip' + (activeDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setProjDeptFilter(\'ALL\')">' +
+      '<span>Tutti (' + projectsData.length + ')</span>' +
+    '</div>';
+
+    depts.forEach(function(dept) {
+      var cnt = projectsData.filter(function(p) { return p.dept === dept; }).length;
+      if (cnt === 0 && activeDeptFilter !== dept) return;
+      var col = DEPT_COLORS[dept] || "#b39ddb";
+      var isAct = (activeDeptFilter === dept) ? " active" : "";
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setProjDeptFilter(\'' + dept + '\')">' +
+        '<span class="folder-dot" style="background:' + col + ';"></span>' +
+        '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
+      '</div>';
+    });
+    bar.innerHTML = html;
+  }
+
+  function setProjDeptFilter(dept) {
+    activeDeptFilter = dept;
+    renderProjFilterBar();
+    renderProjectsList();
+  }
+
+  function renderProjectsList() {
+    var container = document.getElementById("projectsListContainer");
+    var filtered = projectsData.filter(function(p) {
+      return activeDeptFilter === "ALL" || p.dept === activeDeptFilter;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessun progetto presente. Clicca su <strong>+ Nuovo Progetto</strong> in alto.</p>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(function(p) {
+      var col = DEPT_COLORS[p.dept] || "#b39ddb";
+      var totalSteps = p.steps.length;
+      var doneSteps = p.steps.filter(function(s) { return s.done; }).length;
+      var pct = totalSteps === 0 ? (p.done ? 100 : 0) : Math.round((doneSteps / totalSteps) * 100);
+      var dueLabel = p.due ? ("Scad. " + p.due.split("-").reverse().join("/")) : "Nessuna scadenza";
+      var isAct = (p.id === selectedProjectId) ? " active" : "";
+
+      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject(\'' + p.id + '\')">' +
+        '<div class="proj-card-top">' +
+          '<span class="proj-card-title">' + escapeHtml(p.title) + '</span>' +
+          '<span class="proj-dept-pill" style="--proj-color:' + col + ';">' + escapeHtml(p.dept) + '</span>' +
+        '</div>' +
+        '<div class="proj-card-meta">' +
+          '<span>' + doneSteps + '/' + totalSteps + ' fasi (' + pct + '%)</span>' +
+          '<span>' + dueLabel + '</span>' +
+        '</div>' +
+        '<div class="proj-mini-bar"><div class="proj-mini-fill" style="width:' + pct + '%; background:' + col + ';"></div></div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function selectProject(projId) {
+    selectedProjectId = projId;
+    renderProjectsList();
+    renderProjectDetail();
+  }
+
+  function renderProjectDetail() {
+    var emptyEl = document.getElementById("projDetailEmpty");
+    var wrapEl = document.getElementById("projDetailWrap");
+    var actionsEl = document.getElementById("projDetailTopActions");
+    var titleEl = document.getElementById("projDetailHeaderTitle");
+
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj) {
+      titleEl.innerText = "Dettaglio Progetto";
+      actionsEl.style.display = "none";
+      emptyEl.style.display = "flex";
+      wrapEl.style.display = "none";
+      return;
+    }
+
+    titleEl.innerText = "[" + proj.dept + "] " + proj.title;
+    actionsEl.style.display = "flex";
+    emptyEl.style.display = "none";
+    wrapEl.style.display = "flex";
+
+    var driveBtn = document.getElementById("btnOpenProjDriveFolder");
+    if (proj.driveFolderId && driveSubfolders.some(function(sf) { return sf.id === proj.driveFolderId; })) {
+      driveBtn.style.display = "inline-block";
+    } else {
+      driveBtn.style.display = "none";
+    }
+
+    var totalSteps = proj.steps.length;
+    var doneSteps = proj.steps.filter(function(s) { return s.done; }).length;
+    var pct = totalSteps === 0 ? 0 : Math.round((doneSteps / totalSteps) * 100);
+
+    document.getElementById("projDetailProgressFill").style.width = pct + "%";
+    document.getElementById("projDetailProgressPct").innerText = pct + "%";
+    document.getElementById("projStatusNoteInput").value = proj.statusNote || "";
+
+    var stepsListEl = document.getElementById("projStepsList");
+    if (totalSteps === 0) {
+      stepsListEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessuna fase operativa inserita. Aggiungi qui sopra i vari passaggi del progetto.</p>';
+      return;
+    }
+
+    var sortedSteps = proj.steps.slice().sort(function(a, b) {
+      if (a.done === b.done) return 0;
+      return a.done ? 1 : -1;
+    });
+
+    stepsListEl.innerHTML = sortedSteps.map(function(step) {
+      var safeStepTitle = step.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      var safeProjTitle = proj.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      return '<div class="proj-step-item' + (step.done ? " done" : "") + '">' +
+        '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep(\'' + step.id + '\')">' + (step.done ? "✓" : "") + '</div>' +
+        '<div class="proj-step-text" onclick="toggleProjectStep(\'' + step.id + '\')">' + escapeHtml(step.title) + '</div>' +
+        '<div class="proj-step-actions">' +
+          '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, \'[' + safeProjTitle + '] ' + safeStepTitle + '\')">📅</button>' +
+          '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep(\'' + step.id + '\')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function openProjectModal(projId) {
+    if (!accessToken || !projectsListId) { requestAuth(false); return; }
+    editingProjectId = projId;
+
+    var modalTitle = document.getElementById("projectModalTitle");
+    var titleIn = document.getElementById("projTitleInput");
+    var deptIn = document.getElementById("projDeptInput");
+    var dueIn = document.getElementById("projDueInput");
+    var folderSel = document.getElementById("projDriveFolderInput");
+    var noteIn = document.getElementById("projInitNoteInput");
+
+    var folderOpts = '<option value="">— Nessuna cartella collegata —</option>';
+    driveSubfolders.forEach(function(sf) {
+      folderOpts += '<option value="' + sf.id + '">📁 ' + escapeHtml(sf.name) + '</option>';
+    });
+    folderSel.innerHTML = folderOpts;
+
+    if (projId) {
+      var p = projectsData.find(function(item) { return item.id === projId; });
+      if (!p) return;
+      modalTitle.innerText = "✏️ Modifica Progetto";
+      titleIn.value = p.title;
+      deptIn.value = p.dept;
+      dueIn.value = p.due || "";
+      folderSel.value = p.driveFolderId || "";
+      noteIn.value = p.statusNote || "";
+    } else {
+      modalTitle.innerText = "📂 Nuovo Progetto";
+      titleIn.value = "";
+      deptIn.value = "Servizi Sociali";
+      dueIn.value = "";
+      folderSel.value = "";
+      noteIn.value = "";
+    }
+
+    document.getElementById("projectModal").style.display = "flex";
+    titleIn.focus();
+  }
+
+  async function saveProjectModal() {
+    var rawTitle = document.getElementById("projTitleInput").value.trim();
+    if (!rawTitle || !accessToken || !projectsListId) return;
+
+    var dept = document.getElementById("projDeptInput").value;
+    var dueVal = document.getElementById("projDueInput").value;
+    var driveFolderId = document.getElementById("projDriveFolderInput").value;
+    var statusNote = document.getElementById("projInitNoteInput").value.trim();
+
+    var encodedTitle = "[" + dept + "] " + rawTitle;
+    var encodedNotes = JSON.stringify({ driveFolderId: driveFolderId, statusNote: statusNote });
+
+    var bodyPayload = {
+      title: encodedTitle,
+      notes: encodedNotes
+    };
+    if (dueVal) {
+      bodyPayload.due = dueVal + "T00:00:00.000Z";
+    } else if (editingProjectId) {
+      bodyPayload.due = null;
+    }
+
+    document.getElementById("projectModal").style.display = "none";
+    setSyncBadge("Salvataggio progetto...", false);
+
+    try {
+      var url = editingProjectId
+        ? ("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(editingProjectId))
+        : ("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks");
+      var method = editingProjectId ? "PATCH" : "POST";
+
+      var res = await fetch(url, {
+        method: method,
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify(bodyPayload)
+      });
+      if (!res.ok) throw new Error("Tasks " + res.status);
+      var savedTask = await res.json();
+      if (!editingProjectId && savedTask.id) {
+        selectedProjectId = savedTask.id;
+      }
+
+      await loadProjectsFromTasks();
+      saveCachedSnapshot();
+      renderProjFilterBar();
+      renderProjectsList();
+      renderProjectDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore salvataggio progetto: " + err.message);
+    }
+  }
+
+  async function saveProjectStatusNote() {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+
+    var newNote = document.getElementById("projStatusNoteInput").value.trim();
+    proj.statusNote = newNote;
+    saveCachedSnapshot();
+    setSyncBadge("Salvataggio nota...", false);
+
+    var encodedNotes = JSON.stringify({ driveFolderId: proj.driveFolderId || "", statusNote: newNote });
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(proj.id), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: proj.id, notes: encodedNotes })
+    });
+    var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+    setSyncBadge("● Sync " + nowStr, true);
+  }
+
+  async function addProjectStep() {
+    var input = document.getElementById("newProjStepInput");
+    var stepTitle = input.value.trim();
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!stepTitle || !proj || !accessToken || !projectsListId) return;
+
+    input.value = "";
+    setSyncBadge("Aggiunta fase...", false);
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks?parent=" + encodeURIComponent(proj.id), {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: stepTitle })
+    });
+    if (res.ok) {
+      await loadProjectsFromTasks();
+      saveCachedSnapshot();
+      renderProjectsList();
+      renderProjectDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    }
+  }
+
+  async function toggleProjectStep(stepId) {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+    var step = proj.steps.find(function(s) { return s.id === stepId; });
+    if (!step) return;
+
+    step.done = !step.done;
+    renderProjectsList();
+    renderProjectDetail();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(stepId), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: stepId, status: step.done ? "completed" : "needsAction" })
+    });
+  }
+
+  async function deleteProjectStep(stepId) {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+
+    proj.steps = proj.steps.filter(function(s) { return s.id !== stepId; });
+    renderProjectsList();
+    renderProjectDetail();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(stepId), {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+  }
+
+  async function deleteSelectedProject() {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+    if (!confirm("Vuoi eliminare il progetto '" + proj.title + "' e tutte le sue fasi?")) return;
+
+    setSyncBadge("Eliminazione progetto...", false);
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(proj.id), {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+
+    selectedProjectId = null;
+    await loadProjectsFromTasks();
+    saveCachedSnapshot();
+    renderProjFilterBar();
+    renderProjectsList();
+    renderProjectDetail();
+    var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+    setSyncBadge("● Sync " + nowStr, true);
+  }
+
+  // ==================== 5. APPUNTI DRIVE, NOTE LIBERE & CARTELLE COLORATE ====================
+  async function loadDriveNotesAndFolders() {
+    var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
+    document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
+
+    var qRoot = encodeURIComponent("name = '" + folderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    if (!fRes.ok) throw new Error("Drive " + fRes.status);
+    var fData = await fRes.json();
+
+    if (!fData.files || fData.files.length === 0) {
+      var createRootRes = await fetch("https://www.googleapis.com/drive/v3/files", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ name: folderName, mimeType: "application/vnd.google-apps.folder" })
+      });
+      var createdRoot = await createRootRes.json();
+      rootDriveFolderId = createdRoot.id;
+    } else {
+      rootDriveFolderId = fData.files[0].id;
+    }
+
+    var colorMap = getFolderColorsMap();
+
+    var qSub = encodeURIComponent("'" + rootDriveFolderId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var subRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qSub + "&orderBy=name&fields=files(id,name,appProperties)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var subData = await subRes.json();
+    driveSubfolders = (subData.files || []).map(function(sf, idx) {
+      var propColor = sf.appProperties && sf.appProperties.dashColor;
+      var savedColor = colorMap[sf.id] || propColor || FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
+      return { id: sf.id, name: sf.name, color: savedColor };
+    });
+
+    var parentIds = [rootDriveFolderId].concat(driveSubfolders.map(function(sf) { return sf.id; }));
+    var parentsClause = parentIds.map(function(pid) { return "'" + pid + "' in parents"; }).join(" or ");
+    var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_launcher.json' and trashed = false");
+
+    var docsRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qDocs + "&orderBy=modifiedTime desc&pageSize=100&fields=files(id,name,mimeType,modifiedTime,webViewLink,parents)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var docsData = await docsRes.json();
+    driveFiles = (docsData.files || []).map(function(doc) {
+      var pId = (doc.parents && doc.parents[0]) || rootDriveFolderId;
+      return {
+        id: doc.id,
+        name: doc.name,
+        mimeType: doc.mimeType,
+        modifiedTime: doc.modifiedTime,
+        webViewLink: doc.webViewLink,
+        parentId: pId
+      };
+    });
+  }
+
+  function populateFolderSelect(selectEl, defaultFolderId) {
+    var html = '<option value="' + rootDriveFolderId + '"' + (defaultFolderId === rootDriveFolderId ? " selected" : "") + '>📂 Cartella Principale (Senza sottocartella)</option>';
+    driveSubfolders.forEach(function(sf) {
+      var isSel = (defaultFolderId === sf.id) ? " selected" : "";
+      html += '<option value="' + sf.id + '"' + isSel + '>📁 ' + escapeHtml(sf.name) + '</option>';
+    });
+    selectEl.innerHTML = html;
+  }
+
+  function openFreeNoteModal() {
+    if (!accessToken || !rootDriveFolderId) { requestAuth(false); return; }
+    var todayStr = new Date().toLocaleDateString("it-IT");
+    document.getElementById("freeNoteTitleInput").value = "Nota del " + todayStr;
+    document.getElementById("freeNoteBodyInput").value = "";
+
+    var defaultTarget = (activeFolderFilter !== "ALL" && activeFolderFilter !== "ROOT") ? activeFolderFilter : rootDriveFolderId;
+    populateFolderSelect(document.getElementById("freeNoteFolderSelect"), defaultTarget);
+
+    document.getElementById("freeNoteModal").style.display = "flex";
+    document.getElementById("freeNoteTitleInput").focus();
+  }
+
+  async function saveFreeNoteToDrive() {
+    var title = document.getElementById("freeNoteTitleInput").value.trim() || ("Nota_" + toIsoDate(new Date()));
+    var targetFolderId = document.getElementById("freeNoteFolderSelect").value || rootDriveFolderId;
+    var bodyText = document.getElementById("freeNoteBodyInput").value.trim();
+
+    if (!accessToken) return;
+    document.getElementById("freeNoteModal").style.display = "none";
+    setSyncBadge("Creazione appunto su Drive...", false);
+
+    try {
+      var escapedBody = escapeHtml(bodyText).replace(/\n/g, "<br>");
+      var htmlBody =
+        "<html><body style='font-family:Arial,sans-serif;line-height:1.5;'>" +
+        "<h1>" + escapeHtml(title) + "</h1>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<hr><p>" + escapedBody + "</p>" +
+        "</body></html>";
+
+      var metadata = {
+        name: title,
+        mimeType: "application/vnd.google-apps.document",
+        parents: [targetFolderId]
+      };
+
+      var boundary = "-------314159265358979323846";
+      var delimiter = "\r\n--" + boundary + "\r\n";
+      var closeDelim = "\r\n--" + boundary + "--";
+
+      var multipartRequestBody =
+        delimiter +
+        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+        JSON.stringify(metadata) +
+        delimiter +
+        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
+        htmlBody +
+        closeDelim;
+
+      var uploadRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+        },
+        body: multipartRequestBody
+      });
+
+      if (!uploadRes.ok) throw new Error("Drive " + uploadRes.status);
+      var createdFile = await uploadRes.json();
+
+      await refreshDriveOnly();
+      if (createdFile.id) openDrivePreview(createdFile.id);
+    } catch (err) {
+      alert("Errore salvataggio appunto: " + err.message);
+    }
+  }
+
+  function renderDriveFoldersBar() {
+    var bar = document.getElementById("driveFoldersBar");
+    var html = '<div class="folder-chip' + (activeFolderFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setFolderFilter(\'ALL\')">' +
+      '<span>🗂️ Tutti (' + driveFiles.length + ')</span>' +
+    '</div>';
+
+    var rootCount = driveFiles.filter(function(f) { return f.parentId === rootDriveFolderId; }).length;
+    html += '<div class="folder-chip' + (activeFolderFilter === "ROOT" ? " active" : "") + '" style="--chip-color:#9aa0a6;" onclick="setFolderFilter(\'ROOT\')">' +
+      '<span class="folder-dot" style="background:#9aa0a6;"></span>' +
+      '<span>Senza cartella (' + rootCount + ')</span>' +
+    '</div>';
+
+    driveSubfolders.forEach(function(sf) {
+      var cnt = driveFiles.filter(function(f) { return f.parentId === sf.id; }).length;
+      var isAct = (activeFolderFilter === sf.id) ? " active" : "";
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + sf.color + ';" onclick="setFolderFilter(\'' + sf.id + '\')">' +
+        '<span class="folder-dot" style="background:' + sf.color + ';"></span>' +
+        '<span>' + escapeHtml(sf.name) + ' (' + cnt + ')</span>' +
+        '<span style="margin-left:3px; opacity:0.75;" onclick="event.stopPropagation()">' +
+          '<button type="button" class="folder-mini-btn" title="Modifica nome/colore" onclick="openFolderModal(\'' + sf.id + '\')">✏️</button>' +
+        '</span>' +
+      '</div>';
+    });
+
+    bar.innerHTML = html;
+  }
+
+  function setFolderFilter(filterId) {
+    activeFolderFilter = filterId;
+    renderDriveFoldersBar();
+    renderDriveList();
+  }
+
+  function openFolderModal(folderId) {
+    if (!accessToken || !rootDriveFolderId) { requestAuth(false); return; }
+    editingFolderId = folderId;
+    var nameInput = document.getElementById("folderNameInput");
+    var titleEl = document.getElementById("folderModalTitle");
+
+    if (folderId) {
+      var existing = driveSubfolders.find(function(sf) { return sf.id === folderId; });
+      titleEl.innerText = "✏️ Modifica Cartella";
+      nameInput.value = existing ? existing.name : "";
+      selectedSwatchColor = existing ? existing.color : FOLDER_PALETTE[0].hex;
+    } else {
+      titleEl.innerText = "📁 Nuova Cartella Colorata";
+      nameInput.value = "";
+      selectedSwatchColor = FOLDER_PALETTE[driveSubfolders.length % FOLDER_PALETTE.length].hex;
+    }
+
+    renderColorSwatches();
+    document.getElementById("folderModal").style.display = "flex";
+    nameInput.focus();
+  }
+
+  function renderColorSwatches() {
+    var box = document.getElementById("folderColorSwatches");
+    box.innerHTML = FOLDER_PALETTE.map(function(c) {
+      var sel = (c.hex.toLowerCase() === selectedSwatchColor.toLowerCase()) ? " selected" : "";
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectSwatch(\'' + c.hex + '\')"></div>';
+    }).join("");
+  }
+
+  function selectSwatch(hex) {
+    selectedSwatchColor = hex;
+    renderColorSwatches();
+  }
+
+  async function saveFolderModal() {
+    var name = document.getElementById("folderNameInput").value.trim();
+    if (!name || !accessToken || !rootDriveFolderId) return;
+
+    document.getElementById("folderModal").style.display = "none";
+    setSyncBadge("Salvataggio cartella...", false);
+
+    try {
+      if (editingFolderId) {
+        var res = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(editingFolderId), {
+          method: "PATCH",
+          headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+          body: JSON.stringify({ name: name, appProperties: { dashColor: selectedSwatchColor } })
+        });
+        if (!res.ok) throw new Error("Drive " + res.status);
+        saveFolderColor(editingFolderId, selectedSwatchColor);
+      } else {
+        var createRes = await fetch("https://www.googleapis.com/drive/v3/files", {
+          method: "POST",
+          headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: name,
+            mimeType: "application/vnd.google-apps.folder",
+            parents: [rootDriveFolderId],
+            appProperties: { dashColor: selectedSwatchColor }
+          })
+        });
+        if (!createRes.ok) throw new Error("Drive " + createRes.status);
+        var created = await createRes.json();
+        saveFolderColor(created.id, selectedSwatchColor);
+        activeFolderFilter = created.id;
+      }
+
+      await refreshDriveOnly();
+    } catch (err) {
+      alert("Errore salvataggio cartella: " + err.message);
+    }
+  }
+
+  function renderDriveList() {
+    var listEl = document.getElementById("driveFilesList");
+    var term = (document.getElementById("driveSearchInput").value || "").toLowerCase().trim();
+
+    var filtered = driveFiles.filter(function(f) {
+      var matchSearch = !term || (f.name || "").toLowerCase().indexOf(term) !== -1;
+      if (!matchSearch) return false;
+      if (activeFolderFilter === "ALL") return true;
+      if (activeFolderFilter === "ROOT") return f.parentId === rootDriveFolderId;
+      return f.parentId === activeFolderFilter;
+    });
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun appunto in questa cartella.</p>';
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(function(f) {
+      var folderObj = driveSubfolders.find(function(sf) { return sf.id === f.parentId; });
+      var folderColor = folderObj ? folderObj.color : "#3c414f";
+      var folderBadge = folderObj
+        ? '<span class="file-folder-tag" style="--file-color:' + folderObj.color + ';">' + escapeHtml(folderObj.name) + '</span>'
+        : '';
+
+      var dateStr = f.modifiedTime ? new Date(f.modifiedTime).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" }) : "";
+      var isAct = (f.id === selectedDriveFileId) ? " active" : "";
+
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + folderColor + ';" onclick="openDrivePreview(\'' + f.id + '\')">' +
+        '<div class="drive-file-info">' +
+          '<div class="drive-file-title">📄 ' + escapeHtml(f.name) + '</div>' +
+          '<div class="drive-file-meta">' +
+            folderBadge +
+            '<span>' + dateStr + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="file-actions" onclick="event.stopPropagation()">' +
+          '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile(\'' + f.id + '\')">✏️</button>' +
+          '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal(\'' + f.id + '\')">📁</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  async function renameDriveFile(fileId) {
+    if (!accessToken) { requestAuth(false); return; }
+    var file = driveFiles.find(function(f) { return f.id === fileId; });
+    if (!file) return;
+
+    var newName = prompt("Nuovo titolo per l'appunto:", file.name);
+    if (!newName || newName.trim() === "" || newName.trim() === file.name) return;
+
+    setSyncBadge("Rinomina su Drive...", false);
+    try {
+      var res = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId), {
+        method: "PATCH",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName.trim() })
+      });
+      if (!res.ok) throw new Error("Drive " + res.status);
+
+      file.name = newName.trim();
+      if (selectedDriveFileId === fileId) {
+        document.getElementById("drivePreviewTitle").innerText = file.name;
+      }
+      saveCachedSnapshot();
+      renderDriveList();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Impossibile rinominare il documento: " + err.message);
+    }
+  }
+
+  function openMoveDocModal(fileId) {
+    if (!accessToken) { requestAuth(false); return; }
+    var file = driveFiles.find(function(f) { return f.id === fileId; });
+    if (!file) return;
+
+    movingDocId = fileId;
+    document.getElementById("moveDocNameLabel").innerText = "Documento: " + file.name;
+    populateFolderSelect(document.getElementById("moveDocFolderSelect"), file.parentId);
+    document.getElementById("moveDocModal").style.display = "flex";
+  }
+
+  async function confirmMoveDocument() {
+    var targetFolderId = document.getElementById("moveDocFolderSelect").value;
+    var file = driveFiles.find(function(f) { return f.id === movingDocId; });
+    document.getElementById("moveDocModal").style.display = "none";
+
+    if (!file || !targetFolderId || file.parentId === targetFolderId) return;
+
+    setSyncBadge("Spostamento su Drive...", false);
+    try {
+      var url = "https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(file.id) +
+        "?addParents=" + encodeURIComponent(targetFolderId) +
+        "&removeParents=" + encodeURIComponent(file.parentId);
+
+      var res = await fetch(url, {
+        method: "PATCH",
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      if (!res.ok) throw new Error("Drive " + res.status);
+
+      file.parentId = targetFolderId;
+      saveCachedSnapshot();
+      renderDriveFoldersBar();
+      renderDriveList();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore spostamento: " + err.message);
+    }
+  }
+
+  async function openDrivePreview(fileId) {
+    selectedDriveFileId = fileId;
+    renderDriveList();
+
+    var file = driveFiles.find(function(f) { return f.id === fileId; });
+    if (!file) return;
+
+    document.getElementById("drivePreviewTitle").innerText = file.name;
+    document.getElementById("previewActionsBar").style.display = "flex";
+
+    var extBtn = document.getElementById("btnOpenDocExternal");
+    if (file.webViewLink) {
+      extBtn.href = file.webViewLink;
+      extBtn.style.display = "inline-block";
+    } else {
+      extBtn.style.display = "none";
+    }
+
+    var bodyEl = document.getElementById("drivePreviewBody");
+    if (!accessToken) {
+      bodyEl.innerText = "Premi Sincronizza per leggere l'anteprima del documento oppure usa il pulsante 'Google Docs'.";
+      return;
+    }
+
+    bodyEl.innerText = "Caricamento contenuto documento...";
+    try {
+      var exportUrl = (file.mimeType === "application/vnd.google-apps.document")
+        ? ("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "/export?mimeType=text/plain")
+        : ("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "?alt=media");
+
+      var res = await fetch(exportUrl, { headers: { "Authorization": "Bearer " + accessToken } });
+      if (!res.ok) throw new Error("Impossibile leggere il contenuto (" + res.status + ")");
+      var text = await res.text();
+      bodyEl.innerText = text.trim() || "(Documento vuoto)";
+    } catch (err) {
+      bodyEl.innerText = "Anteprima non disponibile direttamente (" + err.message + "). Usa il pulsante 'Google Docs' in alto a destra.";
+    }
+  }
+
+  // ==================== 6. LAUNCHER PORTALI, APP & MODULI PDF ====================
+  async function loadLauncherConfigFromDrive() {
+    if (!accessToken || !rootDriveFolderId) return;
+    try {
+      var qCfg = encodeURIComponent("name = 'pikdash_launcher.json' and '" + rootDriveFolderId + "' in parents and trashed = false");
+      var res = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qCfg + "&fields=files(id,name)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      if (!res.ok) return;
+      var data = await res.json();
+
+      if (data.files && data.files.length > 0) {
+        launcherDriveConfigFileId = data.files[0].id;
+        var dlRes = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(launcherDriveConfigFileId) + "?alt=media", {
+          headers: { "Authorization": "Bearer " + accessToken }
+        });
+        if (dlRes.ok) {
+          var parsed = await dlRes.json();
+          if (Array.isArray(parsed)) {
+            launcherItems = parsed;
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
+  async function syncLauncherConfigToDrive() {
+    saveCachedSnapshot();
+    if (!accessToken || !rootDriveFolderId) return;
+
+    try {
+      var jsonContent = JSON.stringify(launcherItems, null, 2);
+      if (launcherDriveConfigFileId) {
+        await fetch("https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(launcherDriveConfigFileId) + "?uploadType=media", {
+          method: "PATCH",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          },
+          body: jsonContent
+        });
+      } else {
+        var metadata = {
+          name: "pikdash_launcher.json",
+          mimeType: "application/json",
+          parents: [rootDriveFolderId]
+        };
+        var boundary = "-------pikdashlauncher987654321";
+        var body =
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          JSON.stringify(metadata) +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          jsonContent +
+          "\r\n--" + boundary + "--";
+
+        var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          },
+          body: body
+        });
+        if (createRes.ok) {
+          var created = await createRes.json();
+          launcherDriveConfigFileId = created.id;
+        }
+      }
+    } catch (e) {}
+  }
+
+  function getLauncherThemes() {
+    var themes = [];
+    launcherItems.forEach(function(item) {
+      var t = (item.theme || "Generale").trim();
+      if (themes.indexOf(t) === -1) themes.push(t);
+    });
+    return themes;
+  }
+
+  function renderLauncherThemeBar() {
+    var bar = document.getElementById("launcherThemeFilterBar");
+    var themes = getLauncherThemes();
+
+    if (activeLauncherTheme !== "ALL" && themes.indexOf(activeLauncherTheme) === -1) {
+      activeLauncherTheme = "ALL";
+    }
+
+    var html = '<div class="folder-chip' + (activeLauncherTheme === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setLauncherThemeFilter(\'ALL\')">' +
+      '<span>🚀 Tutti (' + launcherItems.length + ')</span>' +
+    '</div>';
+
+    themes.forEach(function(th, idx) {
+      var cnt = launcherItems.filter(function(i) { return (i.theme || "Generale") === th; }).length;
+      var col = FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
+      var isAct = (activeLauncherTheme === th) ? " active" : "";
+      var safeTh = th.replace(/'/g, "\\'");
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setLauncherThemeFilter(\'' + safeTh + '\')">' +
+        '<span class="folder-dot" style="background:' + col + ';"></span>' +
+        '<span>' + escapeHtml(th) + ' (' + cnt + ')</span>' +
+      '</div>';
+    });
+
+    bar.innerHTML = html;
+
+    // Aggiorna anche i suggerimenti nel datalist della modale
+    var dl = document.getElementById("lncThemesDatalist");
+    if (dl) {
+      dl.innerHTML = themes.map(function(t) { return '<option value="' + escapeHtml(t) + '">'; }).join("");
+    }
+  }
+
+  function setLauncherThemeFilter(themeName) {
+    activeLauncherTheme = themeName;
+    renderLauncherThemeBar();
+    renderLauncherGrid();
+  }
+
+  function renderLauncherGrid() {
+    var container = document.getElementById("launcherGridContainer");
+    var term = (document.getElementById("launcherSearchInput").value || "").toLowerCase().trim();
+
+    var filtered = launcherItems.filter(function(item) {
+      var matchTheme = (activeLauncherTheme === "ALL") || ((item.theme || "Generale") === activeLauncherTheme);
+      if (!matchTheme) return false;
+      if (!term) return true;
+      return (item.title || "").toLowerCase().indexOf(term) !== -1 ||
+             (item.desc || "").toLowerCase().indexOf(term) !== -1 ||
+             (item.theme || "").toLowerCase().indexOf(term) !== -1;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale, un\'app o un modulo PDF.</div>';
+      return;
+    }
+
+    // Raggruppa per Tema
+    var groups = {};
+    filtered.forEach(function(item) {
+      var th = item.theme || "Generale";
+      if (!groups[th]) groups[th] = [];
+      groups[th].push(item);
+    });
+
+    var html = "";
+    Object.keys(groups).forEach(function(themeName) {
+      var items = groups[themeName];
+      html += '<div class="launcher-theme-section">' +
+        '<div class="launcher-theme-header">' +
+          '<span>📌 ' + escapeHtml(themeName) + '</span>' +
+          '<span style="font-weight:500; opacity:0.7;">(' + items.length + ')</span>' +
+        '</div>' +
+        '<div class="launcher-grid">';
+
+      items.forEach(function(item) {
+        var accent = item.color || "#b39ddb";
+        var safeUrl = escapeHtml(item.url || "#");
+        html += '<a class="launch-tile" href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" style="--tile-accent:' + accent + ';">' +
+          '<div class="launch-tile-top">' +
+            '<div class="launch-icon-box">' + escapeHtml(item.icon || "🌐") + '</div>' +
+            '<div class="launch-tile-actions" onclick="event.preventDefault(); event.stopPropagation();">' +
+              '<button type="button" class="launch-mini-btn" title="Modifica pulsante" onclick="openLauncherModal(\'' + item.id + '\')">✏️</button>' +
+              '<button type="button" class="launch-mini-btn" title="Elimina pulsante" onclick="deleteLauncherItem(\'' + item.id + '\')">✕</button>' +
+            '</div>' +
+          '</div>' +
+          '<div>' +
+            '<div class="launch-title">' + escapeHtml(item.title) + '</div>' +
+            (item.desc ? '<div class="launch-desc" style="margin-top:4px;">' + escapeHtml(item.desc) + '</div>' : '') +
+          '</div>' +
+          '<div class="launch-footer">' +
+            '<span>' + escapeHtml(item.type || "Portale Web") + '</span>' +
+            '<span>Apri ↗</span>' +
+          '</div>' +
+        '</a>';
+      });
+
+      html += '</div></div>';
+    });
+
+    container.innerHTML = html;
+  }
+
+  function openLauncherModal(itemId) {
+    editingLauncherId = itemId;
+    var modalTitle = document.getElementById("launcherModalTitle");
+    var titleIn = document.getElementById("lncTitleInput");
+    var themeIn = document.getElementById("lncThemeInput");
+    var urlIn = document.getElementById("lncUrlInput");
+    var typeIn = document.getElementById("lncTypeInput");
+    var iconIn = document.getElementById("lncIconInput");
+    var descIn = document.getElementById("lncDescInput");
+
+    if (itemId) {
+      var item = launcherItems.find(function(x) { return x.id === itemId; });
+      if (!item) return;
+      modalTitle.innerText = "✏️ Modifica Pulsante";
+      titleIn.value = item.title || "";
+      themeIn.value = item.theme || "Portali PA & Enti";
+      urlIn.value = item.url || "";
+      typeIn.value = item.type || "Portale Web";
+      iconIn.value = item.icon || "🌐";
+      descIn.value = item.desc || "";
+      selectedLauncherColor = item.color || FOLDER_PALETTE[0].hex;
+    } else {
+      modalTitle.innerText = "🚀 Nuovo Pulsante Rapido";
+      titleIn.value = "";
+      themeIn.value = (activeLauncherTheme !== "ALL") ? activeLauncherTheme : "Portali PA & Enti";
+      urlIn.value = "https://";
+      typeIn.value = "Portale Web";
+      iconIn.value = "🏛️";
+      descIn.value = "";
+      selectedLauncherColor = FOLDER_PALETTE[launcherItems.length % FOLDER_PALETTE.length].hex;
+    }
+
+    renderLauncherEmojiPicker();
+    renderLauncherColorSwatches();
+    document.getElementById("launcherModal").style.display = "flex";
+    titleIn.focus();
+  }
+
+  function renderLauncherEmojiPicker() {
+    var currentIcon = document.getElementById("lncIconInput").value.trim();
+    var box = document.getElementById("lncEmojiPicker");
+    box.innerHTML = LAUNCHER_EMOJIS.map(function(em) {
+      var sel = (em === currentIcon) ? " selected" : "";
+      return '<div class="emoji-opt' + sel + '" onclick="selectLauncherEmoji(\'' + em + '\')">' + em + '</div>';
+    }).join("");
+  }
+
+  function selectLauncherEmoji(em) {
+    document.getElementById("lncIconInput").value = em;
+    renderLauncherEmojiPicker();
+  }
+
+  function renderLauncherColorSwatches() {
+    var box = document.getElementById("lncColorSwatches");
+    box.innerHTML = FOLDER_PALETTE.map(function(c) {
+      var sel = (c.hex.toLowerCase() === selectedLauncherColor.toLowerCase()) ? " selected" : "";
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectLauncherColor(\'' + c.hex + '\')"></div>';
+    }).join("");
+  }
+
+  function selectLauncherColor(hex) {
+    selectedLauncherColor = hex;
+    renderLauncherColorSwatches();
+  }
+
+  async function saveLauncherModal() {
+    var title = document.getElementById("lncTitleInput").value.trim();
+    var theme = document.getElementById("lncThemeInput").value.trim() || "Generale";
+    var url = document.getElementById("lncUrlInput").value.trim();
+    var type = document.getElementById("lncTypeInput").value;
+    var icon = document.getElementById("lncIconInput").value.trim() || "🌐";
+    var desc = document.getElementById("lncDescInput").value.trim();
+
+    if (!title || !url) {
+      alert("Inserisci almeno il nome e l'indirizzo del pulsante.");
+      return;
+    }
+
+    if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url)) {
+      url = "https://" + url;
+    }
+
+    if (editingLauncherId) {
+      var existing = launcherItems.find(function(x) { return x.id === editingLauncherId; });
+      if (existing) {
+        existing.title = title;
+        existing.theme = theme;
+        existing.url = url;
+        existing.type = type;
+        existing.icon = icon;
+        existing.color = selectedLauncherColor;
+        existing.desc = desc;
+      }
+    } else {
+      launcherItems.push({
+        id: "lnc_" + Date.now(),
+        title: title,
+        theme: theme,
+        url: url,
+        type: type,
+        icon: icon,
+        color: selectedLauncherColor,
+        desc: desc
+      });
+    }
+
+    document.getElementById("launcherModal").style.display = "none";
+    renderLauncherThemeBar();
+    renderLauncherGrid();
+    await syncLauncherConfigToDrive();
+  }
+
+  async function deleteLauncherItem(itemId) {
+    var item = launcherItems.find(function(x) { return x.id === itemId; });
+    if (!item) return;
+    if (!confirm("Vuoi rimuovere il pulsante '" + item.title + "'?")) return;
+
+    launcherItems = launcherItems.filter(function(x) { return x.id !== itemId; });
+    renderLauncherThemeBar();
+    renderLauncherGrid();
+    await syncLauncherConfigToDrive();
+  }
+
+  function escapeHtml(str) {
+    return (str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+</script>
+</body>
+</html>
