@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Ufficio v4 — Agenda, Riepilogo & Appunti Drive</title>
+  <title>Dashboard Ufficio v5 — Agenda, Progetti & Appunti Drive</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -81,11 +81,11 @@
       color: var(--muted);
     }
 
-    /* TILE TABS (ISPIRATI ALLA PRIMA IMMAGINE) */
+    /* TILE TABS (4 SCHEDE) */
     .tile-nav {
       display: grid;
-      grid-template-columns: repeat(3, minmax(175px, 215px));
-      gap: 10px;
+      grid-template-columns: repeat(4, minmax(145px, 185px));
+      gap: 8px;
       background: var(--bg);
       padding: 6px;
       border-radius: 14px;
@@ -96,7 +96,7 @@
       background: var(--surface);
       border: 1px solid transparent;
       border-radius: 10px;
-      padding: 9px 14px;
+      padding: 8px 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -104,7 +104,7 @@
       text-align: center;
       cursor: pointer;
       transition: all 0.16s ease;
-      gap: 3px;
+      gap: 2px;
     }
 
     .tile-tab:hover {
@@ -119,30 +119,16 @@
     }
 
     .tile-icon {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       line-height: 1;
       margin-bottom: 2px;
       color: var(--text);
     }
 
-    .tile-tab.active .tile-icon {
-      color: var(--lilac);
-    }
-
-    .tile-title {
-      font-size: 0.92rem;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .tile-sub {
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
-
-    .tile-tab.active .tile-sub {
-      color: #d1c4e9;
-    }
+    .tile-tab.active .tile-icon { color: var(--lilac); }
+    .tile-title { font-size: 0.89rem; font-weight: 700; color: var(--text); }
+    .tile-sub { font-size: 0.71rem; color: var(--muted); }
+    .tile-tab.active .tile-sub { color: #d1c4e9; }
 
     .header-right {
       display: flex;
@@ -209,12 +195,12 @@
     }
     .view-section.active { display: flex; }
 
-    /* ================= WIDGET RIEPILOGO UFFICIO (ISPIRATO ALLA SECONDA IMMAGINE) ================= */
+    /* ================= WIDGET RIEPILOGO UFFICIO ================= */
     .summary-strip {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px 22px;
+      padding: 11px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -226,11 +212,11 @@
       display: flex;
       flex-direction: column;
       gap: 4px;
-      min-width: 165px;
+      min-width: 155px;
     }
 
     .summary-heading {
-      font-size: 0.78rem;
+      font-size: 0.77rem;
       font-weight: 800;
       letter-spacing: 0.9px;
       text-transform: uppercase;
@@ -251,30 +237,17 @@
     .summary-kpis {
       flex: 1;
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
     }
 
-    .kpi-box {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .kpi-num {
-      font-size: 1.95rem;
-      font-weight: 600;
-      line-height: 1.05;
-      color: var(--text);
-    }
+    .kpi-box { display: flex; flex-direction: column; gap: 2px; }
+    .kpi-num { font-size: 1.85rem; font-weight: 600; line-height: 1.05; color: var(--text); }
+    .kpi-num.cyan { color: var(--dash-event); }
     .kpi-num.orange { color: var(--kpi-orange); }
     .kpi-num.green { color: var(--kpi-green); }
     .kpi-num.lilac { color: var(--lilac); }
-
-    .kpi-label {
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
+    .kpi-label { font-size: 0.76rem; color: var(--muted); }
 
     /* ================= VISTA 1: AGENDA ================= */
     .top-row {
@@ -282,7 +255,7 @@
       grid-template-columns: 1.2fr 1fr;
       gap: 14px;
       height: 41%;
-      min-height: 225px;
+      min-height: 220px;
     }
 
     .card {
@@ -361,14 +334,7 @@
     .timeline-item.from-dash { border-left-color: var(--dash-event); }
     .timeline-item.personal { border-left-color: var(--personal); }
 
-    .timeline-left {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      min-width: 0;
-      flex: 1;
-    }
-
+    .timeline-left { display: flex; align-items: flex-start; gap: 10px; min-width: 0; flex: 1; }
     .timeline-time { font-size: 0.79rem; font-weight: 600; color: var(--lilac); min-width: 84px; flex-shrink: 0; }
     .timeline-item.from-dash .timeline-time { color: var(--dash-event); }
     .timeline-item.personal .timeline-time { color: var(--personal); }
@@ -420,7 +386,7 @@
     }
     .add-row input:focus { border-color: var(--lilac); }
 
-    .tasks-list { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; }
+    .tasks-list { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; flex: 1; }
 
     .task-item {
       display: flex;
@@ -513,13 +479,7 @@
     .mini-ev.from-dash .mini-ev-time { color: var(--dash-event); }
     .mini-ev.personal .mini-ev-time { color: var(--personal); }
 
-    .legend-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.74rem;
-      color: var(--muted);
-    }
+    .legend-row { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; color: var(--muted); }
     .leg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
 
     /* ================= VISTA 2: PROMEMORIA & CONTATTI ================= */
@@ -586,7 +546,152 @@
     .memo-del { background: transparent; border: none; color: var(--muted); padding: 4px 6px; font-size: 0.85rem; }
     .memo-del:hover { color: var(--prio-high); background: transparent; }
 
-    /* ================= VISTA 3: APPUNTI DRIVE & NOTE LIBERE ================= */
+    /* ================= VISTA 3: PROGETTI (IPOTESI 1: SCHEDE & CHECKLIST) ================= */
+    .projects-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 440px 1fr;
+      gap: 14px;
+      overflow: hidden;
+    }
+
+    .proj-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .proj-list {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding-right: 4px;
+    }
+
+    .proj-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--proj-color, var(--lilac));
+      border-radius: 10px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .proj-card:hover { background: var(--card-hover); border-color: #4a4f5e; }
+    .proj-card.active { background: #222631; border-color: var(--lilac); }
+
+    .proj-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .proj-card-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+    .proj-dept-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: rgba(255,255,255,0.06);
+      color: var(--proj-color, var(--lilac));
+      white-space: nowrap;
+    }
+
+    .proj-card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .proj-mini-bar {
+      height: 5px;
+      background: var(--bg);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .proj-mini-fill {
+      height: 100%;
+      background: var(--proj-color, var(--lilac));
+      border-radius: 99px;
+      transition: width 0.25s ease;
+    }
+
+    .proj-detail-empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 24px;
+    }
+
+    .proj-detail-wrap {
+      flex: 1;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .proj-status-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .proj-status-label {
+      font-size: 0.73rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--dash-event);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .proj-status-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 7px 10px;
+      border-radius: 7px;
+      font-size: 0.84rem;
+      width: 100%;
+      outline: none;
+    }
+    .proj-status-input:focus { border-color: var(--dash-event); }
+
+    .proj-step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      background: var(--surface);
+      border-radius: 9px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+    }
+    .proj-step-item:hover { background: var(--card-hover); border-color: var(--border); }
+    .proj-step-item.done .task-check { background: var(--lilac); }
+    .proj-step-item.done .proj-step-text { text-decoration: line-through; color: var(--muted); }
+    .proj-step-text { flex: 1; font-size: 0.87rem; cursor: pointer; }
+    .proj-step-actions { display: flex; gap: 5px; align-items: center; }
+
+    /* ================= VISTA 4: APPUNTI DRIVE & NOTE LIBERE ================= */
     .drive-layout {
       flex: 1;
       display: grid;
@@ -767,11 +872,7 @@
     }
     .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--lilac); }
 
-    .modal-row-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
+    .modal-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .color-swatches { display: flex; gap: 10px; margin-top: 8px; }
     .swatch {
@@ -800,7 +901,7 @@
       <span class="brand-sub">Comune di San Martino di Venezze</span>
     </div>
 
-    <!-- MENU A SCHEDE CON ICONE E SOTTOTITOLI (COME PRIMA IMMAGINE) -->
+    <!-- MENU A 4 SCHEDE CON ICONE E SOTTOTITOLI -->
     <nav class="tile-nav">
       <button type="button" class="tile-tab active" data-view="viewPanoramica">
         <span class="tile-icon">📅</span>
@@ -811,6 +912,11 @@
         <span class="tile-icon">☑️</span>
         <span class="tile-title">Promemoria</span>
         <span class="tile-sub">Contatti e verifiche</span>
+      </button>
+      <button type="button" class="tile-tab" data-view="viewProgetti">
+        <span class="tile-icon">📂</span>
+        <span class="tile-title">Progetti</span>
+        <span class="tile-sub">Pratiche e fasi</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewAppunti">
         <span class="tile-icon">📝</span>
@@ -831,7 +937,6 @@
 
   <!-- ==================== VISTA 1: AGENDA + RIEPILOGO UFFICIO ==================== -->
   <section id="viewPanoramica" class="view-section active">
-    <!-- BARRA RIEPILOGO UFFICIO (COME SECONDA IMMAGINE) -->
     <div class="summary-strip">
       <div class="summary-left-meta">
         <span class="summary-heading">Riepilogo Ufficio</span>
@@ -841,6 +946,10 @@
         <div class="kpi-box">
           <span class="kpi-num" id="kpiWeekEvents">0</span>
           <span class="kpi-label">Impegni settimana</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-num cyan" id="kpiActiveProjects">0</span>
+          <span class="kpi-label">Progetti attivi</span>
         </div>
         <div class="kpi-box">
           <span class="kpi-num orange" id="kpiUrgent">0</span>
@@ -858,7 +967,6 @@
     </div>
 
     <div class="top-row">
-      <!-- CARD SINISTRA: ADESSO & DETTAGLIO GIORNO -->
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="selectedDayHeader">Dettaglio Giorno</span>
@@ -879,7 +987,6 @@
         </div>
       </div>
 
-      <!-- CARD DESTRA: OBIETTIVI SETTIMANALI -->
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="tasksCardTitle">Obiettivi Settimanali</span>
@@ -897,7 +1004,6 @@
       </div>
     </div>
 
-    <!-- RIGA INFERIORE: SETTIMANA A 7 COLONNE -->
     <div class="card bottom-card">
       <div class="card-header">
         <span class="card-title">Panoramica Settimanale</span>
@@ -970,7 +1076,64 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 3: APPUNTI DRIVE & NOTE LIBERE ==================== -->
+  <!-- ==================== VISTA 3: PROGETTI (IPOTESI 1: SCHEDE & CHECKLIST) ==================== -->
+  <section id="viewProgetti" class="view-section">
+    <div class="projects-layout">
+      <!-- COLONNA SINISTRA: ELENCO PROGETTI -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">📂 Progetti & Pratiche Complesse</span>
+          <button type="button" id="btnNewProject" class="primary" style="padding:5px 11px; font-size:0.78rem;">+ Nuovo Progetto</button>
+        </div>
+
+        <div class="proj-filter-bar" id="projDeptFilterBar"></div>
+
+        <div class="proj-list" id="projectsListContainer">
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza o crea un nuovo progetto per iniziare.</p>
+        </div>
+      </div>
+
+      <!-- COLONNA DESTRA: DETTAGLIO PROGETTO & CHECKLIST STEP-BY-STEP -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="projDetailHeaderTitle">Dettaglio Progetto</span>
+          <div id="projDetailTopActions" style="display:none; gap:8px; align-items:center;">
+            <button type="button" id="btnOpenProjDriveFolder" class="accent-cyan" style="padding:5px 10px; font-size:0.77rem; display:none;">📁 Cartella Drive</button>
+            <button type="button" id="btnEditProject" style="padding:5px 10px; font-size:0.77rem;">✏️ Modifica</button>
+            <button type="button" id="btnDeleteProject" style="padding:5px 9px; font-size:0.77rem; color:#ff8a80; border-color:rgba(239,83,80,0.4);">🗑️</button>
+          </div>
+        </div>
+
+        <div class="proj-detail-empty" id="projDetailEmpty">
+          Seleziona un progetto dall'elenco a sinistra per gestire le fasi step-by-step, aggiornare lo stato di avanzamento o aprire la cartella appunti collegata.
+        </div>
+
+        <div class="proj-detail-wrap" id="projDetailWrap">
+          <div class="progress-wrap" style="margin-bottom:2px;">
+            <div class="progress-bar"><div class="progress-fill" id="projDetailProgressFill"></div></div>
+            <span class="progress-pct" id="projDetailProgressPct">0%</span>
+          </div>
+
+          <div class="proj-status-box">
+            <div class="proj-status-label">
+              <span>📍 Punto situazione / Nota di blocco</span>
+              <button type="button" id="btnSaveProjStatusNote" style="padding:3px 9px; font-size:0.72rem;">Salva nota</button>
+            </div>
+            <input type="text" id="projStatusNoteInput" class="proj-status-input" placeholder="Es. In attesa preventivo, Bozza inviata al Sindaco, Da pubblicare all'Albo...">
+          </div>
+
+          <div class="add-row" style="margin-bottom:2px;">
+            <input type="text" id="newProjStepInput" placeholder="+ Aggiungi fase o passaggio operativo (es. Predisposizione determina)...">
+            <button type="button" id="btnAddProjStep" class="primary">Aggiungi fase</button>
+          </div>
+
+          <div class="tasks-list" id="projStepsList"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA 4: APPUNTI DRIVE & NOTE LIBERE ==================== -->
   <section id="viewAppunti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -1004,6 +1167,43 @@
       </div>
     </div>
   </section>
+
+  <!-- MODALE CREA / MODIFICA PROGETTO -->
+  <div class="modal-backdrop" id="projectModal">
+    <div class="modal">
+      <h3 id="projectModalTitle">📂 Nuovo Progetto</h3>
+      <label>Titolo Progetto / Pratica:</label>
+      <input type="text" id="projTitleInput" placeholder="Es. Affidamento Asilo Nido, Bando Fondazione Cariparo...">
+
+      <div class="modal-row-2">
+        <div>
+          <label>Servizio / Ambito:</label>
+          <select id="projDeptInput">
+            <option value="Servizi Sociali">Servizi Sociali</option>
+            <option value="Segreteria">Segreteria</option>
+            <option value="Biblioteca">Biblioteca</option>
+            <option value="Anagrafe">Anagrafe</option>
+            <option value="Generale">Generale / Altro</option>
+          </select>
+        </div>
+        <div>
+          <label>Scadenza Target (facoltativa):</label>
+          <input type="date" id="projDueInput">
+        </div>
+      </div>
+
+      <label>Collega Cartella Appunti Drive (facoltativo):</label>
+      <select id="projDriveFolderInput"></select>
+
+      <label>Nota iniziale / Obiettivo del progetto:</label>
+      <input type="text" id="projInitNoteInput" placeholder="Es. Predisposizione atti di gara entro fine mese">
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button type="button" id="btnCancelProjectModal">Annulla</button>
+        <button type="button" id="btnSaveProjectModal" class="primary">Salva Progetto</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODALE CREA / RIPROGRAMMA APPUNTAMENTO -->
   <div class="modal-backdrop" id="eventModal">
@@ -1119,6 +1319,8 @@
       <input type="text" id="cfgTasksList" value="Obiettivi Settimanali">
       <label>Lista Tasks — Promemoria & Contatti:</label>
       <input type="text" id="cfgMemoList" value="Dashboard Promemoria">
+      <label>Lista Tasks — Progetti:</label>
+      <input type="text" id="cfgProjectsList" value="Dashboard Progetti">
       <label>Cartella Principale Google Drive:</label>
       <input type="text" id="cfgDriveFolder" value="Appunti Scanner">
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
@@ -1140,6 +1342,13 @@
     { name: "Rosa", hex: "#f48fb1" },
     { name: "Corallo", hex: "#e57373" }
   ];
+  var DEPT_COLORS = {
+    "Servizi Sociali": "#64b5f6",
+    "Segreteria": "#b39ddb",
+    "Biblioteca": "#81c784",
+    "Anagrafe": "#ffb74d",
+    "Generale": "#f48fb1"
+  };
   var AUTO_SYNC_MS = 5 * 60 * 1000;
 
   var accessToken = null;
@@ -1155,6 +1364,12 @@
 
   var memoListId = null;
   var memoItems = [];
+
+  var projectsListId = null;
+  var projectsData = [];
+  var activeDeptFilter = "ALL";
+  var selectedProjectId = null;
+  var editingProjectId = null;
 
   var rootDriveFolderId = null;
   var driveSubfolders = [];
@@ -1206,6 +1421,15 @@
     if (isLive) el.classList.add("live"); else el.classList.remove("live");
   }
 
+  function switchMainView(viewId) {
+    document.querySelectorAll(".tile-tab").forEach(function(t) {
+      if (t.getAttribute("data-view") === viewId) t.classList.add("active");
+      else t.classList.remove("active");
+    });
+    document.querySelectorAll(".view-section").forEach(function(sec) { sec.classList.remove("active"); });
+    document.getElementById(viewId).classList.add("active");
+  }
+
   function getFolderColorsMap() {
     try { return JSON.parse(localStorage.getItem("dash_folder_colors") || "{}"); } catch (e) { return {}; }
   }
@@ -1218,12 +1442,14 @@
 
   function updateSummaryKpis() {
     var totalWeekEvents = weekEvents.length;
+    var activeProjCount = projectsData.filter(function(p) { return !p.done; }).length;
     var urgentMemos = memoItems.filter(function(m) { return !m.done && m.priority === "high"; }).length;
     var completedTasks = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
     var pendingTasks = weeklyTasks.filter(function(t) { return t.status !== "completed"; }).length;
     var pendingMemos = memoItems.filter(function(m) { return !m.done; }).length;
 
     document.getElementById("kpiWeekEvents").innerText = totalWeekEvents;
+    document.getElementById("kpiActiveProjects").innerText = activeProjCount;
     document.getElementById("kpiUrgent").innerText = urgentMemos;
     document.getElementById("kpiCompleted").innerText = completedTasks;
     document.getElementById("kpiPending").innerText = pendingTasks + pendingMemos;
@@ -1234,11 +1460,13 @@
       var cachedEv = JSON.parse(localStorage.getItem("dash_cache_events") || "[]");
       var cachedTasks = JSON.parse(localStorage.getItem("dash_cache_tasks") || "[]");
       var cachedMemos = JSON.parse(localStorage.getItem("dash_cache_memos") || "[]");
+      var cachedProjs = JSON.parse(localStorage.getItem("dash_cache_projects") || "[]");
       var cachedFolders = JSON.parse(localStorage.getItem("dash_cache_folders") || "[]");
       var cachedDrive = JSON.parse(localStorage.getItem("dash_cache_drive") || "[]");
       if (cachedEv.length) weekEvents = cachedEv;
       if (cachedTasks.length) weeklyTasks = cachedTasks;
       if (cachedMemos.length) memoItems = cachedMemos;
+      if (cachedProjs.length) projectsData = cachedProjs;
       if (cachedFolders.length) driveSubfolders = cachedFolders;
       if (cachedDrive.length) driveFiles = cachedDrive;
     } catch (e) {}
@@ -1247,6 +1475,9 @@
     renderDayDetail();
     renderTasks();
     renderAllMemos();
+    renderProjFilterBar();
+    renderProjectsList();
+    renderProjectDetail();
     renderDriveFoldersBar();
     renderDriveList();
     updateSummaryKpis();
@@ -1257,6 +1488,7 @@
       localStorage.setItem("dash_cache_events", JSON.stringify(weekEvents));
       localStorage.setItem("dash_cache_tasks", JSON.stringify(weeklyTasks));
       localStorage.setItem("dash_cache_memos", JSON.stringify(memoItems));
+      localStorage.setItem("dash_cache_projects", JSON.stringify(projectsData));
       localStorage.setItem("dash_cache_folders", JSON.stringify(driveSubfolders));
       localStorage.setItem("dash_cache_drive", JSON.stringify(driveFiles));
     } catch (e) {}
@@ -1268,31 +1500,26 @@
     var sClient = localStorage.getItem("dash_client_id");
     var sList = localStorage.getItem("dash_tasks_list");
     var sMemo = localStorage.getItem("dash_memo_list");
+    var sProj = localStorage.getItem("dash_projects_list");
     var sDrive = localStorage.getItem("dash_drive_folder");
 
     if (sHint) document.getElementById("cfgLoginHint").value = sHint;
     if (sClient) document.getElementById("cfgClientId").value = sClient;
     if (sList) document.getElementById("cfgTasksList").value = sList;
     if (sMemo) document.getElementById("cfgMemoList").value = sMemo;
+    if (sProj) document.getElementById("cfgProjectsList").value = sProj;
     if (sDrive) document.getElementById("cfgDriveFolder").value = sDrive;
 
     updateClock();
     setInterval(updateClock, 15000);
     loadCachedSnapshot();
 
-    // Tile Navigation
-    var tabs = document.querySelectorAll(".tile-tab");
-    tabs.forEach(function(tab) {
+    document.querySelectorAll(".tile-tab").forEach(function(tab) {
       tab.onclick = function() {
-        tabs.forEach(function(t) { t.classList.remove("active"); });
-        tab.classList.add("active");
-        var targetId = tab.getAttribute("data-view");
-        document.querySelectorAll(".view-section").forEach(function(sec) { sec.classList.remove("active"); });
-        document.getElementById(targetId).classList.add("active");
+        switchMainView(tab.getAttribute("data-view"));
       };
     });
 
-    // Navigazione settimana
     document.getElementById("btnPrevWeek").onclick = function() {
       currentMonday = addDays(currentMonday, -7);
       selectedDateStr = toIsoDate(currentMonday);
@@ -1315,9 +1542,8 @@
       if (accessToken) refreshDriveOnly(); else requestAuth(false);
     };
 
-    // Modale Appuntamento (Nuovo / Riprogramma)
-    document.getElementById("btnNewEventTop").onclick = function() { openEventModal(null, selectedDateStr); };
-    document.getElementById("btnAddEventSelectedDay").onclick = function() { openEventModal(null, selectedDateStr); };
+    document.getElementById("btnNewEventTop").onclick = function() { openEventModal(null, selectedDateStr, ""); };
+    document.getElementById("btnAddEventSelectedDay").onclick = function() { openEventModal(null, selectedDateStr, ""); };
     document.getElementById("evAllDayInput").onchange = function() {
       document.getElementById("evTimesRow").style.display = this.checked ? "none" : "grid";
     };
@@ -1327,14 +1553,35 @@
     document.getElementById("btnSaveEventModal").onclick = saveEventFromModal;
     document.getElementById("btnDeleteEventModal").onclick = deleteEventFromModal;
 
-    // Modale Appunto Libero
+    document.getElementById("btnNewProject").onclick = function() { openProjectModal(null); };
+    document.getElementById("btnEditProject").onclick = function() {
+      if (selectedProjectId) openProjectModal(selectedProjectId);
+    };
+    document.getElementById("btnDeleteProject").onclick = deleteSelectedProject;
+    document.getElementById("btnCancelProjectModal").onclick = function() {
+      document.getElementById("projectModal").style.display = "none";
+    };
+    document.getElementById("btnSaveProjectModal").onclick = saveProjectModal;
+    document.getElementById("btnSaveProjStatusNote").onclick = saveProjectStatusNote;
+    document.getElementById("btnAddProjStep").onclick = addProjectStep;
+    document.getElementById("newProjStepInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addProjectStep();
+    });
+    document.getElementById("btnOpenProjDriveFolder").onclick = function() {
+      var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+      if (!proj || !proj.driveFolderId) return;
+      activeFolderFilter = proj.driveFolderId;
+      switchMainView("viewAppunti");
+      renderDriveFoldersBar();
+      renderDriveList();
+    };
+
     document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
     document.getElementById("btnCancelFreeNote").onclick = function() {
       document.getElementById("freeNoteModal").style.display = "none";
     };
     document.getElementById("btnSaveFreeNote").onclick = saveFreeNoteToDrive;
 
-    // Modale Impostazioni
     document.getElementById("btnOpenSettings").onclick = function() {
       document.getElementById("settingsModal").style.display = "flex";
     };
@@ -1346,19 +1593,18 @@
       localStorage.setItem("dash_client_id", document.getElementById("cfgClientId").value.trim());
       localStorage.setItem("dash_tasks_list", document.getElementById("cfgTasksList").value.trim() || "Obiettivi Settimanali");
       localStorage.setItem("dash_memo_list", document.getElementById("cfgMemoList").value.trim() || "Dashboard Promemoria");
+      localStorage.setItem("dash_projects_list", document.getElementById("cfgProjectsList").value.trim() || "Dashboard Progetti");
       localStorage.setItem("dash_drive_folder", document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner");
       document.getElementById("settingsModal").style.display = "none";
       if (accessToken) loadAllData();
     };
 
-    // Modale Cartelle Colorate
     document.getElementById("btnNewFolder").onclick = function() { openFolderModal(null); };
     document.getElementById("btnCancelFolder").onclick = function() {
       document.getElementById("folderModal").style.display = "none";
     };
     document.getElementById("btnSaveFolder").onclick = saveFolderModal;
 
-    // Modale Sposta Appunto
     document.getElementById("btnCancelMoveDoc").onclick = function() {
       document.getElementById("moveDocModal").style.display = "none";
     };
@@ -1456,6 +1702,7 @@
         loadWeekEvents(),
         loadWeeklyTasks(),
         loadMemosFromTasks(),
+        loadProjectsFromTasks(),
         loadDriveNotesAndFolders()
       ]);
       saveCachedSnapshot();
@@ -1463,6 +1710,9 @@
       renderDayDetail();
       renderTasks();
       renderAllMemos();
+      renderProjFilterBar();
+      renderProjectsList();
+      renderProjectDetail();
       renderDriveFoldersBar();
       renderDriveList();
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
@@ -1493,7 +1743,7 @@
     }
   }
 
-  // ==================== 1. GOOGLE CALENDAR (CREA, DISTINGUI, RIPROGRAMMA) ====================
+  // ==================== 1. GOOGLE CALENDAR ====================
   async function loadWeekEvents() {
     var sunday = addDays(currentMonday, 6);
     var timeMin = encodeURIComponent(toIsoDate(currentMonday) + "T00:00:00Z");
@@ -1529,11 +1779,8 @@
     });
   }
 
-  function openEventModal(eventId, defaultDate) {
-    if (!accessToken) {
-      requestAuth(false);
-      return;
-    }
+  function openEventModal(eventId, defaultDate, prefillTitle) {
+    if (!accessToken) { requestAuth(false); return; }
     editingEventId = eventId;
     var modalTitle = document.getElementById("eventModalTitle");
     var titleInput = document.getElementById("evTitleInput");
@@ -1559,7 +1806,7 @@
       delBtn.style.display = "inline-block";
     } else {
       modalTitle.innerText = "📅 Nuovo Appuntamento da Dashboard";
-      titleInput.value = "";
+      titleInput.value = prefillTitle || "";
       dateInput.value = defaultDate || selectedDateStr;
       catInput.value = "office";
       allDayInput.checked = false;
@@ -1703,7 +1950,7 @@
             '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
             '<div class="day-header-right">' +
               badge +
-              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\')">+</button>' +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\', \'\')">+</button>' +
             '</div>' +
           '</div>' +
           '<div class="day-events">' + evHtml + '</div>';
@@ -1988,7 +2235,390 @@
     });
   }
 
-  // ==================== 4. APPUNTI DRIVE, NOTE LIBERE & CARTELLE COLORATE ====================
+  // ==================== 4. PROGETTI (IPOTESI 1: SCHEDE & CHECKLIST SU TASKS) ====================
+  function parseProjectHeader(rawTitle) {
+    var m = (rawTitle || "").match(/^\[([^\]]+)\]\s*(.*)$/);
+    if (m) return { dept: m[1].trim(), title: m[2].trim() };
+    return { dept: "Generale", title: rawTitle };
+  }
+
+  function parseProjectNotes(rawNotes) {
+    if (!rawNotes) return { driveFolderId: "", statusNote: "" };
+    try {
+      var obj = JSON.parse(rawNotes);
+      return {
+        driveFolderId: obj.driveFolderId || "",
+        statusNote: obj.statusNote || ""
+      };
+    } catch (e) {
+      return { driveFolderId: "", statusNote: rawNotes };
+    }
+  }
+
+  async function loadProjectsFromTasks() {
+    var projListName = document.getElementById("cfgProjectsList").value.trim() || "Dashboard Progetti";
+    projectsListId = await getOrCreateListId(projListName);
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks?showCompleted=true&showHidden=true&maxResults=100", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var data = await res.json();
+    var allItems = (data.items || []).filter(function(t) { return (t.title || "").trim() !== ""; });
+
+    var topProjects = allItems.filter(function(t) { return !t.parent; });
+    var subSteps = allItems.filter(function(t) { return !!t.parent; });
+
+    projectsData = topProjects.map(function(p) {
+      var parsedTitle = parseProjectHeader(p.title);
+      var parsedNotes = parseProjectNotes(p.notes);
+      var dueStr = p.due ? p.due.slice(0, 10) : "";
+      var mySteps = subSteps
+        .filter(function(s) { return s.parent === p.id; })
+        .sort(function(a, b) { return (a.position || "").localeCompare(b.position || ""); })
+        .map(function(s) {
+          return {
+            id: s.id,
+            title: s.title,
+            done: (s.status === "completed")
+          };
+        });
+
+      return {
+        id: p.id,
+        title: parsedTitle.title,
+        dept: parsedTitle.dept,
+        due: dueStr,
+        driveFolderId: parsedNotes.driveFolderId,
+        statusNote: parsedNotes.statusNote,
+        done: (p.status === "completed"),
+        steps: mySteps
+      };
+    });
+
+    if (selectedProjectId && !projectsData.some(function(p) { return p.id === selectedProjectId; })) {
+      selectedProjectId = null;
+    }
+    if (!selectedProjectId && projectsData.length > 0) {
+      selectedProjectId = projectsData[0].id;
+    }
+  }
+
+  function renderProjFilterBar() {
+    var bar = document.getElementById("projDeptFilterBar");
+    var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Generale"];
+    var html = '<div class="folder-chip' + (activeDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setProjDeptFilter(\'ALL\')">' +
+      '<span>Tutti (' + projectsData.length + ')</span>' +
+    '</div>';
+
+    depts.forEach(function(dept) {
+      var cnt = projectsData.filter(function(p) { return p.dept === dept; }).length;
+      if (cnt === 0 && activeDeptFilter !== dept) return;
+      var col = DEPT_COLORS[dept] || "#b39ddb";
+      var isAct = (activeDeptFilter === dept) ? " active" : "";
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setProjDeptFilter(\'' + dept + '\')">' +
+        '<span class="folder-dot" style="background:' + col + ';"></span>' +
+        '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
+      '</div>';
+    });
+    bar.innerHTML = html;
+  }
+
+  function setProjDeptFilter(dept) {
+    activeDeptFilter = dept;
+    renderProjFilterBar();
+    renderProjectsList();
+  }
+
+  function renderProjectsList() {
+    var container = document.getElementById("projectsListContainer");
+    var filtered = projectsData.filter(function(p) {
+      return activeDeptFilter === "ALL" || p.dept === activeDeptFilter;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessun progetto presente. Clicca su <strong>+ Nuovo Progetto</strong> in alto.</p>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(function(p) {
+      var col = DEPT_COLORS[p.dept] || "#b39ddb";
+      var totalSteps = p.steps.length;
+      var doneSteps = p.steps.filter(function(s) { return s.done; }).length;
+      var pct = totalSteps === 0 ? (p.done ? 100 : 0) : Math.round((doneSteps / totalSteps) * 100);
+      var dueLabel = p.due ? ("Scad. " + p.due.split("-").reverse().join("/")) : "Nessuna scadenza";
+      var isAct = (p.id === selectedProjectId) ? " active" : "";
+
+      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject(\'' + p.id + '\')">' +
+        '<div class="proj-card-top">' +
+          '<span class="proj-card-title">' + escapeHtml(p.title) + '</span>' +
+          '<span class="proj-dept-pill" style="--proj-color:' + col + ';">' + escapeHtml(p.dept) + '</span>' +
+        '</div>' +
+        '<div class="proj-card-meta">' +
+          '<span>' + doneSteps + '/' + totalSteps + ' fasi (' + pct + '%)</span>' +
+          '<span>' + dueLabel + '</span>' +
+        '</div>' +
+        '<div class="proj-mini-bar"><div class="proj-mini-fill" style="width:' + pct + '%; background:' + col + ';"></div></div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function selectProject(projId) {
+    selectedProjectId = projId;
+    renderProjectsList();
+    renderProjectDetail();
+  }
+
+  function renderProjectDetail() {
+    var emptyEl = document.getElementById("projDetailEmpty");
+    var wrapEl = document.getElementById("projDetailWrap");
+    var actionsEl = document.getElementById("projDetailTopActions");
+    var titleEl = document.getElementById("projDetailHeaderTitle");
+
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj) {
+      titleEl.innerText = "Dettaglio Progetto";
+      actionsEl.style.display = "none";
+      emptyEl.style.display = "flex";
+      wrapEl.style.display = "none";
+      return;
+    }
+
+    titleEl.innerText = "[" + proj.dept + "] " + proj.title;
+    actionsEl.style.display = "flex";
+    emptyEl.style.display = "none";
+    wrapEl.style.display = "flex";
+
+    var driveBtn = document.getElementById("btnOpenProjDriveFolder");
+    if (proj.driveFolderId && driveSubfolders.some(function(sf) { return sf.id === proj.driveFolderId; })) {
+      driveBtn.style.display = "inline-block";
+    } else {
+      driveBtn.style.display = "none";
+    }
+
+    var totalSteps = proj.steps.length;
+    var doneSteps = proj.steps.filter(function(s) { return s.done; }).length;
+    var pct = totalSteps === 0 ? 0 : Math.round((doneSteps / totalSteps) * 100);
+
+    document.getElementById("projDetailProgressFill").style.width = pct + "%";
+    document.getElementById("projDetailProgressPct").innerText = pct + "%";
+    document.getElementById("projStatusNoteInput").value = proj.statusNote || "";
+
+    var stepsListEl = document.getElementById("projStepsList");
+    if (totalSteps === 0) {
+      stepsListEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessuna fase operativa inserita. Aggiungi qui sopra i vari passaggi del progetto.</p>';
+      return;
+    }
+
+    var sortedSteps = proj.steps.slice().sort(function(a, b) {
+      if (a.done === b.done) return 0;
+      return a.done ? 1 : -1;
+    });
+
+    stepsListEl.innerHTML = sortedSteps.map(function(step) {
+      var safeStepTitle = step.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      var safeProjTitle = proj.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      return '<div class="proj-step-item' + (step.done ? " done" : "") + '">' +
+        '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep(\'' + step.id + '\')">' + (step.done ? "✓" : "") + '</div>' +
+        '<div class="proj-step-text" onclick="toggleProjectStep(\'' + step.id + '\')">' + escapeHtml(step.title) + '</div>' +
+        '<div class="proj-step-actions">' +
+          '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, \'[' + safeProjTitle + '] ' + safeStepTitle + '\')">📅</button>' +
+          '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep(\'' + step.id + '\')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function openProjectModal(projId) {
+    if (!accessToken || !projectsListId) { requestAuth(false); return; }
+    editingProjectId = projId;
+
+    var modalTitle = document.getElementById("projectModalTitle");
+    var titleIn = document.getElementById("projTitleInput");
+    var deptIn = document.getElementById("projDeptInput");
+    var dueIn = document.getElementById("projDueInput");
+    var folderSel = document.getElementById("projDriveFolderInput");
+    var noteIn = document.getElementById("projInitNoteInput");
+
+    var folderOpts = '<option value="">— Nessuna cartella collegata —</option>';
+    driveSubfolders.forEach(function(sf) {
+      folderOpts += '<option value="' + sf.id + '">📁 ' + escapeHtml(sf.name) + '</option>';
+    });
+    folderSel.innerHTML = folderOpts;
+
+    if (projId) {
+      var p = projectsData.find(function(item) { return item.id === projId; });
+      if (!p) return;
+      modalTitle.innerText = "✏️ Modifica Progetto";
+      titleIn.value = p.title;
+      deptIn.value = p.dept;
+      dueIn.value = p.due || "";
+      folderSel.value = p.driveFolderId || "";
+      noteIn.value = p.statusNote || "";
+    } else {
+      modalTitle.innerText = "📂 Nuovo Progetto";
+      titleIn.value = "";
+      deptIn.value = "Servizi Sociali";
+      dueIn.value = "";
+      folderSel.value = "";
+      noteIn.value = "";
+    }
+
+    document.getElementById("projectModal").style.display = "flex";
+    titleIn.focus();
+  }
+
+  async function saveProjectModal() {
+    var rawTitle = document.getElementById("projTitleInput").value.trim();
+    if (!rawTitle || !accessToken || !projectsListId) return;
+
+    var dept = document.getElementById("projDeptInput").value;
+    var dueVal = document.getElementById("projDueInput").value;
+    var driveFolderId = document.getElementById("projDriveFolderInput").value;
+    var statusNote = document.getElementById("projInitNoteInput").value.trim();
+
+    var encodedTitle = "[" + dept + "] " + rawTitle;
+    var encodedNotes = JSON.stringify({ driveFolderId: driveFolderId, statusNote: statusNote });
+
+    var bodyPayload = {
+      title: encodedTitle,
+      notes: encodedNotes
+    };
+    if (dueVal) {
+      bodyPayload.due = dueVal + "T00:00:00.000Z";
+    } else if (editingProjectId) {
+      bodyPayload.due = null;
+    }
+
+    document.getElementById("projectModal").style.display = "none";
+    setSyncBadge("Salvataggio progetto...", false);
+
+    try {
+      var url = editingProjectId
+        ? ("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(editingProjectId))
+        : ("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks");
+      var method = editingProjectId ? "PATCH" : "POST";
+
+      var res = await fetch(url, {
+        method: method,
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify(bodyPayload)
+      });
+      if (!res.ok) throw new Error("Tasks " + res.status);
+      var savedTask = await res.json();
+      if (!editingProjectId && savedTask.id) {
+        selectedProjectId = savedTask.id;
+      }
+
+      await loadProjectsFromTasks();
+      saveCachedSnapshot();
+      renderProjFilterBar();
+      renderProjectsList();
+      renderProjectDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore salvataggio progetto: " + err.message);
+    }
+  }
+
+  async function saveProjectStatusNote() {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+
+    var newNote = document.getElementById("projStatusNoteInput").value.trim();
+    proj.statusNote = newNote;
+    saveCachedSnapshot();
+    setSyncBadge("Salvataggio nota...", false);
+
+    var encodedNotes = JSON.stringify({ driveFolderId: proj.driveFolderId || "", statusNote: newNote });
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(proj.id), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: proj.id, notes: encodedNotes })
+    });
+    var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+    setSyncBadge("● Sync " + nowStr, true);
+  }
+
+  async function addProjectStep() {
+    var input = document.getElementById("newProjStepInput");
+    var stepTitle = input.value.trim();
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!stepTitle || !proj || !accessToken || !projectsListId) return;
+
+    input.value = "";
+    setSyncBadge("Aggiunta fase...", false);
+
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks?parent=" + encodeURIComponent(proj.id), {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: stepTitle })
+    });
+    if (res.ok) {
+      await loadProjectsFromTasks();
+      saveCachedSnapshot();
+      renderProjectsList();
+      renderProjectDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    }
+  }
+
+  async function toggleProjectStep(stepId) {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+    var step = proj.steps.find(function(s) { return s.id === stepId; });
+    if (!step) return;
+
+    step.done = !step.done;
+    renderProjectsList();
+    renderProjectDetail();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(stepId), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: stepId, status: step.done ? "completed" : "needsAction" })
+    });
+  }
+
+  async function deleteProjectStep(stepId) {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+
+    proj.steps = proj.steps.filter(function(s) { return s.id !== stepId; });
+    renderProjectsList();
+    renderProjectDetail();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(stepId), {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+  }
+
+  async function deleteSelectedProject() {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj || !accessToken || !projectsListId) return;
+    if (!confirm("Vuoi eliminare il progetto '" + proj.title + "' e tutte le sue fasi?")) return;
+
+    setSyncBadge("Eliminazione progetto...", false);
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(proj.id), {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+
+    selectedProjectId = null;
+    await loadProjectsFromTasks();
+    saveCachedSnapshot();
+    renderProjFilterBar();
+    renderProjectsList();
+    renderProjectDetail();
+    var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+    setSyncBadge("● Sync " + nowStr, true);
+  }
+
+  // ==================== 5. APPUNTI DRIVE, NOTE LIBERE & CARTELLE COLORATE ====================
   async function loadDriveNotesAndFolders() {
     var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
     document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
@@ -2056,10 +2686,7 @@
   }
 
   function openFreeNoteModal() {
-    if (!accessToken || !rootDriveFolderId) {
-      requestAuth(false);
-      return;
-    }
+    if (!accessToken || !rootDriveFolderId) { requestAuth(false); return; }
     var todayStr = new Date().toLocaleDateString("it-IT");
     document.getElementById("freeNoteTitleInput").value = "Nota del " + todayStr;
     document.getElementById("freeNoteBodyInput").value = "";
@@ -2121,9 +2748,7 @@
       var createdFile = await uploadRes.json();
 
       await refreshDriveOnly();
-      if (createdFile.id) {
-        openDrivePreview(createdFile.id);
-      }
+      if (createdFile.id) openDrivePreview(createdFile.id);
     } catch (err) {
       alert("Errore salvataggio appunto: " + err.message);
     }
