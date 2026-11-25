@@ -3,21 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Ufficio v3 — Agenda, Promemoria & Cartelle Drive</title>
+  <title>Dashboard Ufficio v4 — Agenda, Riepilogo & Appunti Drive</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
-      --bg: #121316;
-      --card: #1b1d22;
-      --card-hover: #23262d;
+      --bg: #111215;
+      --surface: #181a1f;
+      --card: #1d2026;
+      --card-hover: #252932;
       --border: #2c303a;
       --lilac: #b39ddb;
+      --lilac-tile: #2b2838;
       --lilac-dim: rgba(179, 157, 219, 0.14);
       --lilac-glow: rgba(179, 157, 219, 0.35);
+      --dash-event: #4fc3f7;
       --personal: #f48fb1;
       --prio-high: #ef5350;
       --prio-med: #ffb74d;
       --prio-low: #b39ddb;
+      --kpi-orange: #ff6d00;
+      --kpi-green: #00c853;
       --text: #f1f3f5;
       --muted: #9aa0a6;
       --success: #81c784;
@@ -35,28 +40,32 @@
       overflow: hidden;
     }
 
-    /* TOP BAR & MAIN TABS */
+    /* TOP BAR & TILE NAVIGATION */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 24px;
       border-bottom: 1px solid var(--border);
-      background: #16181d;
+      background: var(--surface);
       flex-shrink: 0;
       gap: 16px;
     }
 
-    .header-left { display: flex; align-items: center; gap: 20px; }
+    .brand-col {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 170px;
+    }
 
     .brand {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-weight: 600;
-      font-size: 1rem;
+      font-weight: 700;
+      font-size: 1.02rem;
       letter-spacing: 0.3px;
-      white-space: nowrap;
     }
 
     .brand-dot {
@@ -67,42 +76,93 @@
       box-shadow: 0 0 10px var(--lilac);
     }
 
-    .top-tabs {
-      display: flex;
-      gap: 6px;
-      background: #121316;
-      padding: 4px;
-      border-radius: 10px;
+    .brand-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    /* TILE TABS (ISPIRATI ALLA PRIMA IMMAGINE) */
+    .tile-nav {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(175px, 215px));
+      gap: 10px;
+      background: var(--bg);
+      padding: 6px;
+      border-radius: 14px;
       border: 1px solid var(--border);
     }
 
-    .top-tab {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      padding: 6px 14px;
-      border-radius: 7px;
-      font-size: 0.85rem;
-      font-weight: 500;
+    .tile-tab {
+      background: var(--surface);
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 9px 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
       cursor: pointer;
-      transition: all 0.15s ease;
+      transition: all 0.16s ease;
+      gap: 3px;
     }
 
-    .top-tab:hover { color: var(--text); background: rgba(255,255,255,0.04); }
-    .top-tab.active {
-      background: var(--lilac-dim);
+    .tile-tab:hover {
+      background: var(--card-hover);
+      border-color: #3a3f4d;
+    }
+
+    .tile-tab.active {
+      background: var(--lilac-tile);
+      border-color: var(--lilac-glow);
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .tile-icon {
+      font-size: 1.15rem;
+      line-height: 1;
+      margin-bottom: 2px;
+      color: var(--text);
+    }
+
+    .tile-tab.active .tile-icon {
       color: var(--lilac);
-      font-weight: 600;
-      box-shadow: inset 0 0 0 1px var(--lilac-glow);
     }
 
-    .header-right { display: flex; align-items: center; gap: 10px; }
+    .tile-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .tile-sub {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .tile-tab.active .tile-sub {
+      color: #d1c4e9;
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      min-width: 195px;
+    }
+
+    .header-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     .sync-badge {
-      font-size: 0.78rem;
+      font-size: 0.74rem;
       color: var(--muted);
-      padding: 4px 10px;
-      background: #121316;
+      padding: 3px 10px;
+      background: var(--bg);
       border-radius: 99px;
       border: 1px solid var(--border);
       white-space: nowrap;
@@ -113,9 +173,9 @@
       background: var(--card);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 7px 14px;
+      padding: 7px 13px;
       border-radius: 8px;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -130,32 +190,106 @@
       font-weight: 600;
     }
     button.primary:hover { opacity: 0.9; }
+    button.accent-cyan {
+      background: rgba(79, 195, 247, 0.16);
+      color: var(--dash-event);
+      border-color: rgba(79, 195, 247, 0.4);
+      font-weight: 600;
+    }
+    button.accent-cyan:hover { background: rgba(79, 195, 247, 0.25); }
 
     /* VIEWS CONTAINER */
     .view-section {
       flex: 1;
-      padding: 16px 24px 18px;
+      padding: 14px 24px 16px;
       display: none;
       flex-direction: column;
-      gap: 16px;
+      gap: 14px;
       overflow: hidden;
     }
     .view-section.active { display: flex; }
 
-    /* ================= VISTA 1: PANORAMICA ================= */
+    /* ================= WIDGET RIEPILOGO UFFICIO (ISPIRATO ALLA SECONDA IMMAGINE) ================= */
+    .summary-strip {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-shrink: 0;
+    }
+
+    .summary-left-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 165px;
+    }
+
+    .summary-heading {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.9px;
+      text-transform: uppercase;
+      color: var(--text);
+    }
+
+    .summary-pill {
+      display: inline-block;
+      width: fit-content;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 2px 9px;
+      border-radius: 99px;
+      background: rgba(79, 195, 247, 0.14);
+      color: var(--dash-event);
+    }
+
+    .summary-kpis {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kpi-box {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .kpi-num {
+      font-size: 1.95rem;
+      font-weight: 600;
+      line-height: 1.05;
+      color: var(--text);
+    }
+    .kpi-num.orange { color: var(--kpi-orange); }
+    .kpi-num.green { color: var(--kpi-green); }
+    .kpi-num.lilac { color: var(--lilac); }
+
+    .kpi-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    /* ================= VISTA 1: AGENDA ================= */
     .top-row {
       display: grid;
-      grid-template-columns: 1.15fr 1fr;
-      gap: 16px;
-      height: 44%;
-      min-height: 245px;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 14px;
+      height: 41%;
+      min-height: 225px;
     }
 
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 16px 20px;
+      padding: 14px 18px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -165,13 +299,13 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       flex-shrink: 0;
       gap: 10px;
     }
 
     .card-title {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--muted);
@@ -179,13 +313,13 @@
     }
 
     .week-nav-inline { display: flex; align-items: center; gap: 6px; }
-    .week-nav-inline button { padding: 4px 10px; font-size: 0.78rem; }
-    .week-label-inline { font-size: 0.85rem; font-weight: 600; color: var(--lilac); min-width: 195px; text-align: center; }
+    .week-nav-inline button { padding: 4px 10px; font-size: 0.76rem; }
+    .week-label-inline { font-size: 0.84rem; font-weight: 600; color: var(--lilac); min-width: 190px; text-align: center; }
 
     .now-grid {
       display: grid;
-      grid-template-columns: 205px 1fr;
-      gap: 18px;
+      grid-template-columns: 195px 1fr;
+      gap: 16px;
       flex: 1;
       overflow: hidden;
     }
@@ -195,57 +329,96 @@
       flex-direction: column;
       justify-content: center;
       border-right: 1px solid var(--border);
-      padding-right: 16px;
+      padding-right: 14px;
     }
 
-    .clock-time { font-size: 2.7rem; font-weight: 300; letter-spacing: -1px; line-height: 1; }
-    .clock-date { font-size: 0.88rem; color: var(--muted); margin-top: 8px; text-transform: capitalize; }
+    .clock-time { font-size: 2.5rem; font-weight: 300; letter-spacing: -1px; line-height: 1; }
+    .clock-date { font-size: 0.84rem; color: var(--muted); margin-top: 6px; text-transform: capitalize; }
 
     .next-pill {
-      margin-top: 14px;
+      margin-top: 12px;
       background: var(--lilac-dim);
       border: 1px solid var(--lilac-glow);
       color: var(--lilac);
-      padding: 8px 11px;
-      border-radius: 10px;
-      font-size: 0.8rem;
+      padding: 7px 10px;
+      border-radius: 9px;
+      font-size: 0.78rem;
       line-height: 1.35;
     }
 
-    .day-timeline { overflow-y: auto; padding-right: 6px; display: flex; flex-direction: column; gap: 8px; }
+    .day-timeline { overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 7px; }
 
     .timeline-item {
       display: flex;
       align-items: flex-start;
-      gap: 12px;
-      padding: 8px 12px;
-      background: #16181d;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 11px;
+      background: var(--surface);
       border-radius: 9px;
       border-left: 3px solid var(--lilac);
     }
+    .timeline-item.from-dash { border-left-color: var(--dash-event); }
     .timeline-item.personal { border-left-color: var(--personal); }
-    .timeline-time { font-size: 0.8rem; font-weight: 600; color: var(--lilac); min-width: 86px; flex-shrink: 0; }
+
+    .timeline-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .timeline-time { font-size: 0.79rem; font-weight: 600; color: var(--lilac); min-width: 84px; flex-shrink: 0; }
+    .timeline-item.from-dash .timeline-time { color: var(--dash-event); }
     .timeline-item.personal .timeline-time { color: var(--personal); }
-    .timeline-title { font-size: 0.88rem; font-weight: 500; }
-    .timeline-note { font-size: 0.76rem; color: var(--muted); margin-top: 3px; white-space: pre-line; }
 
-    .progress-wrap { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-shrink: 0; }
-    .progress-bar { flex: 1; height: 7px; background: #121316; border-radius: 99px; overflow: hidden; }
+    .timeline-title { font-size: 0.87rem; font-weight: 500; }
+    .source-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+      text-transform: uppercase;
+    }
+    .source-tag.dash { background: rgba(79, 195, 247, 0.16); color: var(--dash-event); }
+    .source-tag.eink { background: var(--lilac-dim); color: var(--lilac); }
+    .source-tag.pers { background: rgba(244, 143, 177, 0.16); color: var(--personal); }
+
+    .timeline-note { font-size: 0.75rem; color: var(--muted); margin-top: 3px; white-space: pre-line; }
+
+    .resched-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.73rem;
+      flex-shrink: 0;
+    }
+    .resched-btn:hover { color: var(--text); border-color: var(--dash-event); }
+
+    /* WEEKLY TASKS */
+    .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; flex-shrink: 0; }
+    .progress-bar { flex: 1; height: 7px; background: var(--bg); border-radius: 99px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--lilac); width: 0%; transition: width 0.3s ease; border-radius: 99px; }
-    .progress-pct { font-size: 0.8rem; font-weight: 700; color: var(--lilac); min-width: 36px; text-align: right; }
+    .progress-pct { font-size: 0.79rem; font-weight: 700; color: var(--lilac); min-width: 35px; text-align: right; }
 
-    .add-row { display: flex; gap: 8px; margin-bottom: 10px; flex-shrink: 0; }
-    .add-row input, .add-row select {
-      background: #121316;
+    .add-row { display: flex; gap: 8px; margin-bottom: 9px; flex-shrink: 0; }
+    .add-row input {
+      flex: 1;
+      background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 7px 11px;
       border-radius: 8px;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
       outline: none;
     }
-    .add-row input { flex: 1; }
-    .add-row input:focus, .add-row select:focus { border-color: var(--lilac); }
+    .add-row input:focus { border-color: var(--lilac); }
 
     .tasks-list { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; }
 
@@ -255,7 +428,7 @@
       gap: 10px;
       padding: 7px 10px;
       border-radius: 8px;
-      background: #16181d;
+      background: var(--surface);
       cursor: pointer;
       transition: background 0.15s;
     }
@@ -276,70 +449,97 @@
     }
     .task-item.done .task-check { background: var(--lilac); }
     .task-item.done .task-text { text-decoration: line-through; color: var(--muted); }
-    .task-text { font-size: 0.86rem; flex: 1; }
+    .task-text { font-size: 0.85rem; flex: 1; }
 
+    /* 7-DAY WEEK GRID */
     .bottom-card { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; flex: 1; overflow: hidden; }
+    .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 9px; flex: 1; overflow: hidden; }
 
     .day-col {
-      background: #16181d;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 10px;
+      padding: 9px;
       display: flex;
       flex-direction: column;
       cursor: pointer;
       transition: all 0.15s ease;
       overflow: hidden;
     }
-    .day-col:hover { border-color: #4a4f5e; background: #191c22; }
-    .day-col.today { border-color: var(--lilac); box-shadow: 0 0 16px rgba(179, 157, 219, 0.18); }
-    .day-col.selected { background: #20232b; border-color: var(--lilac); }
+    .day-col:hover { border-color: #4a4f5e; background: #1d2027; }
+    .day-col.today { border-color: var(--lilac); box-shadow: 0 0 14px rgba(179, 157, 219, 0.16); }
+    .day-col.selected { background: #222630; border-color: var(--lilac); }
 
     .day-col-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding-bottom: 7px;
-      margin-bottom: 7px;
+      padding-bottom: 6px;
+      margin-bottom: 6px;
       border-bottom: 1px solid var(--border);
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
     }
-    .today-badge { background: var(--lilac); color: #121316; font-size: 0.64rem; padding: 2px 6px; border-radius: 4px; font-weight: 800; }
-    .day-events { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+    .day-header-right { display: flex; align-items: center; gap: 4px; }
+    .today-badge { background: var(--lilac); color: #121316; font-size: 0.62rem; padding: 1px 5px; border-radius: 4px; font-weight: 800; }
+    .quick-add-day-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--dash-event);
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      border-radius: 5px;
+      font-size: 0.82rem;
+      line-height: 18px;
+      text-align: center;
+    }
+    .quick-add-day-btn:hover { border-color: var(--dash-event); background: rgba(79, 195, 247, 0.15); }
+
+    .day-events { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
 
     .mini-ev {
-      font-size: 0.77rem;
+      font-size: 0.75rem;
       padding: 5px 7px;
       border-radius: 6px;
       background: var(--card);
-      border-left: 2px solid var(--lilac);
-      line-height: 1.3;
+      border-left: 3px solid var(--lilac);
+      line-height: 1.28;
     }
+    .mini-ev.from-dash { border-left-color: var(--dash-event); background: rgba(79, 195, 247, 0.06); }
     .mini-ev.personal { border-left-color: var(--personal); }
-    .mini-ev-time { color: var(--lilac); font-weight: 600; font-size: 0.7rem; display: block; }
+    .mini-ev-time { color: var(--lilac); font-weight: 600; font-size: 0.69rem; display: block; }
+    .mini-ev.from-dash .mini-ev-time { color: var(--dash-event); }
     .mini-ev.personal .mini-ev-time { color: var(--personal); }
+
+    .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+    .leg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
 
     /* ================= VISTA 2: PROMEMORIA & CONTATTI ================= */
     .quick-memo-bar {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 14px 18px;
+      padding: 13px 18px;
       display: flex;
       gap: 10px;
       align-items: center;
       flex-shrink: 0;
     }
     .quick-memo-bar select, .quick-memo-bar input {
-      background: #121316;
+      background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 9px 12px;
       border-radius: 8px;
-      font-size: 0.88rem;
+      font-size: 0.87rem;
       outline: none;
     }
     .quick-memo-bar input { flex: 1; }
@@ -350,7 +550,7 @@
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(2, 1fr);
-      gap: 16px;
+      gap: 14px;
       overflow: hidden;
     }
 
@@ -359,7 +559,7 @@
       align-items: center;
       gap: 10px;
       padding: 9px 12px;
-      background: #16181d;
+      background: var(--surface);
       border-radius: 9px;
       border-left: 4px solid var(--prio-low);
       transition: background 0.15s;
@@ -382,16 +582,16 @@
     .prio-pill.med { background: rgba(255, 183, 77, 0.2); color: #ffd180; }
     .prio-pill.low { background: var(--lilac-dim); color: var(--lilac); }
 
-    .memo-title { flex: 1; font-size: 0.88rem; }
+    .memo-title { flex: 1; font-size: 0.87rem; }
     .memo-del { background: transparent; border: none; color: var(--muted); padding: 4px 6px; font-size: 0.85rem; }
     .memo-del:hover { color: var(--prio-high); background: transparent; }
 
-    /* ================= VISTA 3: APPUNTI DRIVE & CARTELLE COLORATE ================= */
+    /* ================= VISTA 3: APPUNTI DRIVE & NOTE LIBERE ================= */
     .drive-layout {
       flex: 1;
       display: grid;
-      grid-template-columns: 420px 1fr;
-      gap: 16px;
+      grid-template-columns: 430px 1fr;
+      gap: 14px;
       overflow: hidden;
     }
 
@@ -409,9 +609,9 @@
       gap: 6px;
       padding: 5px 10px;
       border-radius: 8px;
-      background: #16181d;
+      background: var(--surface);
       border: 1px solid var(--border);
-      font-size: 0.78rem;
+      font-size: 0.77rem;
       font-weight: 500;
       color: var(--text);
       cursor: pointer;
@@ -419,7 +619,7 @@
     }
     .folder-chip:hover { background: var(--card-hover); }
     .folder-chip.active {
-      background: #23262f;
+      background: #252834;
       border-color: var(--chip-color, var(--lilac));
       box-shadow: inset 0 0 0 1px var(--chip-color, var(--lilac));
       font-weight: 600;
@@ -433,13 +633,6 @@
       flex-shrink: 0;
     }
 
-    .folder-chip-actions {
-      display: inline-flex;
-      gap: 3px;
-      margin-left: 3px;
-      opacity: 0.65;
-    }
-    .folder-chip:hover .folder-chip-actions { opacity: 1; }
     .folder-mini-btn {
       background: transparent;
       border: none;
@@ -452,12 +645,12 @@
 
     .drive-search {
       width: 100%;
-      background: #121316;
+      background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
       padding: 8px 12px;
       border-radius: 8px;
-      font-size: 0.86rem;
+      font-size: 0.85rem;
       margin-bottom: 10px;
       outline: none;
       flex-shrink: 0;
@@ -475,7 +668,7 @@
 
     .drive-file-card {
       padding: 10px 13px;
-      background: #16181d;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-left: 4px solid var(--file-color, var(--border));
       border-radius: 10px;
@@ -487,11 +680,11 @@
       gap: 10px;
     }
     .drive-file-card:hover { border-color: #4a4f5e; background: var(--card-hover); }
-    .drive-file-card.active { border-color: var(--lilac); background: #20232b; }
+    .drive-file-card.active { border-color: var(--lilac); background: #222631; }
 
     .drive-file-info { min-width: 0; flex: 1; }
     .drive-file-title {
-      font-size: 0.88rem;
+      font-size: 0.87rem;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 4px;
@@ -503,26 +696,26 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 0.74rem;
+      font-size: 0.73rem;
       color: var(--muted);
     }
     .file-folder-tag {
       padding: 1px 7px;
       border-radius: 5px;
       font-weight: 600;
-      font-size: 0.7rem;
+      font-size: 0.69rem;
       background: rgba(255,255,255,0.06);
       color: var(--file-color, var(--lilac));
     }
 
     .file-actions { display: flex; gap: 4px; flex-shrink: 0; }
     .file-icon-btn {
-      background: #121316;
+      background: var(--bg);
       border: 1px solid var(--border);
       color: var(--muted);
       padding: 5px 8px;
       border-radius: 6px;
-      font-size: 0.76rem;
+      font-size: 0.75rem;
     }
     .file-icon-btn:hover { color: var(--text); border-color: var(--lilac); }
 
@@ -531,11 +724,11 @@
     .drive-preview-body {
       flex: 1;
       overflow-y: auto;
-      background: #16181d;
+      background: var(--surface);
       border-radius: 10px;
       padding: 18px 22px;
       line-height: 1.6;
-      font-size: 0.92rem;
+      font-size: 0.91rem;
       white-space: pre-wrap;
       color: #e2e5e9;
     }
@@ -544,7 +737,7 @@
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.72);
+      background: rgba(0,0,0,0.74);
       display: none;
       align-items: center;
       justify-content: center;
@@ -555,26 +748,32 @@
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 22px;
-      width: 440px;
-      max-width: 92vw;
+      width: 470px;
+      max-width: 94vw;
     }
+    .modal.wide { width: 620px; }
     .modal h3 { margin-bottom: 14px; font-size: 1.05rem; }
-    .modal label { display: block; font-size: 0.82rem; color: var(--muted); margin: 10px 0 4px; }
-    .modal input, .modal select {
+    .modal label { display: block; font-size: 0.81rem; color: var(--muted); margin: 10px 0 4px; }
+    .modal input, .modal select, .modal textarea {
       width: 100%;
-      background: #121316;
+      background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
-      padding: 8px 10px;
+      padding: 8px 11px;
       border-radius: 8px;
       font-size: 0.88rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--lilac); }
+
+    .modal-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
 
-    .color-swatches {
-      display: flex;
-      gap: 10px;
-      margin-top: 8px;
-    }
+    .color-swatches { display: flex; gap: 10px; margin-top: 8px; }
     .swatch {
       width: 28px;
       height: 28px;
@@ -593,33 +792,80 @@
 <body>
 
   <header>
-    <div class="header-left">
+    <div class="brand-col">
       <div class="brand">
         <span class="brand-dot"></span>
         <span>Dashboard Ufficio</span>
       </div>
-
-      <nav class="top-tabs">
-        <button type="button" class="top-tab active" data-view="viewPanoramica">📊 Panoramica</button>
-        <button type="button" class="top-tab" data-view="viewPromemoria">📌 Promemoria & Contatti</button>
-        <button type="button" class="top-tab" data-view="viewAppunti">📝 Appunti Drive</button>
-      </nav>
+      <span class="brand-sub">Comune di San Martino di Venezze</span>
     </div>
 
+    <!-- MENU A SCHEDE CON ICONE E SOTTOTITOLI (COME PRIMA IMMAGINE) -->
+    <nav class="tile-nav">
+      <button type="button" class="tile-tab active" data-view="viewPanoramica">
+        <span class="tile-icon">📅</span>
+        <span class="tile-title">Agenda</span>
+        <span class="tile-sub">Settimana e giorno</span>
+      </button>
+      <button type="button" class="tile-tab" data-view="viewPromemoria">
+        <span class="tile-icon">☑️</span>
+        <span class="tile-title">Promemoria</span>
+        <span class="tile-sub">Contatti e verifiche</span>
+      </button>
+      <button type="button" class="tile-tab" data-view="viewAppunti">
+        <span class="tile-icon">📝</span>
+        <span class="tile-title">Appunti</span>
+        <span class="tile-sub">Drive e note libere</span>
+      </button>
+    </nav>
+
     <div class="header-right">
+      <div class="header-actions-row">
+        <button type="button" id="btnNewEventTop" class="accent-cyan">+ Appuntamento</button>
+        <button type="button" id="btnSync" class="primary">🔄 Sincronizza</button>
+        <button type="button" id="btnOpenSettings" title="Impostazioni">⚙️</button>
+      </div>
       <span class="sync-badge" id="syncBadge">In attesa di sync</span>
-      <button type="button" id="btnSync" class="primary">🔄 Sincronizza Google</button>
-      <button type="button" id="btnOpenSettings">⚙️</button>
     </div>
   </header>
 
-  <!-- ==================== VISTA 1: PANORAMICA ==================== -->
+  <!-- ==================== VISTA 1: AGENDA + RIEPILOGO UFFICIO ==================== -->
   <section id="viewPanoramica" class="view-section active">
+    <!-- BARRA RIEPILOGO UFFICIO (COME SECONDA IMMAGINE) -->
+    <div class="summary-strip">
+      <div class="summary-left-meta">
+        <span class="summary-heading">Riepilogo Ufficio</span>
+        <span class="summary-pill">Tempo reale</span>
+      </div>
+      <div class="summary-kpis">
+        <div class="kpi-box">
+          <span class="kpi-num" id="kpiWeekEvents">0</span>
+          <span class="kpi-label">Impegni settimana</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-num orange" id="kpiUrgent">0</span>
+          <span class="kpi-label">Urgenti / Scadenze</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-num green" id="kpiCompleted">0</span>
+          <span class="kpi-label">Obiettivi completati</span>
+        </div>
+        <div class="kpi-box">
+          <span class="kpi-num lilac" id="kpiPending">0</span>
+          <span class="kpi-label">In attesa / Da fare</span>
+        </div>
+      </div>
+    </div>
+
     <div class="top-row">
+      <!-- CARD SINISTRA: ADESSO & DETTAGLIO GIORNO -->
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="selectedDayHeader">Dettaglio Giorno</span>
-          <span style="font-size:0.78rem; color:var(--muted);" id="dayCountLabel">0 impegni</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.76rem; color:var(--muted);" id="dayCountLabel">0 impegni</span>
+            <button type="button" id="btnAddEventSelectedDay" class="accent-cyan" style="padding:4px 9px; font-size:0.75rem;">+ Aggiungi qui</button>
+          </div>
         </div>
         <div class="now-grid">
           <div class="clock-box">
@@ -628,15 +874,16 @@
             <div class="next-pill" id="nextEventBox">Connetti Google per il prossimo appuntamento.</div>
           </div>
           <div class="day-timeline" id="dayTimeline">
-            <p style="color:var(--muted); font-size:0.88rem;">Caricamento dati...</p>
+            <p style="color:var(--muted); font-size:0.86rem;">Caricamento dati...</p>
           </div>
         </div>
       </div>
 
+      <!-- CARD DESTRA: OBIETTIVI SETTIMANALI -->
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="tasksCardTitle">Obiettivi Settimanali</span>
-          <span style="font-size:0.78rem; color:var(--muted);" id="tasksCounter">0/0 completati</span>
+          <span style="font-size:0.76rem; color:var(--muted);" id="tasksCounter">0/0 completati</span>
         </div>
         <div class="progress-wrap">
           <div class="progress-bar"><div class="progress-fill" id="tasksProgressFill"></div></div>
@@ -650,6 +897,7 @@
       </div>
     </div>
 
+    <!-- RIGA INFERIORE: SETTIMANA A 7 COLONNE -->
     <div class="card bottom-card">
       <div class="card-header">
         <span class="card-title">Panoramica Settimanale</span>
@@ -659,7 +907,11 @@
           <button type="button" id="btnToday">Oggi</button>
           <button type="button" id="btnNextWeek">Succ. →</button>
         </div>
-        <span style="font-size:0.76rem; color:var(--muted);">Lilla = Ufficio · Rosa = [Personale]</span>
+        <div class="legend-row">
+          <span><i class="leg-dot" style="background:var(--lilac);"></i>Agenda E-Ink</span>
+          <span><i class="leg-dot" style="background:var(--dash-event);"></i>Da Dashboard</span>
+          <span><i class="leg-dot" style="background:var(--personal);"></i>Personale</span>
+        </div>
       </div>
       <div class="week-grid" id="weekGrid"></div>
     </div>
@@ -718,24 +970,24 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 3: APPUNTI DRIVE & CARTELLE COLORATE ==================== -->
+  <!-- ==================== VISTA 3: APPUNTI DRIVE & NOTE LIBERE ==================== -->
   <section id="viewAppunti" class="view-section">
     <div class="drive-layout">
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="driveFolderTitle">📁 Appunti Scanner</span>
           <div style="display:flex; gap:6px;">
+            <button type="button" id="btnNewFreeNote" class="accent-cyan" style="padding:4px 10px; font-size:0.76rem;">+ Nuovo Appunto</button>
             <button type="button" id="btnNewFolder" class="primary" style="padding:4px 10px; font-size:0.76rem;">+ Cartella</button>
-            <button type="button" id="btnRefreshDrive" style="padding:4px 10px; font-size:0.76rem;">↻</button>
+            <button type="button" id="btnRefreshDrive" style="padding:4px 9px; font-size:0.76rem;" title="Aggiorna Drive">↻</button>
           </div>
         </div>
 
-        <!-- BARRA CARTELLE COLORATE -->
         <div class="folders-bar" id="driveFoldersBar"></div>
 
         <input type="text" id="driveSearchInput" class="drive-search" placeholder="🔎 Cerca tra i titoli degli appunti...">
         <div class="drive-list" id="driveFilesList">
-          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza Google per caricare gli appunti.</p>
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza per caricare gli appunti.</p>
         </div>
       </div>
 
@@ -748,10 +1000,83 @@
             <a id="btnOpenDocExternal" href="#" target="_blank" style="background:var(--lilac); color:#121316; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; text-decoration:none;">↗ Google Docs</a>
           </div>
         </div>
-        <div class="drive-preview-body" id="drivePreviewBody">Seleziona un documento dall'elenco a sinistra per leggere il riassunto e la trascrizione completa, rinominarlo o spostarlo in una cartella colorata.</div>
+        <div class="drive-preview-body" id="drivePreviewBody">Seleziona un documento dall'elenco a sinistra oppure clicca su "+ Nuovo Appunto" per scrivere una nota libera e salvarla su Google Drive nella cartella colorata che preferisci.</div>
       </div>
     </div>
   </section>
+
+  <!-- MODALE CREA / RIPROGRAMMA APPUNTAMENTO -->
+  <div class="modal-backdrop" id="eventModal">
+    <div class="modal">
+      <h3 id="eventModalTitle">📅 Nuovo Appuntamento da Dashboard</h3>
+      <label>Titolo Appuntamento:</label>
+      <input type="text" id="evTitleInput" placeholder="Es. Riunione Giunta, Chiamata Segretario...">
+
+      <div class="modal-row-2">
+        <div>
+          <label>Data:</label>
+          <input type="date" id="evDateInput">
+        </div>
+        <div>
+          <label>Categoria:</label>
+          <select id="evCategoryInput">
+            <option value="office">🏢 Ufficio (Azzurro Dashboard)</option>
+            <option value="personal">👤 Personale (Rosa)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
+        <input type="checkbox" id="evAllDayInput" style="width:auto;">
+        <label for="evAllDayInput" style="margin:0; cursor:pointer;">Tutto il giorno (scadenza / promemoria giornaliero)</label>
+      </div>
+
+      <div class="modal-row-2" id="evTimesRow">
+        <div>
+          <label>Ora Inizio:</label>
+          <input type="time" id="evStartInput" value="09:00">
+        </div>
+        <div>
+          <label>Ora Fine:</label>
+          <input type="time" id="evEndInput" value="10:00">
+        </div>
+      </div>
+
+      <label>Note / Dettagli (facoltativo):</label>
+      <textarea id="evDescInput" rows="3" placeholder="Eventuali note o riferimenti..."></textarea>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:18px;">
+        <button type="button" id="btnDeleteEventModal" style="color:#ff8a80; border-color:rgba(239,83,80,0.4); display:none;">🗑️ Elimina</button>
+        <div style="display:flex; gap:8px; margin-left:auto;">
+          <button type="button" id="btnCancelEventModal">Annulla</button>
+          <button type="button" id="btnSaveEventModal" class="primary">Salva su Calendar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE CREA APPUNTO LIBERO SU DRIVE -->
+  <div class="modal-backdrop" id="freeNoteModal">
+    <div class="modal wide">
+      <h3>📝 Nuovo Appunto Libero (Google Docs)</h3>
+      <div class="modal-row-2">
+        <div>
+          <label>Titolo Appunto:</label>
+          <input type="text" id="freeNoteTitleInput" placeholder="Es. Appunti riunione Servizi Sociali...">
+        </div>
+        <div>
+          <label>Cartella di destinazione:</label>
+          <select id="freeNoteFolderSelect"></select>
+        </div>
+      </div>
+      <label>Testo dell'appunto:</label>
+      <textarea id="freeNoteBodyInput" rows="10" placeholder="Scrivi qui il testo dell'appunto..."></textarea>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
+        <button type="button" id="btnCancelFreeNote">Annulla</button>
+        <button type="button" id="btnSaveFreeNote" class="primary">☁️ Salva su Google Drive</button>
+      </div>
+    </div>
+  </div>
 
   <!-- MODALE CREA / MODIFICA CARTELLA -->
   <div class="modal-backdrop" id="folderModal">
@@ -789,7 +1114,7 @@
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
-      <input type="text" id="cfgClientId" value="944286670464-v1jlvdvo2pik0t5jjvm89k3c1od3nh0f.apps.googleusercontent.com">
+      <input type="text" id="cfgClientId" value="944286670464-v1j1vdvo2pik0t5jjvm89k3c1od3nh0f.apps.googleusercontent.com">
       <label>Lista Tasks — Obiettivi Settimanali:</label>
       <input type="text" id="cfgTasksList" value="Obiettivi Settimanali">
       <label>Lista Tasks — Promemoria & Contatti:</label>
@@ -804,7 +1129,6 @@
   </div>
 
 <script>
-  // Scope drive completo per creare sottocartelle, rinominare e spostare anche file creati dall'app mobile
   var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive";
   var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
   var MESI_BREVI = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
@@ -824,20 +1148,20 @@
   var selectedDateStr = toIsoDate(new Date());
 
   var weekEvents = [];
+  var editingEventId = null;
+
   var tasksListId = null;
   var weeklyTasks = [];
 
   var memoListId = null;
   var memoItems = [];
 
-  // Stato Drive & Cartelle
   var rootDriveFolderId = null;
-  var driveSubfolders = []; // [{ id, name, color }]
-  var driveFiles = [];      // [{ id, name, mimeType, modifiedTime, webViewLink, parentId }]
-  var activeFolderFilter = "ALL"; // "ALL", "ROOT", oppure folderId
+  var driveSubfolders = [];
+  var driveFiles = [];
+  var activeFolderFilter = "ALL";
   var selectedDriveFileId = null;
 
-  // Stato Modali Cartelle / Sposta
   var editingFolderId = null;
   var selectedSwatchColor = FOLDER_PALETTE[0].hex;
   var movingDocId = null;
@@ -892,6 +1216,19 @@
     localStorage.setItem("dash_folder_colors", JSON.stringify(map));
   }
 
+  function updateSummaryKpis() {
+    var totalWeekEvents = weekEvents.length;
+    var urgentMemos = memoItems.filter(function(m) { return !m.done && m.priority === "high"; }).length;
+    var completedTasks = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
+    var pendingTasks = weeklyTasks.filter(function(t) { return t.status !== "completed"; }).length;
+    var pendingMemos = memoItems.filter(function(m) { return !m.done; }).length;
+
+    document.getElementById("kpiWeekEvents").innerText = totalWeekEvents;
+    document.getElementById("kpiUrgent").innerText = urgentMemos;
+    document.getElementById("kpiCompleted").innerText = completedTasks;
+    document.getElementById("kpiPending").innerText = pendingTasks + pendingMemos;
+  }
+
   function loadCachedSnapshot() {
     try {
       var cachedEv = JSON.parse(localStorage.getItem("dash_cache_events") || "[]");
@@ -912,6 +1249,7 @@
     renderAllMemos();
     renderDriveFoldersBar();
     renderDriveList();
+    updateSummaryKpis();
   }
 
   function saveCachedSnapshot() {
@@ -922,6 +1260,7 @@
       localStorage.setItem("dash_cache_folders", JSON.stringify(driveSubfolders));
       localStorage.setItem("dash_cache_drive", JSON.stringify(driveFiles));
     } catch (e) {}
+    updateSummaryKpis();
   }
 
   window.addEventListener("load", function() {
@@ -941,7 +1280,8 @@
     setInterval(updateClock, 15000);
     loadCachedSnapshot();
 
-    var tabs = document.querySelectorAll(".top-tab");
+    // Tile Navigation
+    var tabs = document.querySelectorAll(".tile-tab");
     tabs.forEach(function(tab) {
       tab.onclick = function() {
         tabs.forEach(function(t) { t.classList.remove("active"); });
@@ -952,21 +1292,22 @@
       };
     });
 
+    // Navigazione settimana
     document.getElementById("btnPrevWeek").onclick = function() {
       currentMonday = addDays(currentMonday, -7);
       selectedDateStr = toIsoDate(currentMonday);
-      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); }
+      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); updateSummaryKpis(); }
     };
     document.getElementById("btnNextWeek").onclick = function() {
       currentMonday = addDays(currentMonday, 7);
       selectedDateStr = toIsoDate(currentMonday);
-      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); }
+      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); updateSummaryKpis(); }
     };
     document.getElementById("btnToday").onclick = function() {
       var today = new Date();
       currentMonday = getMonday(today);
       selectedDateStr = toIsoDate(today);
-      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); }
+      if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); updateSummaryKpis(); }
     };
 
     document.getElementById("btnSync").onclick = function() { requestAuth(false); };
@@ -974,7 +1315,26 @@
       if (accessToken) refreshDriveOnly(); else requestAuth(false);
     };
 
-    // Modale impostazioni
+    // Modale Appuntamento (Nuovo / Riprogramma)
+    document.getElementById("btnNewEventTop").onclick = function() { openEventModal(null, selectedDateStr); };
+    document.getElementById("btnAddEventSelectedDay").onclick = function() { openEventModal(null, selectedDateStr); };
+    document.getElementById("evAllDayInput").onchange = function() {
+      document.getElementById("evTimesRow").style.display = this.checked ? "none" : "grid";
+    };
+    document.getElementById("btnCancelEventModal").onclick = function() {
+      document.getElementById("eventModal").style.display = "none";
+    };
+    document.getElementById("btnSaveEventModal").onclick = saveEventFromModal;
+    document.getElementById("btnDeleteEventModal").onclick = deleteEventFromModal;
+
+    // Modale Appunto Libero
+    document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
+    document.getElementById("btnCancelFreeNote").onclick = function() {
+      document.getElementById("freeNoteModal").style.display = "none";
+    };
+    document.getElementById("btnSaveFreeNote").onclick = saveFreeNoteToDrive;
+
+    // Modale Impostazioni
     document.getElementById("btnOpenSettings").onclick = function() {
       document.getElementById("settingsModal").style.display = "flex";
     };
@@ -1004,7 +1364,6 @@
     };
     document.getElementById("btnConfirmMoveDoc").onclick = confirmMoveDocument;
 
-    // Azioni anteprima documento
     document.getElementById("btnRenameSelectedDoc").onclick = function() {
       if (selectedDriveFileId) renameDriveFile(selectedDriveFileId);
     };
@@ -1112,7 +1471,7 @@
       if (String(err.message).indexOf("401") !== -1) {
         localStorage.removeItem("dash_access_token");
         accessToken = null;
-        setSyncBadge("Sessione scaduta — Sincronizza", false);
+        setSyncBadge("Sessione scaduta", false);
       } else {
         setSyncBadge("Errore sync (" + err.message + ")", false);
       }
@@ -1129,15 +1488,12 @@
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
       setSyncBadge("● Sync " + nowStr, true);
     } catch (err) {
-      if (String(err.message).indexOf("403") !== -1) {
-        requestAuth(false);
-      } else {
-        setSyncBadge("Errore Drive", false);
-      }
+      if (String(err.message).indexOf("403") !== -1) requestAuth(false);
+      else setSyncBadge("Errore Drive", false);
     }
   }
 
-  // ==================== 1. GOOGLE CALENDAR ====================
+  // ==================== 1. GOOGLE CALENDAR (CREA, DISTINGUI, RIPROGRAMMA) ====================
   async function loadWeekEvents() {
     var sunday = addDays(currentMonday, 6);
     var timeMin = encodeURIComponent(toIsoDate(currentMonday) + "T00:00:00Z");
@@ -1155,6 +1511,9 @@
       var endTime = isAllDay ? "" : item.end.dateTime.slice(11, 16);
       var rawTitle = item.summary || "(Senza titolo)";
       var isPersonal = /^\[personale\]/i.test(rawTitle);
+      var privProps = (item.extendedProperties && item.extendedProperties.private) || {};
+      var isFromDashboard = (privProps.source === "dashboard");
+
       return {
         id: item.id,
         date: dateStr,
@@ -1164,9 +1523,142 @@
         startIso: isAllDay ? null : item.start.dateTime,
         title: rawTitle.replace(/^\[personale\]\s*/i, ""),
         isPersonal: isPersonal,
+        isFromDashboard: isFromDashboard,
         description: item.description || ""
       };
     });
+  }
+
+  function openEventModal(eventId, defaultDate) {
+    if (!accessToken) {
+      requestAuth(false);
+      return;
+    }
+    editingEventId = eventId;
+    var modalTitle = document.getElementById("eventModalTitle");
+    var titleInput = document.getElementById("evTitleInput");
+    var dateInput = document.getElementById("evDateInput");
+    var catInput = document.getElementById("evCategoryInput");
+    var allDayInput = document.getElementById("evAllDayInput");
+    var startInput = document.getElementById("evStartInput");
+    var endInput = document.getElementById("evEndInput");
+    var descInput = document.getElementById("evDescInput");
+    var delBtn = document.getElementById("btnDeleteEventModal");
+
+    if (eventId) {
+      var ev = weekEvents.find(function(e) { return e.id === eventId; });
+      if (!ev) return;
+      modalTitle.innerText = "📅 Riprogramma / Modifica Appuntamento";
+      titleInput.value = ev.title;
+      dateInput.value = ev.date;
+      catInput.value = ev.isPersonal ? "personal" : "office";
+      allDayInput.checked = ev.isAllDay;
+      startInput.value = ev.isAllDay ? "09:00" : ev.startTime;
+      endInput.value = (ev.isAllDay || !ev.endTime) ? "10:00" : ev.endTime;
+      descInput.value = ev.description || "";
+      delBtn.style.display = "inline-block";
+    } else {
+      modalTitle.innerText = "📅 Nuovo Appuntamento da Dashboard";
+      titleInput.value = "";
+      dateInput.value = defaultDate || selectedDateStr;
+      catInput.value = "office";
+      allDayInput.checked = false;
+      startInput.value = "09:00";
+      endInput.value = "10:00";
+      descInput.value = "";
+      delBtn.style.display = "none";
+    }
+
+    document.getElementById("evTimesRow").style.display = allDayInput.checked ? "none" : "grid";
+    document.getElementById("eventModal").style.display = "flex";
+    titleInput.focus();
+  }
+
+  async function saveEventFromModal() {
+    var rawTitle = document.getElementById("evTitleInput").value.trim();
+    var dateVal = document.getElementById("evDateInput").value;
+    if (!rawTitle || !dateVal || !accessToken) return;
+
+    var isPersonal = (document.getElementById("evCategoryInput").value === "personal");
+    var isAllDay = document.getElementById("evAllDayInput").checked;
+    var startVal = document.getElementById("evStartInput").value || "09:00";
+    var endVal = document.getElementById("evEndInput").value || "10:00";
+    var descVal = document.getElementById("evDescInput").value.trim();
+
+    var finalSummary = isPersonal ? ("[Personale] " + rawTitle) : rawTitle;
+    var existingEv = editingEventId ? weekEvents.find(function(e) { return e.id === editingEventId; }) : null;
+    var preserveDashboardTag = existingEv ? existingEv.isFromDashboard : true;
+
+    var bodyPayload = {
+      summary: finalSummary,
+      description: descVal
+    };
+
+    if (preserveDashboardTag) {
+      bodyPayload.extendedProperties = { private: { source: "dashboard" } };
+    }
+
+    if (isAllDay) {
+      var parts = dateVal.split("-");
+      var nextD = addDays(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)), 1);
+      bodyPayload.start = { date: dateVal };
+      bodyPayload.end = { date: toIsoDate(nextD) };
+    } else {
+      bodyPayload.start = { dateTime: dateVal + "T" + startVal + ":00", timeZone: "Europe/Rome" };
+      bodyPayload.end = { dateTime: dateVal + "T" + endVal + ":00", timeZone: "Europe/Rome" };
+    }
+
+    document.getElementById("eventModal").style.display = "none";
+    setSyncBadge("Salvataggio su Calendar...", false);
+
+    try {
+      var url = editingEventId
+        ? ("https://www.googleapis.com/calendar/v3/calendars/primary/events/" + encodeURIComponent(editingEventId))
+        : "https://www.googleapis.com/calendar/v3/calendars/primary/events";
+      var method = editingEventId ? "PATCH" : "POST";
+
+      var res = await fetch(url, {
+        method: method,
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify(bodyPayload)
+      });
+      if (!res.ok) throw new Error("Calendar " + res.status);
+
+      selectedDateStr = dateVal;
+      await loadWeekEvents();
+      saveCachedSnapshot();
+      renderWeekGrid();
+      renderDayDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore salvataggio appuntamento: " + err.message);
+    }
+  }
+
+  async function deleteEventFromModal() {
+    if (!editingEventId || !accessToken) return;
+    if (!confirm("Vuoi eliminare questo appuntamento da Google Calendar?")) return;
+
+    document.getElementById("eventModal").style.display = "none";
+    setSyncBadge("Eliminazione...", false);
+
+    try {
+      var res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events/" + encodeURIComponent(editingEventId), {
+        method: "DELETE",
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      if (!res.ok && res.status !== 204) throw new Error("Calendar " + res.status);
+
+      await loadWeekEvents();
+      saveCachedSnapshot();
+      renderWeekGrid();
+      renderDayDetail();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Errore eliminazione: " + err.message);
+    }
   }
 
   function renderWeekGrid() {
@@ -1196,10 +1688,11 @@
 
         var badge = (dStr === todayStr) ? '<span class="today-badge">OGGI</span>' : "";
         var evHtml = dayEvs.length === 0
-          ? '<span style="color:#555a66; font-size:0.75rem;">Nessun impegno</span>'
+          ? '<span style="color:#555a66; font-size:0.74rem;">Nessun impegno</span>'
           : dayEvs.map(function(ev) {
               var timeTxt = ev.isAllDay ? "Tutto il giorno" : ev.startTime;
-              return '<div class="mini-ev' + (ev.isPersonal ? " personal" : "") + '">' +
+              var cls = ev.isPersonal ? " personal" : (ev.isFromDashboard ? " from-dash" : "");
+              return '<div class="mini-ev' + cls + '">' +
                 '<span class="mini-ev-time">' + timeTxt + '</span>' +
                 escapeHtml(ev.title) +
               '</div>';
@@ -1208,7 +1701,10 @@
         col.innerHTML =
           '<div class="day-col-header">' +
             '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
-            badge +
+            '<div class="day-header-right">' +
+              badge +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\')">+</button>' +
+            '</div>' +
           '</div>' +
           '<div class="day-events">' + evHtml + '</div>';
 
@@ -1228,19 +1724,27 @@
 
     var container = document.getElementById("dayTimeline");
     if (dayEvs.length === 0) {
-      container.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessun impegno in programma per questa giornata.</p>';
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun impegno in programma per questa giornata.</p>';
       return;
     }
 
     container.innerHTML = dayEvs.map(function(ev) {
       var timeRange = ev.isAllDay ? "Tutto il giorno" : (ev.startTime + (ev.endTime ? " – " + ev.endTime : ""));
+      var cls = ev.isPersonal ? " personal" : (ev.isFromDashboard ? " from-dash" : "");
+      var sourceBadge = ev.isPersonal
+        ? '<span class="source-tag pers">Personale</span>'
+        : (ev.isFromDashboard ? '<span class="source-tag dash">Dashboard</span>' : '<span class="source-tag eink">E-Ink</span>');
       var noteHtml = ev.description ? '<div class="timeline-note">' + escapeHtml(ev.description) + '</div>' : "";
-      return '<div class="timeline-item' + (ev.isPersonal ? " personal" : "") + '">' +
-        '<div class="timeline-time">' + timeRange + '</div>' +
-        '<div>' +
-          '<div class="timeline-title">' + escapeHtml(ev.title) + '</div>' +
-          noteHtml +
+
+      return '<div class="timeline-item' + cls + '">' +
+        '<div class="timeline-left">' +
+          '<div class="timeline-time">' + timeRange + '</div>' +
+          '<div>' +
+            '<div class="timeline-title">' + escapeHtml(ev.title) + sourceBadge + '</div>' +
+            noteHtml +
+          '</div>' +
         '</div>' +
+        '<button type="button" class="resched-btn" title="Riprogramma o modifica" onclick="openEventModal(\'' + ev.id + '\')">📅 Riprogramma</button>' +
       '</div>';
     }).join("");
 
@@ -1310,7 +1814,7 @@
     document.getElementById("tasksProgressPct").innerText = pct + "%";
 
     if (total === 0) {
-      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessun obiettivo in lista.</p>';
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun obiettivo in lista.</p>';
       return;
     }
 
@@ -1349,10 +1853,8 @@
     var input = document.getElementById("newTaskInput");
     var title = input.value.trim();
     if (!title) return;
-    if (!accessToken || !tasksListId) {
-      requestAuth(false);
-      return;
-    }
+    if (!accessToken || !tasksListId) { requestAuth(false); return; }
+
     input.value = "";
     var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks", {
       method: "POST",
@@ -1445,10 +1947,7 @@
     var encodedTitle = "[" + category + "|" + priority + "] " + text;
 
     input.value = "";
-    if (!accessToken || !memoListId) {
-      requestAuth(false);
-      return;
-    }
+    if (!accessToken || !memoListId) { requestAuth(false); return; }
 
     var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(memoListId) + "/tasks", {
       method: "POST",
@@ -1489,7 +1988,7 @@
     });
   }
 
-  // ==================== 4. APPUNTI DRIVE, CARTELLE COLORATE & RINOMINA ====================
+  // ==================== 4. APPUNTI DRIVE, NOTE LIBERE & CARTELLE COLORATE ====================
   async function loadDriveNotesAndFolders() {
     var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
     document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
@@ -1502,16 +2001,19 @@
     var fData = await fRes.json();
 
     if (!fData.files || fData.files.length === 0) {
-      rootDriveFolderId = null;
-      driveSubfolders = [];
-      driveFiles = [];
-      return;
+      var createRootRes = await fetch("https://www.googleapis.com/drive/v3/files", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ name: folderName, mimeType: "application/vnd.google-apps.folder" })
+      });
+      var createdRoot = await createRootRes.json();
+      rootDriveFolderId = createdRoot.id;
+    } else {
+      rootDriveFolderId = fData.files[0].id;
     }
 
-    rootDriveFolderId = fData.files[0].id;
     var colorMap = getFolderColorsMap();
 
-    // 1) Carica le sottocartelle dentro Appunti Scanner
     var qSub = encodeURIComponent("'" + rootDriveFolderId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
     var subRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qSub + "&orderBy=name&fields=files(id,name,appProperties)", {
       headers: { "Authorization": "Bearer " + accessToken }
@@ -1523,7 +2025,6 @@
       return { id: sf.id, name: sf.name, color: savedColor };
     });
 
-    // 2) Cerca tutti i documenti nella cartella principale e nelle sottocartelle
     var parentIds = [rootDriveFolderId].concat(driveSubfolders.map(function(sf) { return sf.id; }));
     var parentsClause = parentIds.map(function(pid) { return "'" + pid + "' in parents"; }).join(" or ");
     var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and trashed = false");
@@ -1545,6 +2046,89 @@
     });
   }
 
+  function populateFolderSelect(selectEl, defaultFolderId) {
+    var html = '<option value="' + rootDriveFolderId + '"' + (defaultFolderId === rootDriveFolderId ? " selected" : "") + '>📂 Cartella Principale (Senza sottocartella)</option>';
+    driveSubfolders.forEach(function(sf) {
+      var isSel = (defaultFolderId === sf.id) ? " selected" : "";
+      html += '<option value="' + sf.id + '"' + isSel + '>📁 ' + escapeHtml(sf.name) + '</option>';
+    });
+    selectEl.innerHTML = html;
+  }
+
+  function openFreeNoteModal() {
+    if (!accessToken || !rootDriveFolderId) {
+      requestAuth(false);
+      return;
+    }
+    var todayStr = new Date().toLocaleDateString("it-IT");
+    document.getElementById("freeNoteTitleInput").value = "Nota del " + todayStr;
+    document.getElementById("freeNoteBodyInput").value = "";
+
+    var defaultTarget = (activeFolderFilter !== "ALL" && activeFolderFilter !== "ROOT") ? activeFolderFilter : rootDriveFolderId;
+    populateFolderSelect(document.getElementById("freeNoteFolderSelect"), defaultTarget);
+
+    document.getElementById("freeNoteModal").style.display = "flex";
+    document.getElementById("freeNoteTitleInput").focus();
+  }
+
+  async function saveFreeNoteToDrive() {
+    var title = document.getElementById("freeNoteTitleInput").value.trim() || ("Nota_" + toIsoDate(new Date()));
+    var targetFolderId = document.getElementById("freeNoteFolderSelect").value || rootDriveFolderId;
+    var bodyText = document.getElementById("freeNoteBodyInput").value.trim();
+
+    if (!accessToken) return;
+    document.getElementById("freeNoteModal").style.display = "none";
+    setSyncBadge("Creazione appunto su Drive...", false);
+
+    try {
+      var escapedBody = escapeHtml(bodyText).replace(/\n/g, "<br>");
+      var htmlBody =
+        "<html><body style='font-family:Arial,sans-serif;line-height:1.5;'>" +
+        "<h1>" + escapeHtml(title) + "</h1>" +
+        "<p style='color:#666;font-size:12px;'>Creato da Dashboard Ufficio il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<hr><p>" + escapedBody + "</p>" +
+        "</body></html>";
+
+      var metadata = {
+        name: title,
+        mimeType: "application/vnd.google-apps.document",
+        parents: [targetFolderId]
+      };
+
+      var boundary = "-------314159265358979323846";
+      var delimiter = "\r\n--" + boundary + "\r\n";
+      var closeDelim = "\r\n--" + boundary + "--";
+
+      var multipartRequestBody =
+        delimiter +
+        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+        JSON.stringify(metadata) +
+        delimiter +
+        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
+        htmlBody +
+        closeDelim;
+
+      var uploadRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id,webViewLink", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+        },
+        body: multipartRequestBody
+      });
+
+      if (!uploadRes.ok) throw new Error("Drive " + uploadRes.status);
+      var createdFile = await uploadRes.json();
+
+      await refreshDriveOnly();
+      if (createdFile.id) {
+        openDrivePreview(createdFile.id);
+      }
+    } catch (err) {
+      alert("Errore salvataggio appunto: " + err.message);
+    }
+  }
+
   function renderDriveFoldersBar() {
     var bar = document.getElementById("driveFoldersBar");
     var html = '<div class="folder-chip' + (activeFolderFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setFolderFilter(\'ALL\')">' +
@@ -1563,7 +2147,7 @@
       html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + sf.color + ';" onclick="setFolderFilter(\'' + sf.id + '\')">' +
         '<span class="folder-dot" style="background:' + sf.color + ';"></span>' +
         '<span>' + escapeHtml(sf.name) + ' (' + cnt + ')</span>' +
-        '<span class="folder-chip-actions" onclick="event.stopPropagation()">' +
+        '<span style="margin-left:3px; opacity:0.75;" onclick="event.stopPropagation()">' +
           '<button type="button" class="folder-mini-btn" title="Modifica nome/colore" onclick="openFolderModal(\'' + sf.id + '\')">✏️</button>' +
         '</span>' +
       '</div>';
@@ -1579,10 +2163,7 @@
   }
 
   function openFolderModal(folderId) {
-    if (!accessToken || !rootDriveFolderId) {
-      requestAuth(false);
-      return;
-    }
+    if (!accessToken || !rootDriveFolderId) { requestAuth(false); return; }
     editingFolderId = folderId;
     var nameInput = document.getElementById("folderNameInput");
     var titleEl = document.getElementById("folderModalTitle");
@@ -1625,19 +2206,14 @@
 
     try {
       if (editingFolderId) {
-        // Rinomina cartella esistente e salva colore
         var res = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(editingFolderId), {
           method: "PATCH",
           headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
-          body: JSON.stringify({
-            name: name,
-            appProperties: { dashColor: selectedSwatchColor }
-          })
+          body: JSON.stringify({ name: name, appProperties: { dashColor: selectedSwatchColor } })
         });
         if (!res.ok) throw new Error("Drive " + res.status);
         saveFolderColor(editingFolderId, selectedSwatchColor);
       } else {
-        // Crea nuova sottocartella dentro Appunti Scanner
         var createRes = await fetch("https://www.googleapis.com/drive/v3/files", {
           method: "POST",
           headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
@@ -1673,7 +2249,7 @@
     });
 
     if (filtered.length === 0) {
-      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessun appunto in questa cartella.</p>';
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun appunto in questa cartella.</p>';
       return;
     }
 
@@ -1740,15 +2316,7 @@
 
     movingDocId = fileId;
     document.getElementById("moveDocNameLabel").innerText = "Documento: " + file.name;
-
-    var sel = document.getElementById("moveDocFolderSelect");
-    var optionsHtml = '<option value="' + rootDriveFolderId + '"' + (file.parentId === rootDriveFolderId ? " selected" : "") + '>📂 Cartella Principale (Senza sottocartella)</option>';
-    driveSubfolders.forEach(function(sf) {
-      var isSel = (file.parentId === sf.id) ? " selected" : "";
-      optionsHtml += '<option value="' + sf.id + '"' + isSel + '>📁 ' + escapeHtml(sf.name) + '</option>';
-    });
-    sel.innerHTML = optionsHtml;
-
+    populateFolderSelect(document.getElementById("moveDocFolderSelect"), file.parentId);
     document.getElementById("moveDocModal").style.display = "flex";
   }
 
@@ -1802,7 +2370,7 @@
 
     var bodyEl = document.getElementById("drivePreviewBody");
     if (!accessToken) {
-      bodyEl.innerText = "Premi Sincronizza Google per leggere l'anteprima del documento oppure usa il pulsante 'Google Docs'.";
+      bodyEl.innerText = "Premi Sincronizza per leggere l'anteprima del documento oppure usa il pulsante 'Google Docs'.";
       return;
     }
 
