@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH v6 — Agenda, Progetti, Appunti & Portali</title>
+  <title>PIKDASH v7 — Agenda, Progetti, Appunti, Modulistica & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -45,19 +45,19 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 22px;
+      padding: 9px 20px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       flex-shrink: 0;
-      gap: 14px;
+      gap: 12px;
     }
 
-    /* LOGO PIKDASH (IN ALTO A SINISTRA) */
+    /* LOGO PIKDASH */
     .brand-col {
       display: flex;
       align-items: center;
-      gap: 11px;
-      min-width: 205px;
+      gap: 10px;
+      min-width: 195px;
     }
 
     .logo-container {
@@ -71,14 +71,10 @@
 
     .logo-container svg { width: 100%; height: 100%; }
 
-    .brand-text-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
+    .brand-text-wrapper { display: flex; flex-direction: column; gap: 2px; }
 
     .brand-title {
-      font-size: 1.22rem;
+      font-size: 1.2rem;
       font-weight: 850;
       letter-spacing: -0.2px;
       line-height: 1;
@@ -88,13 +84,13 @@
     }
 
     .brand-title .brand-dash { color: var(--lilac); }
-    .brand-sub { font-size: 0.71rem; color: var(--muted); line-height: 1; }
+    .brand-sub { font-size: 0.69rem; color: var(--muted); line-height: 1; }
 
-    /* TILE TABS (5 SCHEDE) */
+    /* TILE TABS (6 SCHEDE) */
     .tile-nav {
       display: grid;
-      grid-template-columns: repeat(5, minmax(122px, 162px));
-      gap: 7px;
+      grid-template-columns: repeat(6, minmax(105px, 142px));
+      gap: 6px;
       background: var(--bg);
       padding: 5px;
       border-radius: 14px;
@@ -105,7 +101,7 @@
       background: var(--surface);
       border: 1px solid transparent;
       border-radius: 10px;
-      padding: 7px 10px;
+      padding: 7px 8px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -116,10 +112,7 @@
       gap: 2px;
     }
 
-    .tile-tab:hover {
-      background: var(--card-hover);
-      border-color: #3a3f4d;
-    }
+    .tile-tab:hover { background: var(--card-hover); border-color: #3a3f4d; }
 
     .tile-tab.active {
       background: var(--lilac-tile);
@@ -127,16 +120,10 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     }
 
-    .tile-icon {
-      font-size: 1.05rem;
-      line-height: 1;
-      margin-bottom: 1px;
-      color: var(--text);
-    }
-
+    .tile-icon { font-size: 1.02rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
     .tile-tab.active .tile-icon { color: var(--lilac); }
-    .tile-title { font-size: 0.85rem; font-weight: 700; color: var(--text); }
-    .tile-sub { font-size: 0.68rem; color: var(--muted); }
+    .tile-title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .tile-sub { font-size: 0.65rem; color: var(--muted); }
     .tile-tab.active .tile-sub { color: #d1c4e9; }
 
     .header-right {
@@ -144,17 +131,13 @@
       flex-direction: column;
       align-items: flex-end;
       gap: 5px;
-      min-width: 185px;
+      min-width: 175px;
     }
 
-    .header-actions-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
+    .header-actions-row { display: flex; align-items: center; gap: 6px; }
 
     .sync-badge {
-      font-size: 0.72rem;
+      font-size: 0.71rem;
       color: var(--muted);
       padding: 2px 9px;
       background: var(--bg);
@@ -168,9 +151,9 @@
       background: var(--card);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 7px 12px;
+      padding: 6px 11px;
       border-radius: 8px;
-      font-size: 0.82rem;
+      font-size: 0.81rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -178,12 +161,7 @@
     }
 
     button:hover { background: var(--card-hover); border-color: var(--lilac); }
-    button.primary {
-      background: var(--lilac);
-      color: #121316;
-      border-color: var(--lilac);
-      font-weight: 600;
-    }
+    button.primary { background: var(--lilac); color: #121316; border-color: var(--lilac); font-weight: 600; }
     button.primary:hover { opacity: 0.9; }
     button.accent-cyan {
       background: rgba(79, 195, 247, 0.16);
@@ -193,10 +171,10 @@
     }
     button.accent-cyan:hover { background: rgba(79, 195, 247, 0.25); }
 
-    /* VIEWS CONTAINER */
+    /* VIEWS */
     .view-section {
       flex: 1;
-      padding: 14px 22px 16px;
+      padding: 14px 20px 16px;
       display: none;
       flex-direction: column;
       gap: 14px;
@@ -204,7 +182,7 @@
     }
     .view-section.active { display: flex; }
 
-    /* ================= WIDGET RIEPILOGO UFFICIO ================= */
+    /* RIEPILOGO UFFICIO */
     .summary-strip {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -217,21 +195,8 @@
       flex-shrink: 0;
     }
 
-    .summary-left-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 155px;
-    }
-
-    .summary-heading {
-      font-size: 0.77rem;
-      font-weight: 800;
-      letter-spacing: 0.9px;
-      text-transform: uppercase;
-      color: var(--text);
-    }
-
+    .summary-left-meta { display: flex; flex-direction: column; gap: 4px; min-width: 155px; }
+    .summary-heading { font-size: 0.77rem; font-weight: 800; letter-spacing: 0.9px; text-transform: uppercase; color: var(--text); }
     .summary-pill {
       display: inline-block;
       width: fit-content;
@@ -243,13 +208,7 @@
       color: var(--dash-event);
     }
 
-    .summary-kpis {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-    }
-
+    .summary-kpis { flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
     .kpi-box { display: flex; flex-direction: column; gap: 2px; }
     .kpi-num { font-size: 1.85rem; font-weight: 600; line-height: 1.05; color: var(--text); }
     .kpi-num.cyan { color: var(--dash-event); }
@@ -258,14 +217,8 @@
     .kpi-num.lilac { color: var(--lilac); }
     .kpi-label { font-size: 0.76rem; color: var(--muted); }
 
-    /* ================= VISTA 1: AGENDA ================= */
-    .top-row {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr;
-      gap: 14px;
-      height: 41%;
-      min-height: 220px;
-    }
+    /* AGENDA */
+    .top-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; height: 41%; min-height: 220px; }
 
     .card {
       background: var(--card);
@@ -277,46 +230,17 @@
       overflow: hidden;
     }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-      flex-shrink: 0;
-      gap: 10px;
-    }
-
-    .card-title {
-      font-size: 0.76rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--muted);
-      font-weight: 700;
-    }
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-shrink: 0; gap: 10px; }
+    .card-title { font-size: 0.76rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 700; }
 
     .week-nav-inline { display: flex; align-items: center; gap: 6px; }
     .week-nav-inline button { padding: 4px 10px; font-size: 0.76rem; }
     .week-label-inline { font-size: 0.84rem; font-weight: 600; color: var(--lilac); min-width: 190px; text-align: center; }
 
-    .now-grid {
-      display: grid;
-      grid-template-columns: 195px 1fr;
-      gap: 16px;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    .clock-box {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      border-right: 1px solid var(--border);
-      padding-right: 14px;
-    }
-
+    .now-grid { display: grid; grid-template-columns: 195px 1fr; gap: 16px; flex: 1; overflow: hidden; }
+    .clock-box { display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); padding-right: 14px; }
     .clock-time { font-size: 2.5rem; font-weight: 300; letter-spacing: -1px; line-height: 1; }
     .clock-date { font-size: 0.84rem; color: var(--muted); margin-top: 6px; text-transform: capitalize; }
-
     .next-pill {
       margin-top: 12px;
       background: var(--lilac-dim);
@@ -329,7 +253,6 @@
     }
 
     .day-timeline { overflow-y: auto; padding-right: 4px; display: flex; flex-direction: column; gap: 7px; }
-
     .timeline-item {
       display: flex;
       align-items: flex-start;
@@ -342,12 +265,10 @@
     }
     .timeline-item.from-dash { border-left-color: var(--dash-event); }
     .timeline-item.personal { border-left-color: var(--personal); }
-
     .timeline-left { display: flex; align-items: flex-start; gap: 10px; min-width: 0; flex: 1; }
     .timeline-time { font-size: 0.79rem; font-weight: 600; color: var(--lilac); min-width: 84px; flex-shrink: 0; }
     .timeline-item.from-dash .timeline-time { color: var(--dash-event); }
     .timeline-item.personal .timeline-time { color: var(--personal); }
-
     .timeline-title { font-size: 0.87rem; font-weight: 500; }
     .source-tag {
       display: inline-block;
@@ -362,21 +283,11 @@
     .source-tag.dash { background: rgba(79, 195, 247, 0.16); color: var(--dash-event); }
     .source-tag.eink { background: var(--lilac-dim); color: var(--lilac); }
     .source-tag.pers { background: rgba(244, 143, 177, 0.16); color: var(--personal); }
-
     .timeline-note { font-size: 0.75rem; color: var(--muted); margin-top: 3px; white-space: pre-line; }
-
-    .resched-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.73rem;
-      flex-shrink: 0;
-    }
+    .resched-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 4px 8px; border-radius: 6px; font-size: 0.73rem; flex-shrink: 0; }
     .resched-btn:hover { color: var(--text); border-color: var(--dash-event); }
 
-    /* WEEKLY TASKS */
+    /* TASKS */
     .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; flex-shrink: 0; }
     .progress-bar { flex: 1; height: 7px; background: var(--bg); border-radius: 99px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--lilac); width: 0%; transition: width 0.3s ease; border-radius: 99px; }
@@ -396,7 +307,6 @@
     .add-row input:focus { border-color: var(--lilac); }
 
     .tasks-list { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; flex: 1; }
-
     .task-item {
       display: flex;
       align-items: center;
@@ -408,7 +318,6 @@
       transition: background 0.15s;
     }
     .task-item:hover { background: var(--card-hover); }
-
     .task-check {
       width: 17px;
       height: 17px;
@@ -429,7 +338,6 @@
     /* 7-DAY WEEK GRID */
     .bottom-card { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 9px; flex: 1; overflow: hidden; }
-
     .day-col {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -444,7 +352,6 @@
     .day-col:hover { border-color: #4a4f5e; background: #1d2027; }
     .day-col.today { border-color: var(--lilac); box-shadow: 0 0 14px rgba(179, 157, 219, 0.16); }
     .day-col.selected { background: #222630; border-color: var(--lilac); }
-
     .day-col-header {
       display: flex;
       justify-content: space-between;
@@ -471,116 +378,38 @@
       text-align: center;
     }
     .quick-add-day-btn:hover { border-color: var(--dash-event); background: rgba(79, 195, 247, 0.15); }
-
     .day-events { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
-
-    .mini-ev {
-      font-size: 0.75rem;
-      padding: 5px 7px;
-      border-radius: 6px;
-      background: var(--card);
-      border-left: 3px solid var(--lilac);
-      line-height: 1.28;
-    }
+    .mini-ev { font-size: 0.75rem; padding: 5px 7px; border-radius: 6px; background: var(--card); border-left: 3px solid var(--lilac); line-height: 1.28; }
     .mini-ev.from-dash { border-left-color: var(--dash-event); background: rgba(79, 195, 247, 0.06); }
     .mini-ev.personal { border-left-color: var(--personal); }
     .mini-ev-time { color: var(--lilac); font-weight: 600; font-size: 0.69rem; display: block; }
     .mini-ev.from-dash .mini-ev-time { color: var(--dash-event); }
     .mini-ev.personal .mini-ev-time { color: var(--personal); }
-
     .legend-row { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; color: var(--muted); }
     .leg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
 
-    /* ================= VISTA 2: PROMEMORIA & CONTATTI ================= */
-    .quick-memo-bar {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 13px 18px;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .quick-memo-bar select, .quick-memo-bar input {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 0.87rem;
-      outline: none;
-    }
+    /* PROMEMORIA */
+    .quick-memo-bar { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 13px 18px; display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
+    .quick-memo-bar select, .quick-memo-bar input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 9px 12px; border-radius: 8px; font-size: 0.87rem; outline: none; }
     .quick-memo-bar input { flex: 1; }
-    .quick-memo-bar input:focus, .quick-memo-bar select:focus { border-color: var(--lilac); }
-
-    .memo-grid-4 {
-      flex: 1;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(2, 1fr);
-      gap: 14px;
-      overflow: hidden;
-    }
-
-    .memo-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      background: var(--surface);
-      border-radius: 9px;
-      border-left: 4px solid var(--prio-low);
-      transition: background 0.15s;
-    }
-    .memo-item:hover { background: var(--card-hover); }
+    .memo-grid-4 { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); gap: 14px; overflow: hidden; }
+    .memo-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--surface); border-radius: 9px; border-left: 4px solid var(--prio-low); }
     .memo-item.prio-high { border-left-color: var(--prio-high); background: rgba(239, 83, 80, 0.08); }
     .memo-item.prio-med { border-left-color: var(--prio-med); background: rgba(255, 183, 77, 0.06); }
     .memo-item.done { opacity: 0.5; }
     .memo-item.done .memo-title { text-decoration: line-through; }
-
-    .prio-pill {
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      flex-shrink: 0;
-    }
+    .prio-pill { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 5px; text-transform: uppercase; flex-shrink: 0; }
     .prio-pill.high { background: rgba(239, 83, 80, 0.2); color: #ff8a80; }
     .prio-pill.med { background: rgba(255, 183, 77, 0.2); color: #ffd180; }
     .prio-pill.low { background: var(--lilac-dim); color: var(--lilac); }
-
     .memo-title { flex: 1; font-size: 0.87rem; }
     .memo-del { background: transparent; border: none; color: var(--muted); padding: 4px 6px; font-size: 0.85rem; }
     .memo-del:hover { color: var(--prio-high); background: transparent; }
 
-    /* ================= VISTA 3: PROGETTI ================= */
-    .projects-layout {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 440px 1fr;
-      gap: 14px;
-      overflow: hidden;
-    }
-
-    .proj-filter-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-      flex-shrink: 0;
-    }
-
-    .proj-list {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      padding-right: 4px;
-    }
-
+    /* PROGETTI */
+    .projects-layout { flex: 1; display: grid; grid-template-columns: 440px 1fr; gap: 14px; overflow: hidden; }
+    .proj-filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
+    .proj-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-right: 4px; }
     .proj-card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -595,128 +424,27 @@
     }
     .proj-card:hover { background: var(--card-hover); border-color: #4a4f5e; }
     .proj-card.active { background: #222631; border-color: var(--lilac); }
-
-    .proj-card-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 8px;
-    }
+    .proj-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; }
     .proj-card-title { font-size: 0.92rem; font-weight: 700; color: var(--text); }
-    .proj-dept-pill {
-      font-size: 0.68rem;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 5px;
-      background: rgba(255,255,255,0.06);
-      color: var(--proj-color, var(--lilac));
-      white-space: nowrap;
-    }
-
-    .proj-card-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    .proj-mini-bar {
-      height: 5px;
-      background: var(--bg);
-      border-radius: 99px;
-      overflow: hidden;
-    }
-    .proj-mini-fill {
-      height: 100%;
-      background: var(--proj-color, var(--lilac));
-      border-radius: 99px;
-      transition: width 0.25s ease;
-    }
-
-    .proj-detail-empty {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: var(--muted);
-      font-size: 0.9rem;
-      padding: 24px;
-    }
-
-    .proj-detail-wrap {
-      flex: 1;
-      display: none;
-      flex-direction: column;
-      gap: 12px;
-      overflow: hidden;
-    }
-
-    .proj-status-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 13px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .proj-status-label {
-      font-size: 0.73rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      color: var(--dash-event);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .proj-status-input {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 7px 10px;
-      border-radius: 7px;
-      font-size: 0.84rem;
-      width: 100%;
-      outline: none;
-    }
-    .proj-status-input:focus { border-color: var(--dash-event); }
-
-    .proj-step-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 9px 12px;
-      background: var(--surface);
-      border-radius: 9px;
-      border: 1px solid transparent;
-      transition: all 0.15s;
-    }
+    .proj-dept-pill { font-size: 0.68rem; font-weight: 700; padding: 2px 7px; border-radius: 5px; background: rgba(255,255,255,0.06); color: var(--proj-color, var(--lilac)); white-space: nowrap; }
+    .proj-card-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); }
+    .proj-mini-bar { height: 5px; background: var(--bg); border-radius: 99px; overflow: hidden; }
+    .proj-mini-fill { height: 100%; background: var(--proj-color, var(--lilac)); border-radius: 99px; transition: width 0.25s ease; }
+    .proj-detail-empty { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--muted); font-size: 0.9rem; padding: 24px; }
+    .proj-detail-wrap { flex: 1; display: none; flex-direction: column; gap: 12px; overflow: hidden; }
+    .proj-status-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+    .proj-status-label { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; color: var(--dash-event); display: flex; justify-content: space-between; align-items: center; }
+    .proj-status-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 7px; font-size: 0.84rem; width: 100%; outline: none; }
+    .proj-step-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--surface); border-radius: 9px; border: 1px solid transparent; }
     .proj-step-item:hover { background: var(--card-hover); border-color: var(--border); }
     .proj-step-item.done .task-check { background: var(--lilac); }
     .proj-step-item.done .proj-step-text { text-decoration: line-through; color: var(--muted); }
     .proj-step-text { flex: 1; font-size: 0.87rem; cursor: pointer; }
     .proj-step-actions { display: flex; gap: 5px; align-items: center; }
 
-    /* ================= VISTA 4: APPUNTI DRIVE ================= */
-    .drive-layout {
-      flex: 1;
-      display: grid;
-      grid-template-columns: 430px 1fr;
-      gap: 14px;
-      overflow: hidden;
-    }
-
-    .folders-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-      flex-shrink: 0;
-    }
-
+    /* APPUNTI DRIVE & MODULISTICA */
+    .drive-layout { flex: 1; display: grid; grid-template-columns: 430px 1fr; gap: 14px; overflow: hidden; }
+    .folders-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
     .folder-chip {
       display: inline-flex;
       align-items: center;
@@ -732,54 +460,11 @@
       transition: all 0.15s;
     }
     .folder-chip:hover { background: var(--card-hover); }
-    .folder-chip.active {
-      background: #252834;
-      border-color: var(--chip-color, var(--lilac));
-      box-shadow: inset 0 0 0 1px var(--chip-color, var(--lilac));
-      font-weight: 600;
-    }
-
-    .folder-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--chip-color, var(--lilac));
-      flex-shrink: 0;
-    }
-
-    .folder-mini-btn {
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      padding: 0 2px;
-      font-size: 0.72rem;
-      cursor: pointer;
-    }
-    .folder-mini-btn:hover { color: var(--text); background: transparent; }
-
-    .drive-search {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-      margin-bottom: 10px;
-      outline: none;
-      flex-shrink: 0;
-    }
-    .drive-search:focus { border-color: var(--lilac); }
-
-    .drive-list {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding-right: 4px;
-    }
-
+    .folder-chip.active { background: #252834; border-color: var(--chip-color, var(--lilac)); box-shadow: inset 0 0 0 1px var(--chip-color, var(--lilac)); font-weight: 600; }
+    .folder-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--chip-color, var(--lilac)); flex-shrink: 0; }
+    .folder-mini-btn { background: transparent; border: none; color: var(--muted); padding: 0 2px; font-size: 0.72rem; cursor: pointer; }
+    .drive-search { width: 100%; background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; margin-bottom: 10px; outline: none; flex-shrink: 0; }
+    .drive-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
     .drive-file-card {
       padding: 10px 13px;
       background: var(--surface);
@@ -795,46 +480,22 @@
     }
     .drive-file-card:hover { border-color: #4a4f5e; background: var(--card-hover); }
     .drive-file-card.active { border-color: var(--lilac); background: #222631; }
-
     .drive-file-info { min-width: 0; flex: 1; }
-    .drive-file-title {
-      font-size: 0.87rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 4px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .drive-file-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.73rem;
-      color: var(--muted);
-    }
-    .file-folder-tag {
-      padding: 1px 7px;
-      border-radius: 5px;
-      font-weight: 600;
-      font-size: 0.69rem;
-      background: rgba(255,255,255,0.06);
-      color: var(--file-color, var(--lilac));
-    }
+    .drive-file-title { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .drive-file-meta { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: var(--muted); flex-wrap: wrap; }
+    .file-folder-tag { padding: 1px 7px; border-radius: 5px; font-weight: 600; font-size: 0.69rem; background: rgba(255,255,255,0.06); color: var(--file-color, var(--lilac)); }
+    .platform-badge { padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 0.66rem; text-transform: uppercase; }
+    .platform-badge.gdrive { background: rgba(129, 199, 132, 0.16); color: #81c784; }
+    .platform-badge.onedrive { background: rgba(41, 182, 246, 0.18); color: #4fc3f7; }
+    .platform-badge.sharepoint { background: rgba(38, 166, 154, 0.2); color: #4db6ac; }
+    .platform-badge.external { background: rgba(255, 183, 77, 0.18); color: #ffb74d; }
 
     .file-actions { display: flex; gap: 4px; flex-shrink: 0; }
-    .file-icon-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 5px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-    }
+    .file-icon-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 5px 8px; border-radius: 6px; font-size: 0.75rem; }
     .file-icon-btn:hover { color: var(--text); border-color: var(--lilac); }
+    .file-icon-btn.fav-active { color: #ffd54f; border-color: rgba(255, 213, 79, 0.45); }
 
     .drive-preview-header-actions { display: flex; align-items: center; gap: 8px; }
-
     .drive-preview-body {
       flex: 1;
       overflow-y: auto;
@@ -847,7 +508,27 @@
       color: #e2e5e9;
     }
 
-    /* ================= VISTA 5: LAUNCHER PORTALI, APP & MODULI PDF ================= */
+    .pdf-embed-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 8px;
+      background: #1a1c22;
+    }
+
+    .ext-module-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px;
+      max-width: 560px;
+      margin: 24px auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* PORTALI & APP LAUNCHER */
     .launcher-toolbar {
       background: var(--card);
       border: 1px solid var(--border);
@@ -860,66 +541,13 @@
       flex-shrink: 0;
       flex-wrap: wrap;
     }
-
-    .launcher-filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 7px;
-      align-items: center;
-    }
-
-    .launcher-right-tools {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .launcher-search {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 7px 12px;
-      border-radius: 8px;
-      font-size: 0.84rem;
-      width: 220px;
-      outline: none;
-    }
-    .launcher-search:focus { border-color: var(--lilac); }
-
-    .launcher-scroll-area {
-      flex: 1;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      padding-right: 4px;
-    }
-
-    .launcher-theme-section {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .launcher-theme-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.78rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.9px;
-      color: var(--muted);
-      padding-bottom: 4px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .launcher-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
-      gap: 12px;
-    }
-
+    .launcher-filters { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; }
+    .launcher-right-tools { display: flex; align-items: center; gap: 8px; }
+    .launcher-search { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 7px 12px; border-radius: 8px; font-size: 0.84rem; width: 220px; outline: none; }
+    .launcher-scroll-area { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 18px; padding-right: 4px; }
+    .launcher-theme-section { display: flex; flex-direction: column; gap: 10px; }
+    .launcher-theme-header { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--muted); padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+    .launcher-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 12px; }
     .launch-tile {
       background: var(--card);
       border: 1px solid var(--border);
@@ -932,125 +560,27 @@
       gap: 10px;
       cursor: pointer;
       transition: all 0.16s ease;
-      position: relative;
       text-decoration: none;
       color: var(--text);
     }
-
-    .launch-tile:hover {
-      background: var(--card-hover);
-      border-color: var(--tile-accent, var(--lilac));
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28);
-    }
-
-    .launch-tile-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 10px;
-    }
-
-    .launch-icon-box {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.45rem;
-      flex-shrink: 0;
-    }
-
-    .launch-tile-actions {
-      display: flex;
-      gap: 4px;
-      opacity: 0.35;
-      transition: opacity 0.15s;
-    }
+    .launch-tile:hover { background: var(--card-hover); border-color: var(--tile-accent, var(--lilac)); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28); }
+    .launch-tile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .launch-icon-box { width: 42px; height: 42px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.45rem; flex-shrink: 0; }
+    .launch-tile-actions { display: flex; gap: 4px; opacity: 0.35; transition: opacity 0.15s; }
     .launch-tile:hover .launch-tile-actions { opacity: 1; }
+    .launch-mini-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 3px 6px; border-radius: 5px; font-size: 0.72rem; }
+    .launch-title { font-size: 0.94rem; font-weight: 700; color: var(--text); line-height: 1.25; }
+    .launch-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.35; }
+    .launch-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--tile-accent, var(--lilac)); font-weight: 600; margin-top: 2px; }
 
-    .launch-mini-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      padding: 3px 6px;
-      border-radius: 5px;
-      font-size: 0.72rem;
-    }
-    .launch-mini-btn:hover { color: var(--text); border-color: var(--lilac); }
-
-    .launch-title {
-      font-size: 0.94rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.25;
-    }
-
-    .launch-desc {
-      font-size: 0.77rem;
-      color: var(--muted);
-      line-height: 1.35;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .launch-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.7rem;
-      color: var(--tile-accent, var(--lilac));
-      font-weight: 600;
-      margin-top: 2px;
-    }
-
-    /* ICON PICKER GRID IN MODAL */
-    .emoji-picker-grid {
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 6px;
-      margin-top: 6px;
-      background: var(--bg);
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-    }
-
-    .emoji-opt {
-      background: var(--surface);
-      border: 1px solid transparent;
-      border-radius: 6px;
-      padding: 5px 0;
-      text-align: center;
-      font-size: 1.15rem;
-      cursor: pointer;
-    }
+    .emoji-picker-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 6px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); }
+    .emoji-opt { background: var(--surface); border: 1px solid transparent; border-radius: 6px; padding: 5px 0; text-align: center; font-size: 1.15rem; cursor: pointer; }
     .emoji-opt:hover { background: var(--card-hover); border-color: var(--lilac); }
     .emoji-opt.selected { background: var(--lilac-tile); border-color: var(--lilac); }
 
     /* MODALS */
-    .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.74);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 50;
-    }
-    .modal {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 22px;
-      width: 480px;
-      max-width: 94vw;
-    }
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.74); display: none; align-items: center; justify-content: center; z-index: 50; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: 480px; max-width: 94vw; }
     .modal.wide { width: 620px; }
     .modal h3 { margin-bottom: 14px; font-size: 1.05rem; }
     .modal label { display: block; font-size: 0.81rem; color: var(--muted); margin: 10px 0 4px; }
@@ -1066,18 +596,9 @@
       outline: none;
     }
     .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--lilac); }
-
     .modal-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
     .color-swatches { display: flex; gap: 10px; margin-top: 8px; }
-    .swatch {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: transform 0.15s;
-    }
+    .swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s; }
     .swatch:hover { transform: scale(1.1); }
     .swatch.selected { border-color: #ffffff; box-shadow: 0 0 10px rgba(255,255,255,0.4); }
 
@@ -1104,7 +625,7 @@
       </div>
     </div>
 
-    <!-- MENU A 5 SCHEDE CON ICONE E SOTTOTITOLI -->
+    <!-- MENU A 6 SCHEDE -->
     <nav class="tile-nav">
       <button type="button" class="tile-tab active" data-view="viewPanoramica">
         <span class="tile-icon">📅</span>
@@ -1126,10 +647,15 @@
         <span class="tile-title">Appunti</span>
         <span class="tile-sub">Drive e note libere</span>
       </button>
+      <button type="button" class="tile-tab" data-view="viewModulistica">
+        <span class="tile-icon">📄</span>
+        <span class="tile-title">Modulistica</span>
+        <span class="tile-sub">Drive, OneDrive & SP</span>
+      </button>
       <button type="button" class="tile-tab" data-view="viewPortali">
         <span class="tile-icon">🚀</span>
         <span class="tile-title">Portali & App</span>
-        <span class="tile-sub">Siti, app e moduli PDF</span>
+        <span class="tile-sub">Siti e strumenti</span>
       </button>
     </nav>
 
@@ -1374,12 +900,51 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 5: PORTALI, APP & MODULI PDF ==================== -->
+  <!-- ==================== VISTA 5: MODULISTICA (GOOGLE DRIVE + ONEDRIVE / SHAREPOINT) ==================== -->
+  <section id="viewModulistica" class="view-section">
+    <div class="drive-layout">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="modFolderTitle">📄 Modulistica Ufficio</span>
+          <div style="display:flex; gap:6px;">
+            <button type="button" id="btnNewModLink" class="accent-cyan" style="padding:4px 10px; font-size:0.76rem;">+ Link OneDrive / SP</button>
+            <button type="button" id="btnRefreshModulistica" style="padding:4px 9px; font-size:0.76rem;" title="Aggiorna Modulistica">↻</button>
+          </div>
+        </div>
+
+        <div class="folders-bar" id="modFilterBar"></div>
+
+        <input type="text" id="modSearchInput" class="drive-search" placeholder="🔎 Cerca modulo PDF, Word, OneDrive o SharePoint...">
+        <div class="drive-list" id="modItemsList">
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza per leggere la cartella Modulistica Ufficio su Google Drive o aggiungi collegamenti a OneDrive / SharePoint.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="modPreviewTitle" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Anteprima & Apertura Modulo</span>
+          <div class="drive-preview-header-actions" id="modPreviewActions" style="display:none;">
+            <button type="button" id="btnEditSelectedModLink" style="padding:5px 10px; font-size:0.78rem; display:none;">✏️ Modifica Link</button>
+            <a id="btnOpenModExternal" href="#" target="_blank" rel="noopener noreferrer" style="background:var(--lilac); color:#121316; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; text-decoration:none;">↗ Apri File / Portale</a>
+          </div>
+        </div>
+        <div class="drive-preview-body" id="modPreviewBody" style="padding:14px;">
+          <div style="padding:10px; color:var(--muted);">
+            Seleziona un documento dall'elenco a sinistra:<br><br>
+            • I <strong>PDF e i documenti salvati nella cartella Google Drive "Modulistica Ufficio"</strong> mostrano qui l'anteprima immediata e si aggiornano automaticamente ogni volta che carichi file su Drive.<br><br>
+            • I <strong>collegamenti a OneDrive, SharePoint o portali esterni</strong> creati con <em>"+ Link OneDrive / SP"</em> appaiono nello stesso elenco filtrabile per servizio e si aprono con un clic.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA 6: PORTALI & APP ==================== -->
   <section id="viewPortali" class="view-section">
     <div class="launcher-toolbar">
       <div class="launcher-filters" id="launcherThemeFilterBar"></div>
       <div class="launcher-right-tools">
-        <input type="text" id="launcherSearchInput" class="launcher-search" placeholder="🔎 Cerca portale, app o PDF...">
+        <input type="text" id="launcherSearchInput" class="launcher-search" placeholder="🔎 Cerca portale, app o strumento...">
         <button type="button" id="btnNewLauncherItem" class="primary">+ Nuovo Pulsante</button>
       </div>
     </div>
@@ -1387,7 +952,58 @@
     <div class="launcher-scroll-area" id="launcherGridContainer"></div>
   </section>
 
-  <!-- MODALE AGGIUNGI / MODIFICA PULSANTE PORTALE / APP / MODULO PDF -->
+  <!-- MODALE COLLEGAMENTO MODULISTICA (ONEDRIVE / SHAREPOINT / ESTERNO) -->
+  <div class="modal-backdrop" id="modLinkModal">
+    <div class="modal">
+      <h3 id="modLinkModalTitle">🔗 Nuovo Collegamento Modulistica (OneDrive / SharePoint)</h3>
+      <label>Nome del Modulo / Documento:</label>
+      <input type="text" id="modLinkTitleInput" placeholder="Es. Schema Determina D.Lgs. 36/2023, Modulo Ferie...">
+
+      <div class="modal-row-2">
+        <div>
+          <label>Piattaforma / Origine:</label>
+          <select id="modLinkPlatformInput">
+            <option value="onedrive">☁️ OneDrive</option>
+            <option value="sharepoint">🔷 SharePoint</option>
+            <option value="external">🌐 Portale / Sito Esterno</option>
+          </select>
+        </div>
+        <div>
+          <label>Tipo Formato:</label>
+          <select id="modLinkFormatInput">
+            <option value="Word (.docx)">📘 Word (.docx)</option>
+            <option value="PDF">📕 PDF</option>
+            <option value="Excel (.xlsx)">📗 Excel (.xlsx)</option>
+            <option value="Cartella Condivisa">📁 Cartella Condivisa</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Settore / Categoria:</label>
+      <input type="text" id="modLinkSectorInput" list="modSectorsDatalist" placeholder="Es. Segreteria, Servizi Sociali, Anagrafe...">
+      <datalist id="modSectorsDatalist">
+        <option value="Segreteria">
+        <option value="Servizi Sociali">
+        <option value="Anagrafe">
+        <option value="Biblioteca">
+        <option value="Gare & Contratti">
+        <option value="Personale">
+      </datalist>
+
+      <label>Link Condiviso (OneDrive, SharePoint o URL diretto):</label>
+      <input type="text" id="modLinkUrlInput" placeholder="https://...incolla qui il link di condivisione OneDrive o SharePoint">
+
+      <label>Note / Istruzioni compilazione (facoltativo):</label>
+      <input type="text" id="modLinkNoteInput" placeholder="Es. Modello aggiornato a novembre 2026 - cartella Ufficio Segreteria">
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button type="button" id="btnCancelModLinkModal">Annulla</button>
+        <button type="button" id="btnSaveModLinkModal" class="primary">Salva Collegamento</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE PULSANTE PORTALE / APP -->
   <div class="modal-backdrop" id="launcherModal">
     <div class="modal">
       <h3 id="launcherModalTitle">🚀 Nuovo Pulsante Rapido</h3>
@@ -1395,30 +1011,30 @@
       <div class="modal-row-2">
         <div>
           <label>Nome Pulsante:</label>
-          <input type="text" id="lncTitleInput" placeholder="Es. Portale ANPR, Modulo Ferie PDF...">
+          <input type="text" id="lncTitleInput" placeholder="Es. Portale ANPR, PCP ANAC...">
         </div>
         <div>
           <label>Tema / Categoria:</label>
-          <input type="text" id="lncThemeInput" list="lncThemesDatalist" placeholder="Es. Portali PA, Moduli PDF, App...">
+          <input type="text" id="lncThemeInput" list="lncThemesDatalist" placeholder="Es. Portali PA & Enti, App...">
           <datalist id="lncThemesDatalist">
             <option value="Portali PA & Enti">
             <option value="Servizi Sociali & Anagrafe">
-            <option value="Moduli PDF & Documenti">
+            <option value="Appalti & Contratti">
             <option value="Web App & Strumenti">
           </datalist>
         </div>
       </div>
 
-      <label>Indirizzo Web, Link PDF o Comando App:</label>
-      <input type="text" id="lncUrlInput" placeholder="https://... (oppure link Google Drive / file PDF)">
+      <label>Indirizzo Web o Comando App:</label>
+      <input type="text" id="lncUrlInput" placeholder="https://...">
 
       <div class="modal-row-2">
         <div>
           <label>Tipo Risorsa (Etichetta):</label>
           <select id="lncTypeInput">
             <option value="Portale Web">🌐 Portale Web</option>
-            <option value="Modulo PDF">📕 Modulo PDF</option>
             <option value="Web App">⚡ Web App</option>
+            <option value="Modulo PDF">📕 Modulo PDF</option>
             <option value="Documento / Cartella">📁 Documento / Cartella</option>
           </select>
         </div>
@@ -1597,15 +1213,18 @@
       <input type="text" id="cfgMemoList" value="Dashboard Promemoria">
       <label>Lista Tasks — Progetti:</label>
       <input type="text" id="cfgProjectsList" value="Dashboard Progetti">
-      <label>Cartella Principale Google Drive:</label>
+      <label>Cartella Google Drive — Appunti Scanner:</label>
       <input type="text" id="cfgDriveFolder" value="Appunti Scanner">
+      <label>Cartella Google Drive — Modulistica Ufficio:</label>
+      <input type="text" id="cfgModFolder" value="Modulistica Ufficio">
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
         <button type="button" id="btnCloseSettings">Chiudi</button>
         <button type="button" id="btnSaveSettings" class="primary">Salva</button>
       </div>
     </div>
   </div>
-
+<!-- FINE PARTE 1 -->
+<!-- INIZIO PARTE 2 -->
 <script>
   var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive";
   var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
@@ -1658,6 +1277,7 @@
   var selectedProjectId = null;
   var editingProjectId = null;
 
+  // Stato Appunti Drive
   var rootDriveFolderId = null;
   var driveSubfolders = [];
   var driveFiles = [];
@@ -1667,6 +1287,17 @@
   var editingFolderId = null;
   var selectedSwatchColor = FOLDER_PALETTE[0].hex;
   var movingDocId = null;
+
+  // Stato Modulistica (Google Drive + Collegamenti OneDrive / SharePoint)
+  var modRootFolderId = null;
+  var modSubfolders = [];
+  var modDriveFiles = [];
+  var modExternalLinks = [];
+  var modLinksConfigFileId = null;
+  var modFavorites = [];
+  var activeModFilter = "ALL";
+  var selectedModItemId = null;
+  var editingModLinkId = null;
 
   // Stato Launcher Portali & App
   var launcherItems = [];
@@ -1757,6 +1388,9 @@
       var cachedProjs = JSON.parse(localStorage.getItem("dash_cache_projects") || "[]");
       var cachedFolders = JSON.parse(localStorage.getItem("dash_cache_folders") || "[]");
       var cachedDrive = JSON.parse(localStorage.getItem("dash_cache_drive") || "[]");
+      var cachedModFiles = JSON.parse(localStorage.getItem("dash_cache_mod_files") || "[]");
+      var cachedModLinks = JSON.parse(localStorage.getItem("dash_cache_mod_links") || "[]");
+      var cachedModFavs = JSON.parse(localStorage.getItem("dash_cache_mod_favs") || "[]");
       var cachedLauncher = JSON.parse(localStorage.getItem("dash_cache_launcher") || "null");
 
       if (cachedEv.length) weekEvents = cachedEv;
@@ -1765,6 +1399,9 @@
       if (cachedProjs.length) projectsData = cachedProjs;
       if (cachedFolders.length) driveSubfolders = cachedFolders;
       if (cachedDrive.length) driveFiles = cachedDrive;
+      if (cachedModFiles.length) modDriveFiles = cachedModFiles;
+      if (cachedModLinks.length) modExternalLinks = cachedModLinks;
+      if (cachedModFavs.length) modFavorites = cachedModFavs;
       launcherItems = Array.isArray(cachedLauncher) ? cachedLauncher : DEFAULT_LAUNCHER_ITEMS.slice();
     } catch (e) {
       launcherItems = DEFAULT_LAUNCHER_ITEMS.slice();
@@ -1779,6 +1416,8 @@
     renderProjectDetail();
     renderDriveFoldersBar();
     renderDriveList();
+    renderModFilterBar();
+    renderModItemsList();
     renderLauncherThemeBar();
     renderLauncherGrid();
     updateSummaryKpis();
@@ -1792,6 +1431,9 @@
       localStorage.setItem("dash_cache_projects", JSON.stringify(projectsData));
       localStorage.setItem("dash_cache_folders", JSON.stringify(driveSubfolders));
       localStorage.setItem("dash_cache_drive", JSON.stringify(driveFiles));
+      localStorage.setItem("dash_cache_mod_files", JSON.stringify(modDriveFiles));
+      localStorage.setItem("dash_cache_mod_links", JSON.stringify(modExternalLinks));
+      localStorage.setItem("dash_cache_mod_favs", JSON.stringify(modFavorites));
       localStorage.setItem("dash_cache_launcher", JSON.stringify(launcherItems));
     } catch (e) {}
     updateSummaryKpis();
@@ -1804,6 +1446,7 @@
     var sMemo = localStorage.getItem("dash_memo_list");
     var sProj = localStorage.getItem("dash_projects_list");
     var sDrive = localStorage.getItem("dash_drive_folder");
+    var sMod = localStorage.getItem("dash_mod_folder");
 
     if (sHint) document.getElementById("cfgLoginHint").value = sHint;
     if (sClient) document.getElementById("cfgClientId").value = sClient;
@@ -1811,6 +1454,7 @@
     if (sMemo) document.getElementById("cfgMemoList").value = sMemo;
     if (sProj) document.getElementById("cfgProjectsList").value = sProj;
     if (sDrive) document.getElementById("cfgDriveFolder").value = sDrive;
+    if (sMod) document.getElementById("cfgModFolder").value = sMod;
 
     updateClock();
     setInterval(updateClock, 15000);
@@ -1897,6 +1541,7 @@
       localStorage.setItem("dash_memo_list", document.getElementById("cfgMemoList").value.trim() || "Dashboard Promemoria");
       localStorage.setItem("dash_projects_list", document.getElementById("cfgProjectsList").value.trim() || "Dashboard Progetti");
       localStorage.setItem("dash_drive_folder", document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner");
+      localStorage.setItem("dash_mod_folder", document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio");
       document.getElementById("settingsModal").style.display = "none";
       if (accessToken) loadAllData();
     };
@@ -1917,6 +1562,22 @@
     };
     document.getElementById("btnMoveSelectedDoc").onclick = function() {
       if (selectedDriveFileId) openMoveDocModal(selectedDriveFileId);
+    };
+
+    // Modulistica (Drive + OneDrive / SharePoint)
+    document.getElementById("btnNewModLink").onclick = function() { openModLinkModal(null); };
+    document.getElementById("btnCancelModLinkModal").onclick = function() {
+      document.getElementById("modLinkModal").style.display = "none";
+    };
+    document.getElementById("btnSaveModLinkModal").onclick = saveModLinkModal;
+    document.getElementById("btnRefreshModulistica").onclick = function() {
+      if (accessToken) refreshModulisticaOnly(); else requestAuth(false);
+    };
+    document.getElementById("modSearchInput").addEventListener("input", renderModItemsList);
+    document.getElementById("btnEditSelectedModLink").onclick = function() {
+      if (selectedModItemId && selectedModItemId.indexOf("ext_") === 0) {
+        openModLinkModal(selectedModItemId);
+      }
     };
 
     // Launcher Portali & App
@@ -2013,7 +1674,8 @@
         loadWeeklyTasks(),
         loadMemosFromTasks(),
         loadProjectsFromTasks(),
-        loadDriveNotesAndFolders()
+        loadDriveNotesAndFolders(),
+        loadModulisticaFromDrive()
       ]);
       await loadLauncherConfigFromDrive();
       saveCachedSnapshot();
@@ -2026,6 +1688,8 @@
       renderProjectDetail();
       renderDriveFoldersBar();
       renderDriveList();
+      renderModFilterBar();
+      renderModItemsList();
       renderLauncherThemeBar();
       renderLauncherGrid();
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
@@ -2053,6 +1717,20 @@
     } catch (err) {
       if (String(err.message).indexOf("403") !== -1) requestAuth(false);
       else setSyncBadge("Errore Drive", false);
+    }
+  }
+
+  async function refreshModulisticaOnly() {
+    setSyncBadge("Aggiornamento Modulistica...", false);
+    try {
+      await loadModulisticaFromDrive();
+      saveCachedSnapshot();
+      renderModFilterBar();
+      renderModItemsList();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      setSyncBadge("Errore Modulistica", false);
     }
   }
 
@@ -2970,7 +2648,7 @@
 
     var parentIds = [rootDriveFolderId].concat(driveSubfolders.map(function(sf) { return sf.id; }));
     var parentsClause = parentIds.map(function(pid) { return "'" + pid + "' in parents"; }).join(" or ");
-    var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_launcher.json' and trashed = false");
+    var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_launcher.json' and name != 'pikdash_modulistica_links.json' and trashed = false");
 
     var docsRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qDocs + "&orderBy=modifiedTime desc&pageSize=100&fields=files(id,name,mimeType,modifiedTime,webViewLink,parents)", {
       headers: { "Authorization": "Bearer " + accessToken }
@@ -3327,7 +3005,431 @@
     }
   }
 
-  // ==================== 6. LAUNCHER PORTALI, APP & MODULI PDF ====================
+  // ==================== 6. MODULISTICA (GOOGLE DRIVE + ONEDRIVE / SHAREPOINT) ====================
+  async function loadModulisticaFromDrive() {
+    var modFolderName = document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio";
+    document.getElementById("modFolderTitle").innerText = "📄 " + modFolderName;
+
+    var qRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    if (!fRes.ok) throw new Error("Drive " + fRes.status);
+    var fData = await fRes.json();
+
+    if (!fData.files || fData.files.length === 0) {
+      var createRootRes = await fetch("https://www.googleapis.com/drive/v3/files", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ name: modFolderName, mimeType: "application/vnd.google-apps.folder" })
+      });
+      var createdRoot = await createRootRes.json();
+      modRootFolderId = createdRoot.id;
+    } else {
+      modRootFolderId = fData.files[0].id;
+    }
+
+    var qSub = encodeURIComponent("'" + modRootFolderId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var subRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qSub + "&orderBy=name&fields=files(id,name)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var subData = await subRes.json();
+    modSubfolders = (subData.files || []).map(function(sf, idx) {
+      return {
+        id: sf.id,
+        name: sf.name,
+        color: DEPT_COLORS[sf.name] || FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex
+      };
+    });
+
+    var parentIds = [modRootFolderId].concat(modSubfolders.map(function(sf) { return sf.id; }));
+    var parentsClause = parentIds.map(function(pid) { return "'" + pid + "' in parents"; }).join(" or ");
+    var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_modulistica_links.json' and trashed = false");
+
+    var docsRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qDocs + "&orderBy=name&pageSize=100&fields=files(id,name,mimeType,modifiedTime,webViewLink,parents)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var docsData = await docsRes.json();
+    modDriveFiles = (docsData.files || []).map(function(doc) {
+      var pId = (doc.parents && doc.parents[0]) || modRootFolderId;
+      var sfObj = modSubfolders.find(function(sf) { return sf.id === pId; });
+      return {
+        id: "gd_" + doc.id,
+        rawDriveId: doc.id,
+        title: doc.name,
+        platform: "gdrive",
+        mimeType: doc.mimeType,
+        sector: sfObj ? sfObj.name : "Generale",
+        url: doc.webViewLink || "",
+        modifiedTime: doc.modifiedTime || ""
+      };
+    });
+
+    var qLinks = encodeURIComponent("name = 'pikdash_modulistica_links.json' and '" + modRootFolderId + "' in parents and trashed = false");
+    var linksRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qLinks + "&fields=files(id,name)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    if (linksRes.ok) {
+      var linksData = await linksRes.json();
+      if (linksData.files && linksData.files.length > 0) {
+        modLinksConfigFileId = linksData.files[0].id;
+        var dlRes = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(modLinksConfigFileId) + "?alt=media", {
+          headers: { "Authorization": "Bearer " + accessToken }
+        });
+        if (dlRes.ok) {
+          var parsed = await dlRes.json();
+          if (Array.isArray(parsed)) {
+            modExternalLinks = parsed;
+          }
+        }
+      }
+    }
+  }
+
+  async function syncModExternalLinksToDrive() {
+    saveCachedSnapshot();
+    if (!accessToken || !modRootFolderId) return;
+
+    try {
+      var jsonContent = JSON.stringify(modExternalLinks, null, 2);
+      if (modLinksConfigFileId) {
+        await fetch("https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(modLinksConfigFileId) + "?uploadType=media", {
+          method: "PATCH",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          },
+          body: jsonContent
+        });
+      } else {
+        var metadata = {
+          name: "pikdash_modulistica_links.json",
+          mimeType: "application/json",
+          parents: [modRootFolderId]
+        };
+        var boundary = "-------pikdashmodlinks554433221";
+        var body =
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          JSON.stringify(metadata) +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          jsonContent +
+          "\r\n--" + boundary + "--";
+
+        var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          },
+          body: body
+        });
+        if (createRes.ok) {
+          var created = await createRes.json();
+          modLinksConfigFileId = created.id;
+        }
+      }
+    } catch (e) {}
+  }
+
+  function getAllUnifiedModules() {
+    var extFormatted = modExternalLinks.map(function(link) {
+      return {
+        id: link.id,
+        title: link.title,
+        platform: link.platform || "onedrive",
+        format: link.format || "Documento",
+        sector: link.sector || "Generale",
+        url: link.url,
+        note: link.note || "",
+        modifiedTime: link.modifiedTime || ""
+      };
+    });
+    return modDriveFiles.concat(extFormatted);
+  }
+
+  function renderModFilterBar() {
+    var bar = document.getElementById("modFilterBar");
+    var allItems = getAllUnifiedModules();
+
+    var favCount = allItems.filter(function(i) { return modFavorites.indexOf(i.id) !== -1; }).length;
+    var odCount = allItems.filter(function(i) { return i.platform === "onedrive"; }).length;
+    var spCount = allItems.filter(function(i) { return i.platform === "sharepoint"; }).length;
+
+    var html = '<div class="folder-chip' + (activeModFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter(\'ALL\')">' +
+      '<span>🗂️ Tutti (' + allItems.length + ')</span>' +
+    '</div>';
+
+    if (favCount > 0 || activeModFilter === "FAV") {
+      html += '<div class="folder-chip' + (activeModFilter === "FAV" ? " active" : "") + '" style="--chip-color:#ffd54f;" onclick="setModFilter(\'FAV\')">' +
+        '<span>⭐ Preferiti (' + favCount + ')</span>' +
+      '</div>';
+    }
+
+    if (odCount > 0 || activeModFilter === "ONEDRIVE") {
+      html += '<div class="folder-chip' + (activeModFilter === "ONEDRIVE" ? " active" : "") + '" style="--chip-color:#29b6f6;" onclick="setModFilter(\'ONEDRIVE\')">' +
+        '<span class="folder-dot" style="background:#29b6f6;"></span>' +
+        '<span>OneDrive (' + odCount + ')</span>' +
+      '</div>';
+    }
+
+    if (spCount > 0 || activeModFilter === "SHAREPOINT") {
+      html += '<div class="folder-chip' + (activeModFilter === "SHAREPOINT" ? " active" : "") + '" style="--chip-color:#26a69a;" onclick="setModFilter(\'SHAREPOINT\')">' +
+        '<span class="folder-dot" style="background:#26a69a;"></span>' +
+        '<span>SharePoint (' + spCount + ')</span>' +
+      '</div>';
+    }
+
+    var sectors = [];
+    allItems.forEach(function(item) {
+      var s = item.sector || "Generale";
+      if (sectors.indexOf(s) === -1) sectors.push(s);
+    });
+
+    sectors.forEach(function(sec, idx) {
+      var cnt = allItems.filter(function(i) { return (i.sector || "Generale") === sec; }).length;
+      var col = DEPT_COLORS[sec] || FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
+      var isAct = (activeModFilter === "SEC:" + sec) ? " active" : "";
+      var safeSec = sec.replace(/'/g, "\\'");
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setModFilter(\'SEC:' + safeSec + '\')">' +
+        '<span class="folder-dot" style="background:' + col + ';"></span>' +
+        '<span>' + escapeHtml(sec) + ' (' + cnt + ')</span>' +
+      '</div>';
+    });
+
+    bar.innerHTML = html;
+  }
+
+  function setModFilter(filterKey) {
+    activeModFilter = filterKey;
+    renderModFilterBar();
+    renderModItemsList();
+  }
+
+  function toggleModFavorite(itemId) {
+    var idx = modFavorites.indexOf(itemId);
+    if (idx === -1) modFavorites.push(itemId);
+    else modFavorites.splice(idx, 1);
+    saveCachedSnapshot();
+    renderModFilterBar();
+    renderModItemsList();
+  }
+
+  function renderModItemsList() {
+    var listEl = document.getElementById("modItemsList");
+    var term = (document.getElementById("modSearchInput").value || "").toLowerCase().trim();
+    var allItems = getAllUnifiedModules();
+
+    var filtered = allItems.filter(function(item) {
+      var matchTerm = !term ||
+        (item.title || "").toLowerCase().indexOf(term) !== -1 ||
+        (item.sector || "").toLowerCase().indexOf(term) !== -1 ||
+        (item.note || "").toLowerCase().indexOf(term) !== -1;
+      if (!matchTerm) return false;
+
+      if (activeModFilter === "ALL") return true;
+      if (activeModFilter === "FAV") return modFavorites.indexOf(item.id) !== -1;
+      if (activeModFilter === "ONEDRIVE") return item.platform === "onedrive";
+      if (activeModFilter === "SHAREPOINT") return item.platform === "sharepoint";
+      if (activeModFilter.indexOf("SEC:") === 0) {
+        return (item.sector || "Generale") === activeModFilter.slice(4);
+      }
+      return true;
+    });
+
+    filtered.sort(function(a, b) {
+      var aFav = modFavorites.indexOf(a.id) !== -1 ? 0 : 1;
+      var bFav = modFavorites.indexOf(b.id) !== -1 ? 0 : 1;
+      if (aFav !== bFav) return aFav - bFav;
+      return (a.title || "").localeCompare(b.title || "");
+    });
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun modulo trovato. Salva file nella cartella <strong>Modulistica Ufficio</strong> su Google Drive oppure clicca su <strong>+ Link OneDrive / SP</strong>.</p>';
+      return;
+    }
+
+    var platformLabels = {
+      gdrive: "Google Drive",
+      onedrive: "OneDrive",
+      sharepoint: "SharePoint",
+      external: "Link Web"
+    };
+
+    listEl.innerHTML = filtered.map(function(item) {
+      var isFav = modFavorites.indexOf(item.id) !== -1;
+      var isAct = (item.id === selectedModItemId) ? " active" : "";
+      var secCol = DEPT_COLORS[item.sector] || "#b39ddb";
+      var borderCol = item.platform === "onedrive" ? "#29b6f6" : (item.platform === "sharepoint" ? "#26a69a" : secCol);
+      var iconEmoji = item.platform === "onedrive" ? "☁️" : (item.platform === "sharepoint" ? "🔷" : ((item.mimeType || "").indexOf("pdf") !== -1 ? "📕" : "📘"));
+
+      var extActions = item.platform !== "gdrive"
+        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal(\'' + item.id + '\')">✏️</button>' +
+          '<button type="button" class="file-icon-btn" title="Elimina collegamento" onclick="deleteModExternalLink(\'' + item.id + '\')">✕</button>'
+        : '';
+
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + borderCol + ';" onclick="openModItemPreview(\'' + item.id + '\')">' +
+        '<div class="drive-file-info">' +
+          '<div class="drive-file-title">' + iconEmoji + ' ' + escapeHtml(item.title) + '</div>' +
+          '<div class="drive-file-meta">' +
+            '<span class="platform-badge ' + item.platform + '">' + (platformLabels[item.platform] || "Drive") + '</span>' +
+            '<span class="file-folder-tag" style="--file-color:' + secCol + ';">' + escapeHtml(item.sector || "Generale") + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="file-actions" onclick="event.stopPropagation()">' +
+          '<button type="button" class="file-icon-btn' + (isFav ? " fav-active" : "") + '" title="Fissa tra i preferiti" onclick="toggleModFavorite(\'' + item.id + '\')">' + (isFav ? "★" : "☆") + '</button>' +
+          extActions +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function openModItemPreview(itemId) {
+    selectedModItemId = itemId;
+    renderModItemsList();
+
+    var allItems = getAllUnifiedModules();
+    var item = allItems.find(function(i) { return i.id === itemId; });
+    if (!item) return;
+
+    document.getElementById("modPreviewTitle").innerText = item.title;
+    document.getElementById("modPreviewActions").style.display = "flex";
+
+    var editBtn = document.getElementById("btnEditSelectedModLink");
+    editBtn.style.display = (item.platform !== "gdrive") ? "inline-block" : "none";
+
+    var openBtn = document.getElementById("btnOpenModExternal");
+    if (item.url) {
+      openBtn.href = item.url;
+      openBtn.style.display = "inline-block";
+    } else {
+      openBtn.style.display = "none";
+    }
+
+    var bodyEl = document.getElementById("modPreviewBody");
+
+    if (item.platform === "gdrive" && item.rawDriveId) {
+      var previewUrl = "https://drive.google.com/file/d/" + encodeURIComponent(item.rawDriveId) + "/preview";
+      bodyEl.innerHTML = '<iframe class="pdf-embed-frame" src="' + previewUrl + '" allow="autoplay"></iframe>';
+    } else {
+      var platTitle = item.platform === "onedrive" ? "Microsoft OneDrive" : (item.platform === "sharepoint" ? "Microsoft SharePoint" : "Risorsa Esterna");
+      var platColor = item.platform === "onedrive" ? "#29b6f6" : (item.platform === "sharepoint" ? "#26a69a" : "#ffb74d");
+
+      bodyEl.innerHTML =
+        '<div class="ext-module-card" style="border-top:4px solid ' + platColor + ';">' +
+          '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+            '<span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:' + platColor + ';">' + platTitle + '</span>' +
+            '<span class="file-folder-tag" style="--file-color:#b39ddb;">' + escapeHtml(item.sector || "Generale") + '</span>' +
+          '</div>' +
+          '<h3 style="font-size:1.15rem; color:var(--text);">' + escapeHtml(item.title) + '</h3>' +
+          '<div style="font-size:0.84rem; color:var(--muted);">Formato: <strong style="color:var(--text);">' + escapeHtml(item.format || "Documento") + '</strong></div>' +
+          (item.note ? '<div style="background:var(--surface); padding:10px 12px; border-radius:8px; font-size:0.85rem; color:#d1d5db;">' + escapeHtml(item.note) + '</div>' : '') +
+          '<div style="font-size:0.75rem; color:var(--muted); word-break:break-all;">' + escapeHtml(item.url) + '</div>' +
+          '<a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer" style="background:' + platColor + '; color:#111215; text-align:center; padding:11px 16px; border-radius:9px; font-weight:700; text-decoration:none; margin-top:6px;">↗ Apri documento su ' + platTitle + '</a>' +
+        '</div>';
+    }
+  }
+
+  function openModLinkModal(linkId) {
+    editingModLinkId = linkId;
+    var modalTitle = document.getElementById("modLinkModalTitle");
+    var titleIn = document.getElementById("modLinkTitleInput");
+    var platIn = document.getElementById("modLinkPlatformInput");
+    var fmtIn = document.getElementById("modLinkFormatInput");
+    var secIn = document.getElementById("modLinkSectorInput");
+    var urlIn = document.getElementById("modLinkUrlInput");
+    var noteIn = document.getElementById("modLinkNoteInput");
+
+    if (linkId) {
+      var item = modExternalLinks.find(function(x) { return x.id === linkId; });
+      if (!item) return;
+      modalTitle.innerText = "✏️ Modifica Collegamento Modulistica";
+      titleIn.value = item.title || "";
+      platIn.value = item.platform || "onedrive";
+      fmtIn.value = item.format || "Word (.docx)";
+      secIn.value = item.sector || "Segreteria";
+      urlIn.value = item.url || "";
+      noteIn.value = item.note || "";
+    } else {
+      modalTitle.innerText = "🔗 Nuovo Collegamento (OneDrive / SharePoint)";
+      titleIn.value = "";
+      platIn.value = "onedrive";
+      fmtIn.value = "Word (.docx)";
+      secIn.value = "Segreteria";
+      urlIn.value = "https://";
+      noteIn.value = "";
+    }
+
+    document.getElementById("modLinkModal").style.display = "flex";
+    titleIn.focus();
+  }
+
+  async function saveModLinkModal() {
+    var title = document.getElementById("modLinkTitleInput").value.trim();
+    var platform = document.getElementById("modLinkPlatformInput").value;
+    var format = document.getElementById("modLinkFormatInput").value;
+    var sector = document.getElementById("modLinkSectorInput").value.trim() || "Generale";
+    var url = document.getElementById("modLinkUrlInput").value.trim();
+    var note = document.getElementById("modLinkNoteInput").value.trim();
+
+    if (!title || !url) {
+      alert("Inserisci il nome del modulo e il collegamento.");
+      return;
+    }
+
+    if (!/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(url)) {
+      url = "https://" + url;
+    }
+
+    if (editingModLinkId) {
+      var existing = modExternalLinks.find(function(x) { return x.id === editingModLinkId; });
+      if (existing) {
+        existing.title = title;
+        existing.platform = platform;
+        existing.format = format;
+        existing.sector = sector;
+        existing.url = url;
+        existing.note = note;
+        existing.modifiedTime = new Date().toISOString();
+      }
+    } else {
+      var newId = "ext_" + Date.now();
+      modExternalLinks.push({
+        id: newId,
+        title: title,
+        platform: platform,
+        format: format,
+        sector: sector,
+        url: url,
+        note: note,
+        modifiedTime: new Date().toISOString()
+      });
+      selectedModItemId = newId;
+    }
+
+    document.getElementById("modLinkModal").style.display = "none";
+    renderModFilterBar();
+    renderModItemsList();
+    if (selectedModItemId) openModItemPreview(selectedModItemId);
+    await syncModExternalLinksToDrive();
+  }
+
+  async function deleteModExternalLink(linkId) {
+    var item = modExternalLinks.find(function(x) { return x.id === linkId; });
+    if (!item) return;
+    if (!confirm("Vuoi rimuovere il collegamento '" + item.title + "'?")) return;
+
+    modExternalLinks = modExternalLinks.filter(function(x) { return x.id !== linkId; });
+    if (selectedModItemId === linkId) {
+      selectedModItemId = null;
+      document.getElementById("modPreviewActions").style.display = "none";
+      document.getElementById("modPreviewBody").innerHTML = "";
+    }
+    renderModFilterBar();
+    renderModItemsList();
+    await syncModExternalLinksToDrive();
+  }
+
+  // ==================== 7. LAUNCHER PORTALI & APP ====================
   async function loadLauncherConfigFromDrive() {
     if (!accessToken || !rootDriveFolderId) return;
     try {
@@ -3432,7 +3534,6 @@
 
     bar.innerHTML = html;
 
-    // Aggiorna anche i suggerimenti nel datalist della modale
     var dl = document.getElementById("lncThemesDatalist");
     if (dl) {
       dl.innerHTML = themes.map(function(t) { return '<option value="' + escapeHtml(t) + '">'; }).join("");
@@ -3459,11 +3560,10 @@
     });
 
     if (filtered.length === 0) {
-      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale, un\'app o un modulo PDF.</div>';
+      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale o un\'app.</div>';
       return;
     }
 
-    // Raggruppa per Tema
     var groups = {};
     filtered.forEach(function(item) {
       var th = item.theme || "Generale";
