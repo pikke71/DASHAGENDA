@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 0.9B — Agenda, Progetti, Appunti, Documenti & Portali</title>
+  <title>PIKDASH 0.91B — Agenda, Progetti, Scadenzario, Team, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -45,27 +45,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 9px 20px;
+      padding: 8px 16px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       flex-shrink: 0;
-      gap: 12px;
+      gap: 10px;
     }
 
     /* LOGO PIKDASH BENTO + VERSIONE */
     .brand-col {
       display: flex;
       align-items: center;
-      gap: 11px;
-      min-width: 215px;
+      gap: 10px;
+      min-width: 195px;
+      flex-shrink: 0;
     }
 
     .logo-container {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 34px;
-      height: 34px;
+      width: 32px;
+      height: 32px;
       flex-shrink: 0;
     }
 
@@ -74,7 +75,7 @@
     .brand-text-wrapper { display: flex; flex-direction: column; gap: 3px; }
 
     .brand-title {
-      font-size: 1.24rem;
+      font-size: 1.18rem;
       font-weight: 850;
       letter-spacing: -0.2px;
       line-height: 1;
@@ -86,33 +87,34 @@
 
     .brand-title .brand-dash { color: var(--lilac); }
     .brand-ver {
-      font-size: 0.72rem;
+      font-size: 0.69rem;
       font-weight: 800;
       letter-spacing: 0.3px;
-      padding: 2px 7px;
+      padding: 2px 6px;
       border-radius: 6px;
       background: var(--lilac-dim);
       border: 1px solid var(--lilac-glow);
       color: var(--lilac);
     }
-    .brand-sub { font-size: 0.69rem; color: var(--muted); line-height: 1; }
+    .brand-sub { font-size: 0.67rem; color: var(--muted); line-height: 1; }
 
-    /* TILE TABS (6 SCHEDE) */
+    /* TILE TABS (8 SCHEDE) */
     .tile-nav {
       display: grid;
-      grid-template-columns: repeat(6, minmax(105px, 142px));
-      gap: 6px;
+      grid-template-columns: repeat(8, minmax(84px, 122px));
+      gap: 5px;
       background: var(--bg);
-      padding: 5px;
-      border-radius: 14px;
+      padding: 4px;
+      border-radius: 13px;
       border: 1px solid var(--border);
+      overflow-x: auto;
     }
 
     .tile-tab {
       background: var(--surface);
       border: 1px solid transparent;
-      border-radius: 10px;
-      padding: 7px 8px;
+      border-radius: 9px;
+      padding: 6px 6px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -131,26 +133,27 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     }
 
-    .tile-icon { font-size: 1.02rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
+    .tile-icon { font-size: 0.98rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
     .tile-tab.active .tile-icon { color: var(--lilac); }
-    .tile-title { font-size: 0.82rem; font-weight: 700; color: var(--text); }
-    .tile-sub { font-size: 0.65rem; color: var(--muted); }
+    .tile-title { font-size: 0.78rem; font-weight: 700; color: var(--text); }
+    .tile-sub { font-size: 0.61rem; color: var(--muted); white-space: nowrap; }
     .tile-tab.active .tile-sub { color: #d1c4e9; }
 
     .header-right {
       display: flex;
       flex-direction: column;
       align-items: flex-end;
-      gap: 5px;
-      min-width: 175px;
+      gap: 4px;
+      min-width: 165px;
+      flex-shrink: 0;
     }
 
-    .header-actions-row { display: flex; align-items: center; gap: 6px; }
+    .header-actions-row { display: flex; align-items: center; gap: 5px; }
 
     .sync-badge {
-      font-size: 0.71rem;
+      font-size: 0.69rem;
       color: var(--muted);
-      padding: 2px 9px;
+      padding: 2px 8px;
       background: var(--bg);
       border-radius: 99px;
       border: 1px solid var(--border);
@@ -162,9 +165,9 @@
       background: var(--card);
       color: var(--text);
       border: 1px solid var(--border);
-      padding: 6px 11px;
+      padding: 6px 10px;
       border-radius: 8px;
-      font-size: 0.81rem;
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.15s ease;
@@ -190,10 +193,10 @@
     /* VIEWS */
     .view-section {
       flex: 1;
-      padding: 14px 20px 16px;
+      padding: 13px 18px 15px;
       display: none;
       flex-direction: column;
-      gap: 14px;
+      gap: 13px;
       overflow: hidden;
     }
     .view-section.active { display: flex; }
@@ -203,7 +206,7 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 11px 22px;
+      padding: 10px 22px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -226,15 +229,15 @@
 
     .summary-kpis { flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
     .kpi-box { display: flex; flex-direction: column; gap: 2px; }
-    .kpi-num { font-size: 1.85rem; font-weight: 600; line-height: 1.05; color: var(--text); }
+    .kpi-num { font-size: 1.8rem; font-weight: 600; line-height: 1.05; color: var(--text); }
     .kpi-num.cyan { color: var(--dash-event); }
     .kpi-num.orange { color: var(--kpi-orange); }
     .kpi-num.green { color: var(--kpi-green); }
     .kpi-num.lilac { color: var(--lilac); }
-    .kpi-label { font-size: 0.76rem; color: var(--muted); }
+    .kpi-label { font-size: 0.75rem; color: var(--muted); }
 
     /* AGENDA */
-    .top-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; height: 41%; min-height: 220px; }
+    .top-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; height: 41%; min-height: 215px; }
 
     .card {
       background: var(--card);
@@ -310,8 +313,7 @@
     .progress-pct { font-size: 0.79rem; font-weight: 700; color: var(--lilac); min-width: 35px; text-align: right; }
 
     .add-row { display: flex; gap: 8px; margin-bottom: 9px; flex-shrink: 0; }
-    .add-row input {
-      flex: 1;
+    .add-row input, .add-row select {
       background: var(--bg);
       border: 1px solid var(--border);
       color: var(--text);
@@ -320,7 +322,8 @@
       font-size: 0.83rem;
       outline: none;
     }
-    .add-row input:focus { border-color: var(--lilac); }
+    .add-row input { flex: 1; }
+    .add-row input:focus, .add-row select:focus { border-color: var(--lilac); }
 
     .tasks-list { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; padding-right: 4px; flex: 1; }
     .task-item {
@@ -477,6 +480,125 @@
     .proj-doc-chip:hover { background: var(--card-hover); border-color: var(--lilac); }
     .proj-doc-chip-title { font-size: 0.83rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+    /* SCADENZARIO & ADEMPIMENTI */
+    .scad-toolbar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .scad-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
+    .scad-row {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--scad-color, var(--lilac));
+      border-radius: 11px;
+      padding: 11px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: all 0.15s ease;
+    }
+    .scad-row:hover { background: var(--card-hover); border-color: #4a4f5e; }
+    .scad-row.done { opacity: 0.55; }
+    .scad-row.done .scad-title { text-decoration: line-through; }
+    .scad-left { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+    .scad-date-box {
+      min-width: 92px;
+      text-align: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 8px;
+      flex-shrink: 0;
+    }
+    .scad-date-main { font-size: 0.84rem; font-weight: 700; color: var(--text); }
+    .scad-days-pill { font-size: 0.67rem; font-weight: 800; margin-top: 2px; display: block; text-transform: uppercase; }
+    .scad-days-pill.urgent { color: #ff8a80; }
+    .scad-days-pill.soon { color: #ffd180; }
+    .scad-days-pill.ok { color: var(--success); }
+    .scad-days-pill.done { color: var(--muted); }
+    .scad-info { min-width: 0; flex: 1; }
+    .scad-title { font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .scad-meta { display: flex; align-items: center; gap: 8px; font-size: 0.74rem; color: var(--muted); flex-wrap: wrap; }
+    .scad-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+    /* TEAM & DELEGHE */
+    .team-layout { flex: 1; display: grid; grid-template-columns: 370px 1fr; gap: 14px; overflow: hidden; }
+    .team-members-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-right: 4px; }
+    .member-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--member-color, var(--lilac));
+      border-radius: 11px;
+      padding: 11px 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .member-card:hover { background: var(--card-hover); border-color: #4a4f5e; }
+    .member-card.active { background: #222631; border-color: var(--member-color, var(--lilac)); box-shadow: inset 0 0 0 1px var(--member-color, var(--lilac)); }
+    .member-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--member-color, var(--lilac));
+      color: #111215;
+      font-weight: 800;
+      font-size: 0.92rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .member-info { min-width: 0; flex: 1; }
+    .member-name { font-size: 0.92rem; font-weight: 700; color: var(--text); }
+    .member-role { font-size: 0.74rem; color: var(--muted); margin-top: 2px; }
+    .member-stats { display: flex; align-items: center; gap: 6px; margin-top: 5px; font-size: 0.71rem; }
+    .member-count-badge {
+      padding: 1px 7px;
+      border-radius: 99px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--member-color, var(--lilac));
+    }
+
+    .delegation-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--member-color, var(--lilac));
+      border-radius: 10px;
+      padding: 10px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .delegation-item.done { opacity: 0.55; }
+    .delegation-item.done .del-title { text-decoration: line-through; }
+    .del-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+    .del-title { font-size: 0.89rem; font-weight: 600; color: var(--text); }
+    .del-meta { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: var(--muted); margin-top: 3px; flex-wrap: wrap; }
+    .del-status-select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      outline: none;
+    }
+
     /* APPUNTI DRIVE & DOCUMENTI */
     .drive-layout { flex: 1; display: grid; grid-template-columns: 430px 1fr; gap: 14px; overflow: hidden; }
     .folders-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
@@ -614,7 +736,7 @@
       gap: 12px;
     }
 
-    /* PORTALI & APP LAUNCHER (CON DRAG & DROP) */
+    /* PORTALI & APP LAUNCHER */
     .launcher-toolbar {
       background: var(--card);
       border: 1px solid var(--border);
@@ -689,10 +811,10 @@
     }
     .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--lilac); }
     .modal-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .color-swatches { display: flex; gap: 10px; margin-top: 8px; }
-    .swatch { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s; }
+    .color-swatches { display: flex; gap: 9px; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+    .swatch { width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: transform 0.15s; flex-shrink: 0; }
     .swatch:hover { transform: scale(1.1); }
-    .swatch.selected { border-color: #ffffff; box-shadow: 0 0 10px rgba(255,255,255,0.4); }
+    .swatch.selected { border-color: #ffffff; box-shadow: 0 0 10px rgba(255,255,255,0.45); }
 
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-thumb { background: #333742; border-radius: 99px; }
@@ -716,17 +838,17 @@
         </svg>
       </div>
       <div class="brand-text-wrapper">
-        <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.9B</span></span>
+        <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.91B</span></span>
         <span class="brand-sub">Comune di San Martino di Venezze</span>
       </div>
     </div>
 
-    <!-- MENU A 6 SCHEDE -->
+    <!-- MENU A 8 SCHEDE -->
     <nav class="tile-nav">
       <button type="button" class="tile-tab active" data-view="viewPanoramica">
         <span class="tile-icon">📅</span>
         <span class="tile-title">Agenda</span>
-        <span class="tile-sub">Settimana e giorno</span>
+        <span class="tile-sub">Settimana</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewPromemoria">
         <span class="tile-icon">☑️</span>
@@ -736,29 +858,39 @@
       <button type="button" class="tile-tab" data-view="viewProgetti">
         <span class="tile-icon">📂</span>
         <span class="tile-title">Progetti</span>
-        <span class="tile-sub">Pratiche, fasi e atti</span>
+        <span class="tile-sub">Pratiche e fasi</span>
+      </button>
+      <button type="button" class="tile-tab" data-view="viewScadenzario">
+        <span class="tile-icon">⏳</span>
+        <span class="tile-title">Scadenzario</span>
+        <span class="tile-sub">Adempimenti</span>
+      </button>
+      <button type="button" class="tile-tab" data-view="viewTeam">
+        <span class="tile-icon">👥</span>
+        <span class="tile-title">Team</span>
+        <span class="tile-sub">Deleghe uffici</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewAppunti">
         <span class="tile-icon">📝</span>
         <span class="tile-title">Appunti</span>
-        <span class="tile-sub">Drive e note ricche</span>
+        <span class="tile-sub">Note ricche</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewDocumenti">
         <span class="tile-icon">📄</span>
         <span class="tile-title">Documenti</span>
-        <span class="tile-sub">Drive, OneDrive & SP</span>
+        <span class="tile-sub">Drive & Office</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewPortali">
         <span class="tile-icon">🚀</span>
-        <span class="tile-title">Portali & App</span>
-        <span class="tile-sub">Siti e strumenti</span>
+        <span class="tile-title">Portali</span>
+        <span class="tile-sub">Siti e app</span>
       </button>
     </nav>
 
     <div class="header-right">
       <div class="header-actions-row">
         <button type="button" id="btnNewEventTop" class="accent-cyan">+ Appuntamento</button>
-        <button type="button" id="btnSync" class="primary">🔄 Sincronizza</button>
+        <button type="button" id="btnSync" class="primary">🔄 Sync</button>
         <button type="button" id="btnOpenSettings" title="Impostazioni">⚙️</button>
       </div>
       <span class="sync-badge" id="syncBadge">In attesa di sync</span>
@@ -975,7 +1107,64 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 4: APPUNTI DRIVE & NOTE FORMATTATE ==================== -->
+  <!-- ==================== VISTA 4: SCADENZARIO & ADEMPIMENTI ==================== -->
+  <section id="viewScadenzario" class="view-section">
+    <div class="scad-toolbar">
+      <div class="launcher-filters" id="scadFilterBar"></div>
+      <div class="launcher-right-tools">
+        <input type="text" id="scadSearchInput" class="launcher-search" placeholder="🔎 Cerca scadenza, bando o ente...">
+        <button type="button" id="btnNewScadenza" class="primary">+ Nuova Scadenza</button>
+      </div>
+    </div>
+
+    <div class="scad-list" id="scadItemsList">
+      <p style="color:var(--muted); font-size:0.86rem;">Nessuna scadenza inserita. Clicca su <strong>+ Nuova Scadenza</strong> per aggiungere adempimenti PNRR, bandi, convenzioni o scadenze amministrative.</p>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA 5: TEAM & DELEGHE UFFICI ==================== -->
+  <section id="viewTeam" class="view-section">
+    <div class="team-layout">
+      <!-- COLONNA SINISTRA: COLLABORATORI -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">👥 Collaboratori & Uffici</span>
+          <button type="button" id="btnNewMember" class="primary" style="padding:5px 10px; font-size:0.77rem;">+ Dipendente</button>
+        </div>
+
+        <div class="folders-bar" id="teamDeptFilterBar"></div>
+
+        <div class="team-members-list" id="teamMembersList">
+          <p style="color:var(--muted); font-size:0.85rem;">Aggiungi i dipendenti dei tuoi uffici con <strong>+ Dipendente</strong> scegliendo reparto e colore identificativo.</p>
+        </div>
+      </div>
+
+      <!-- COLONNA DESTRA: DELEGHE E PRATICHE ASSEGNATE -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="teamDelegationsHeader">📋 Pratiche & Attività Delegate</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <select id="teamStatusFilter" style="background:var(--bg); border:1px solid var(--border); color:var(--text); padding:4px 8px; border-radius:7px; font-size:0.76rem;">
+              <option value="ACTIVE">Attive (Da avviare / In corso)</option>
+              <option value="ALL">Tutte (incluse completate)</option>
+              <option value="REVIEW">In attesa revisione / firma</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="add-row">
+          <select id="newDelMemberSelect" style="min-width:170px;"></select>
+          <input type="text" id="newDelTitleInput" placeholder="+ Assegna pratica o attività (es. Predisposizione determina liquidazione)...">
+          <input type="date" id="newDelDueInput" style="width:140px;" title="Scadenza (facoltativa)">
+          <button type="button" id="btnAddDelegation" class="primary">Assegna</button>
+        </div>
+
+        <div class="tasks-list" id="teamDelegationsList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA 6: APPUNTI DRIVE & NOTE FORMATTATE ==================== -->
   <section id="viewAppunti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -1011,7 +1200,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 5: DOCUMENTI (GOOGLE DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ==================== -->
+  <!-- ==================== VISTA 7: DOCUMENTI (DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ==================== -->
   <section id="viewDocumenti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -1051,7 +1240,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 6: PORTALI & APP (DRAG & DROP + SCELTA BROWSER) ==================== -->
+  <!-- ==================== VISTA 8: PORTALI & APP ==================== -->
   <section id="viewPortali" class="view-section">
     <div class="launcher-toolbar">
       <div class="launcher-filters" id="launcherThemeFilterBar"></div>
@@ -1064,6 +1253,97 @@
 
     <div class="launcher-scroll-area" id="launcherGridContainer"></div>
   </section>
+
+  <!-- MODALE NUOVA / MODIFICA SCADENZA -->
+  <div class="modal-backdrop" id="scadenzaModal">
+    <div class="modal">
+      <h3 id="scadenzaModalTitle">⏳ Nuova Scadenza / Adempimento</h3>
+      <label>Titolo Scadenza / Adempimento:</label>
+      <input type="text" id="scadTitleInput" placeholder="Es. Rendicontazione PNRR Misura 1.4.3, Bando Cariparo...">
+
+      <div class="modal-row-2">
+        <div>
+          <label>Data Scadenza:</label>
+          <input type="date" id="scadDateInput">
+        </div>
+        <div>
+          <label>Settore / Ambito:</label>
+          <input type="text" id="scadSectorInput" list="scadSectorsDatalist" placeholder="Es. Segreteria, PNRR & Bandi...">
+          <datalist id="scadSectorsDatalist">
+            <option value="Segreteria">
+            <option value="Servizi Sociali">
+            <option value="Anagrafe">
+            <option value="Biblioteca">
+            <option value="PNRR & Bandi">
+            <option value="Gare & Contratti">
+          </datalist>
+        </div>
+      </div>
+
+      <div class="modal-row-2">
+        <div>
+          <label>Ricorrenza:</label>
+          <select id="scadFreqInput">
+            <option value="Una tantum">Una tantum</option>
+            <option value="Mensile">Mensile</option>
+            <option value="Trimestrale">Trimestrale</option>
+            <option value="Semestrale">Semestrale</option>
+            <option value="Annuale">Annuale</option>
+          </select>
+        </div>
+        <div>
+          <label>Note / Riferimento normativo:</label>
+          <input type="text" id="scadNoteInput" placeholder="Es. Portale PA digitale 2026">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button type="button" id="btnCancelScadModal">Annulla</button>
+        <button type="button" id="btnSaveScadModal" class="primary">Salva Scadenza</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE CREA / MODIFICA DIPENDENTE TEAM -->
+  <div class="modal-backdrop" id="memberModal">
+    <div class="modal">
+      <h3 id="memberModalTitle">👤 Nuovo Dipendente / Collaboratore</h3>
+      <label>Nome e Cognome:</label>
+      <input type="text" id="memNameInput" placeholder="Es. Mario Rossi">
+
+      <div class="modal-row-2">
+        <div>
+          <label>Ufficio / Reparto:</label>
+          <select id="memDeptInput">
+            <option value="Servizi Sociali">Servizi Sociali</option>
+            <option value="Segreteria">Segreteria</option>
+            <option value="Biblioteca">Biblioteca</option>
+            <option value="Anagrafe">Anagrafe</option>
+            <option value="Altro">Altro / Trasversale</option>
+          </select>
+        </div>
+        <div>
+          <label>Ruolo / Mansione (facoltativo):</label>
+          <input type="text" id="memRoleInput" placeholder="Es. Istruttore Amministrativo">
+        </div>
+      </div>
+
+      <label>Colore Identificativo Personalizzato:</label>
+      <div class="color-swatches" id="memColorSwatches"></div>
+      <div style="display:flex; align-items:center; gap:10px; margin-top:10px;">
+        <span style="font-size:0.78rem; color:var(--muted);">Oppure scegli qualsiasi tonalità:</span>
+        <input type="color" id="memCustomColorPicker" value="#b39ddb" style="width:44px; height:30px; padding:2px; cursor:pointer;">
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:20px;">
+        <button type="button" id="btnDeleteMemberModal" class="danger-btn" style="display:none;">🗑️ Elimina Dipendente</button>
+        <div style="display:flex; gap:8px; margin-left:auto;">
+          <button type="button" id="btnCancelMemberModal">Annulla</button>
+          <button type="button" id="btnSaveMemberModal" class="primary">Salva Scheda</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- MODALE COLLEGAMENTO DOCUMENTO (ONEDRIVE / SHAREPOINT / PROGETTO) -->
   <div class="modal-backdrop" id="modLinkModal">
@@ -1137,7 +1417,7 @@
     </div>
   </div>
 
-  <!-- MODALE PULSANTE PORTALE / APP (CON SCELTA BROWSER INCLUSO FIREFOX) -->
+  <!-- MODALE PULSANTE PORTALE / APP -->
   <div class="modal-backdrop" id="launcherModal">
     <div class="modal">
       <h3 id="launcherModalTitle">🚀 Nuovo Pulsante Rapido</h3>
@@ -1294,7 +1574,7 @@
     </div>
   </div>
 
-  <!-- MODALE CREA APPUNTO FORMATTATO SU DRIVE (RICH-TEXT EDITOR) -->
+  <!-- MODALE CREA APPUNTO FORMATTATO SU DRIVE -->
   <div class="modal-backdrop" id="freeNoteModal">
     <div class="modal wide">
       <h3>📝 Nuovo Appunto Formattato (Google Docs)</h3>
@@ -1357,7 +1637,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 0.9B</h3>
+      <h3>⚙️ Configurazione PIKDASH 0.91B</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -1390,7 +1670,9 @@
     { name: "Verde", hex: "#81c784" },
     { name: "Ambra", hex: "#ffb74d" },
     { name: "Rosa", hex: "#f48fb1" },
-    { name: "Corallo", hex: "#e57373" }
+    { name: "Corallo", hex: "#e57373" },
+    { name: "Turchese", hex: "#4dd0e1" },
+    { name: "Lime", hex: "#aed581" }
   ];
   var LAUNCHER_EMOJIS = [
     "🏛️", "🌐", "📕", "📄", "📋", "🧾", "🪪", "👨‍👩‍👧", "📚", "⚖️",
@@ -1431,6 +1713,21 @@
   var activeDeptFilter = "ALL";
   var selectedProjectId = null;
   var editingProjectId = null;
+
+  // Stato Scadenzario & Adempimenti
+  var scadenzeItems = [];
+  var scadDriveConfigFileId = null;
+  var activeScadFilter = "ACTIVE";
+  var editingScadId = null;
+
+  // Stato Team & Deleghe Uffici
+  var teamMembers = [];
+  var teamDelegations = [];
+  var teamDriveConfigFileId = null;
+  var activeTeamDeptFilter = "ALL";
+  var selectedMemberId = "ALL";
+  var editingMemberId = null;
+  var selectedMemberColor = FOLDER_PALETTE[0].hex;
 
   // Stato Appunti Drive
   var rootDriveFolderId = null;
@@ -1489,6 +1786,15 @@
     return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
   }
 
+  function getDaysDiffFromToday(isoDateStr) {
+    if (!isoDateStr) return 9999;
+    var parts = isoDateStr.split("-");
+    var target = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((target - today) / 86400000);
+  }
+
   function updateClock() {
     var now = new Date();
     document.getElementById("liveClock").innerText =
@@ -1527,15 +1833,17 @@
     var totalWeekEvents = weekEvents.length;
     var activeProjCount = projectsData.filter(function(p) { return !p.done; }).length;
     var urgentMemos = memoItems.filter(function(m) { return !m.done && m.priority === "high"; }).length;
+    var urgentScadenze = scadenzeItems.filter(function(s) { return !s.done && getDaysDiffFromToday(s.dueDate) <= 7; }).length;
     var completedTasks = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
     var pendingTasks = weeklyTasks.filter(function(t) { return t.status !== "completed"; }).length;
     var pendingMemos = memoItems.filter(function(m) { return !m.done; }).length;
+    var activeDelegations = teamDelegations.filter(function(d) { return d.status !== "done"; }).length;
 
     document.getElementById("kpiWeekEvents").innerText = totalWeekEvents;
     document.getElementById("kpiActiveProjects").innerText = activeProjCount;
-    document.getElementById("kpiUrgent").innerText = urgentMemos;
+    document.getElementById("kpiUrgent").innerText = urgentMemos + urgentScadenze;
     document.getElementById("kpiCompleted").innerText = completedTasks;
-    document.getElementById("kpiPending").innerText = pendingTasks + pendingMemos;
+    document.getElementById("kpiPending").innerText = pendingTasks + pendingMemos + activeDelegations;
   }
 
   function loadCachedSnapshot() {
@@ -1544,6 +1852,9 @@
       var cachedTasks = JSON.parse(localStorage.getItem("dash_cache_tasks") || "[]");
       var cachedMemos = JSON.parse(localStorage.getItem("dash_cache_memos") || "[]");
       var cachedProjs = JSON.parse(localStorage.getItem("dash_cache_projects") || "[]");
+      var cachedScad = JSON.parse(localStorage.getItem("dash_cache_scadenze") || "[]");
+      var cachedTeamMembers = JSON.parse(localStorage.getItem("dash_cache_team_members") || "[]");
+      var cachedTeamDel = JSON.parse(localStorage.getItem("dash_cache_team_delegations") || "[]");
       var cachedFolders = JSON.parse(localStorage.getItem("dash_cache_folders") || "[]");
       var cachedDrive = JSON.parse(localStorage.getItem("dash_cache_drive") || "[]");
       var cachedModFiles = JSON.parse(localStorage.getItem("dash_cache_mod_files") || "[]");
@@ -1556,6 +1867,9 @@
       if (cachedTasks.length) weeklyTasks = cachedTasks;
       if (cachedMemos.length) memoItems = cachedMemos;
       if (cachedProjs.length) projectsData = cachedProjs;
+      if (cachedScad.length) scadenzeItems = cachedScad;
+      if (cachedTeamMembers.length) teamMembers = cachedTeamMembers;
+      if (cachedTeamDel.length) teamDelegations = cachedTeamDel;
       if (cachedFolders.length) driveSubfolders = cachedFolders;
       if (cachedDrive.length) driveFiles = cachedDrive;
       if (cachedModFiles.length) modDriveFiles = cachedModFiles;
@@ -1574,6 +1888,12 @@
     renderProjFilterBar();
     renderProjectsList();
     renderProjectDetail();
+    renderScadFilterBar();
+    renderScadenzeList();
+    renderTeamDeptBar();
+    renderTeamMembersList();
+    populateTeamAssignSelect();
+    renderTeamDelegationsList();
     renderDriveFoldersBar();
     renderDriveList();
     renderModFilterBar();
@@ -1589,6 +1909,9 @@
       localStorage.setItem("dash_cache_tasks", JSON.stringify(weeklyTasks));
       localStorage.setItem("dash_cache_memos", JSON.stringify(memoItems));
       localStorage.setItem("dash_cache_projects", JSON.stringify(projectsData));
+      localStorage.setItem("dash_cache_scadenze", JSON.stringify(scadenzeItems));
+      localStorage.setItem("dash_cache_team_members", JSON.stringify(teamMembers));
+      localStorage.setItem("dash_cache_team_delegations", JSON.stringify(teamDelegations));
       localStorage.setItem("dash_cache_folders", JSON.stringify(driveSubfolders));
       localStorage.setItem("dash_cache_drive", JSON.stringify(driveFiles));
       localStorage.setItem("dash_cache_mod_files", JSON.stringify(modDriveFiles));
@@ -1687,7 +2010,32 @@
       renderDriveList();
     };
 
-    // Appunti Drive (formattazione + eliminazione)
+    // Scadenzario & Adempimenti
+    document.getElementById("btnNewScadenza").onclick = function() { openScadenzaModal(null); };
+    document.getElementById("btnCancelScadModal").onclick = function() {
+      document.getElementById("scadenzaModal").style.display = "none";
+    };
+    document.getElementById("btnSaveScadModal").onclick = saveScadenzaModal;
+    document.getElementById("scadSearchInput").addEventListener("input", renderScadenzeList);
+
+    // Team & Deleghe Uffici
+    document.getElementById("btnNewMember").onclick = function() { openMemberModal(null); };
+    document.getElementById("btnCancelMemberModal").onclick = function() {
+      document.getElementById("memberModal").style.display = "none";
+    };
+    document.getElementById("btnSaveMemberModal").onclick = saveMemberModal;
+    document.getElementById("btnDeleteMemberModal").onclick = deleteMemberFromModal;
+    document.getElementById("memCustomColorPicker").addEventListener("input", function() {
+      selectedMemberColor = this.value;
+      renderMemberColorSwatches();
+    });
+    document.getElementById("btnAddDelegation").onclick = addDelegationItem;
+    document.getElementById("newDelTitleInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addDelegationItem();
+    });
+    document.getElementById("teamStatusFilter").addEventListener("change", renderTeamDelegationsList);
+
+    // Appunti Drive
     document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
     document.getElementById("btnCancelFreeNote").onclick = function() {
       document.getElementById("freeNoteModal").style.display = "none";
@@ -1806,7 +2154,7 @@
         requestAuth(true);
       } else if (attempts > 25) {
         clearInterval(waitGsi);
-        setSyncBadge("Clicca Sincronizza", false);
+        setSyncBadge("Clicca Sync", false);
       }
     }, 200);
   }
@@ -1830,11 +2178,11 @@
           localStorage.setItem("dash_token_exp", String(Date.now() + expiresInSec * 1000));
           loadAllData();
         } else if (silent) {
-          setSyncBadge("Clicca Sincronizza", false);
+          setSyncBadge("Clicca Sync", false);
         }
       },
       error_callback: function() {
-        setSyncBadge(silent ? "Clicca Sincronizza" : "Accesso annullato", false);
+        setSyncBadge(silent ? "Clicca Sync" : "Accesso annullato", false);
       }
     });
 
@@ -1853,7 +2201,11 @@
         loadDriveNotesAndFolders(),
         loadModulisticaFromDrive()
       ]);
-      await loadLauncherConfigFromDrive();
+      await Promise.all([
+        loadLauncherConfigFromDrive(),
+        loadScadenzeFromDrive(),
+        loadTeamFromDrive()
+      ]);
       saveCachedSnapshot();
       renderWeekGrid();
       renderDayDetail();
@@ -1862,6 +2214,12 @@
       renderProjFilterBar();
       renderProjectsList();
       renderProjectDetail();
+      renderScadFilterBar();
+      renderScadenzeList();
+      renderTeamDeptBar();
+      renderTeamMembersList();
+      populateTeamAssignSelect();
+      renderTeamDelegationsList();
       renderDriveFoldersBar();
       renderDriveList();
       renderModFilterBar();
@@ -2823,7 +3181,669 @@
     setSyncBadge("● Sync " + nowStr, true);
   }
 
-  // ==================== 5. APPUNTI DRIVE (RICH-TEXT FORMATTATO + ELIMINAZIONE) ====================
+  // ==================== 5. SCADENZARIO & ADEMPIMENTI ====================
+  async function loadScadenzeFromDrive() {
+    if (!accessToken || !rootDriveFolderId) return;
+    try {
+      var qCfg = encodeURIComponent("name = 'pikdash_scadenze.json' and '" + rootDriveFolderId + "' in parents and trashed = false");
+      var res = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qCfg + "&fields=files(id,name)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      if (!res.ok) return;
+      var data = await res.json();
+
+      if (data.files && data.files.length > 0) {
+        scadDriveConfigFileId = data.files[0].id;
+        var dlRes = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(scadDriveConfigFileId) + "?alt=media", {
+          headers: { "Authorization": "Bearer " + accessToken }
+        });
+        if (dlRes.ok) {
+          var parsed = await dlRes.json();
+          if (Array.isArray(parsed)) {
+            scadenzeItems = parsed;
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
+  async function syncScadenzeToDrive() {
+    saveCachedSnapshot();
+    if (!accessToken || !rootDriveFolderId) return;
+
+    try {
+      var jsonContent = JSON.stringify(scadenzeItems, null, 2);
+      if (scadDriveConfigFileId) {
+        await fetch("https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(scadDriveConfigFileId) + "?uploadType=media", {
+          method: "PATCH",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          },
+          body: jsonContent
+        });
+      } else {
+        var metadata = {
+          name: "pikdash_scadenze.json",
+          mimeType: "application/json",
+          parents: [rootDriveFolderId]
+        };
+        var boundary = "-------pikdashscadenze11223344";
+        var body =
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          JSON.stringify(metadata) +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          jsonContent +
+          "\r\n--" + boundary + "--";
+
+        var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          },
+          body: body
+        });
+        if (createRes.ok) {
+          var created = await createRes.json();
+          scadDriveConfigFileId = created.id;
+        }
+      }
+    } catch (e) {}
+  }
+
+  function renderScadFilterBar() {
+    var bar = document.getElementById("scadFilterBar");
+    var activeCount = scadenzeItems.filter(function(s) { return !s.done; }).length;
+    var urgentCount = scadenzeItems.filter(function(s) { return !s.done && getDaysDiffFromToday(s.dueDate) <= 7; }).length;
+    var doneCount = scadenzeItems.filter(function(s) { return s.done; }).length;
+
+    var html =
+      '<div class="folder-chip' + (activeScadFilter === "ACTIVE" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setScadFilter(\'ACTIVE\')">' +
+        '<span>⏳ Attive (' + activeCount + ')</span>' +
+      '</div>' +
+      '<div class="folder-chip' + (activeScadFilter === "URGENT" ? " active" : "") + '" style="--chip-color:#ef5350;" onclick="setScadFilter(\'URGENT\')">' +
+        '<span class="folder-dot" style="background:#ef5350;"></span>' +
+        '<span>Entro 7 gg / Scadute (' + urgentCount + ')</span>' +
+      '</div>' +
+      '<div class="folder-chip' + (activeScadFilter === "DONE" ? " active" : "") + '" style="--chip-color:#81c784;" onclick="setScadFilter(\'DONE\')">' +
+        '<span>✅ Completate (' + doneCount + ')</span>' +
+      '</div>' +
+      '<div class="folder-chip' + (activeScadFilter === "ALL" ? " active" : "") + '" style="--chip-color:#64b5f6;" onclick="setScadFilter(\'ALL\')">' +
+        '<span>Tutte (' + scadenzeItems.length + ')</span>' +
+      '</div>';
+
+    bar.innerHTML = html;
+  }
+
+  function setScadFilter(filterKey) {
+    activeScadFilter = filterKey;
+    renderScadFilterBar();
+    renderScadenzeList();
+  }
+
+  function renderScadenzeList() {
+    var listEl = document.getElementById("scadItemsList");
+    var term = (document.getElementById("scadSearchInput").value || "").toLowerCase().trim();
+
+    var filtered = scadenzeItems.filter(function(s) {
+      var matchTerm = !term ||
+        (s.title || "").toLowerCase().indexOf(term) !== -1 ||
+        (s.sector || "").toLowerCase().indexOf(term) !== -1 ||
+        (s.note || "").toLowerCase().indexOf(term) !== -1;
+      if (!matchTerm) return false;
+
+      if (activeScadFilter === "ACTIVE") return !s.done;
+      if (activeScadFilter === "URGENT") return !s.done && getDaysDiffFromToday(s.dueDate) <= 7;
+      if (activeScadFilter === "DONE") return !!s.done;
+      return true;
+    });
+
+    filtered.sort(function(a, b) {
+      if (a.done !== b.done) return a.done ? 1 : -1;
+      return (a.dueDate || "9999-12-31").localeCompare(b.dueDate || "9999-12-31");
+    });
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:28px; color:var(--muted);">Nessuna scadenza presente in questa vista. Clicca su <strong>+ Nuova Scadenza</strong> in alto a destra.</div>';
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(function(s) {
+      var diff = getDaysDiffFromToday(s.dueDate);
+      var borderCol = "#81c784";
+      var pillClass = "ok";
+      var pillText = "Tra " + diff + " gg";
+
+      if (s.done) {
+        borderCol = "#4a4f5e";
+        pillClass = "done";
+        pillText = "Completata";
+      } else if (diff < 0) {
+        borderCol = "#ef5350";
+        pillClass = "urgent";
+        pillText = "Scaduta da " + Math.abs(diff) + " gg";
+      } else if (diff === 0) {
+        borderCol = "#ef5350";
+        pillClass = "urgent";
+        pillText = "OGGI";
+      } else if (diff <= 7) {
+        borderCol = "#ef5350";
+        pillClass = "urgent";
+        pillText = "Tra " + diff + " gg";
+      } else if (diff <= 30) {
+        borderCol = "#ffb74d";
+        pillClass = "soon";
+        pillText = "Tra " + diff + " gg";
+      }
+
+      var formattedDate = s.dueDate ? s.dueDate.split("-").reverse().join("/") : "—";
+      var secCol = DEPT_COLORS[s.sector] || "#b39ddb";
+      var safeTitle = (s.title || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+
+      return '<div class="scad-row' + (s.done ? " done" : "") + '" style="--scad-color:' + borderCol + ';">' +
+        '<div class="scad-left">' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleScadenzaDone(\'' + s.id + '\')">' + (s.done ? "✓" : "") + '</div>' +
+          '<div class="scad-date-box">' +
+            '<div class="scad-date-main">' + formattedDate + '</div>' +
+            '<span class="scad-days-pill ' + pillClass + '">' + pillText + '</span>' +
+          '</div>' +
+          '<div class="scad-info">' +
+            '<div class="scad-title">' + escapeHtml(s.title) + '</div>' +
+            '<div class="scad-meta">' +
+              '<span class="file-folder-tag" style="--file-color:' + secCol + ';">' + escapeHtml(s.sector || "Generale") + '</span>' +
+              '<span>🔄 ' + escapeHtml(s.freq || "Una tantum") + '</span>' +
+              (s.note ? '<span>• ' + escapeHtml(s.note) + '</span>' : '') +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="scad-actions">' +
+          '<button type="button" class="file-icon-btn" title="Fissa su Google Calendar" onclick="openEventModal(null, \'' + (s.dueDate || selectedDateStr) + '\', \'SCADENZA: ' + safeTitle + '\')">📅 Calendar</button>' +
+          '<button type="button" class="file-icon-btn" title="Modifica scadenza" onclick="openScadenzaModal(\'' + s.id + '\')">✏️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina" onclick="deleteScadenzaItem(\'' + s.id + '\')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  function openScadenzaModal(scadId) {
+    editingScadId = scadId;
+    var modalTitle = document.getElementById("scadenzaModalTitle");
+    var titleIn = document.getElementById("scadTitleInput");
+    var dateIn = document.getElementById("scadDateInput");
+    var secIn = document.getElementById("scadSectorInput");
+    var freqIn = document.getElementById("scadFreqInput");
+    var noteIn = document.getElementById("scadNoteInput");
+
+    if (scadId) {
+      var s = scadenzeItems.find(function(x) { return x.id === scadId; });
+      if (!s) return;
+      modalTitle.innerText = "✏️ Modifica Scadenza";
+      titleIn.value = s.title || "";
+      dateIn.value = s.dueDate || toIsoDate(new Date());
+      secIn.value = s.sector || "Segreteria";
+      freqIn.value = s.freq || "Una tantum";
+      noteIn.value = s.note || "";
+    } else {
+      modalTitle.innerText = "⏳ Nuova Scadenza / Adempimento";
+      titleIn.value = "";
+      dateIn.value = toIsoDate(addDays(new Date(), 7));
+      secIn.value = "Segreteria";
+      freqIn.value = "Una tantum";
+      noteIn.value = "";
+    }
+
+    document.getElementById("scadenzaModal").style.display = "flex";
+    titleIn.focus();
+  }
+
+  async function saveScadenzaModal() {
+    var title = document.getElementById("scadTitleInput").value.trim();
+    var dueDate = document.getElementById("scadDateInput").value;
+    var sector = document.getElementById("scadSectorInput").value.trim() || "Generale";
+    var freq = document.getElementById("scadFreqInput").value;
+    var note = document.getElementById("scadNoteInput").value.trim();
+
+    if (!title || !dueDate) {
+      alert("Inserisci almeno il titolo e la data di scadenza.");
+      return;
+    }
+
+    if (editingScadId) {
+      var existing = scadenzeItems.find(function(x) { return x.id === editingScadId; });
+      if (existing) {
+        existing.title = title;
+        existing.dueDate = dueDate;
+        existing.sector = sector;
+        existing.freq = freq;
+        existing.note = note;
+      }
+    } else {
+      scadenzeItems.push({
+        id: "scad_" + Date.now(),
+        title: title,
+        dueDate: dueDate,
+        sector: sector,
+        freq: freq,
+        note: note,
+        done: false
+      });
+    }
+
+    document.getElementById("scadenzaModal").style.display = "none";
+    renderScadFilterBar();
+    renderScadenzeList();
+    await syncScadenzeToDrive();
+  }
+
+  async function toggleScadenzaDone(scadId) {
+    var item = scadenzeItems.find(function(x) { return x.id === scadId; });
+    if (!item) return;
+    item.done = !item.done;
+    renderScadFilterBar();
+    renderScadenzeList();
+    await syncScadenzeToDrive();
+  }
+
+  async function deleteScadenzaItem(scadId) {
+    var item = scadenzeItems.find(function(x) { return x.id === scadId; });
+    if (!item) return;
+    if (!confirm("Vuoi eliminare la scadenza '" + item.title + "'?")) return;
+    scadenzeItems = scadenzeItems.filter(function(x) { return x.id !== scadId; });
+    renderScadFilterBar();
+    renderScadenzeList();
+    await syncScadenzeToDrive();
+  }
+
+  // ==================== 6. TEAM & DELEGHE UFFICI ====================
+  async function loadTeamFromDrive() {
+    if (!accessToken || !rootDriveFolderId) return;
+    try {
+      var qCfg = encodeURIComponent("name = 'pikdash_team.json' and '" + rootDriveFolderId + "' in parents and trashed = false");
+      var res = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qCfg + "&fields=files(id,name)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      if (!res.ok) return;
+      var data = await res.json();
+
+      if (data.files && data.files.length > 0) {
+        teamDriveConfigFileId = data.files[0].id;
+        var dlRes = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(teamDriveConfigFileId) + "?alt=media", {
+          headers: { "Authorization": "Bearer " + accessToken }
+        });
+        if (dlRes.ok) {
+          var parsed = await dlRes.json();
+          if (parsed && typeof parsed === "object") {
+            teamMembers = Array.isArray(parsed.members) ? parsed.members : [];
+            teamDelegations = Array.isArray(parsed.delegations) ? parsed.delegations : [];
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
+  async function syncTeamToDrive() {
+    saveCachedSnapshot();
+    if (!accessToken || !rootDriveFolderId) return;
+
+    try {
+      var payloadObj = { members: teamMembers, delegations: teamDelegations };
+      var jsonContent = JSON.stringify(payloadObj, null, 2);
+      if (teamDriveConfigFileId) {
+        await fetch("https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(teamDriveConfigFileId) + "?uploadType=media", {
+          method: "PATCH",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          },
+          body: jsonContent
+        });
+      } else {
+        var metadata = {
+          name: "pikdash_team.json",
+          mimeType: "application/json",
+          parents: [rootDriveFolderId]
+        };
+        var boundary = "-------pikdashteam99887766";
+        var body =
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          JSON.stringify(metadata) +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          jsonContent +
+          "\r\n--" + boundary + "--";
+
+        var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          },
+          body: body
+        });
+        if (createRes.ok) {
+          var created = await createRes.json();
+          teamDriveConfigFileId = created.id;
+        }
+      }
+    } catch (e) {}
+  }
+
+  function getInitials(fullName) {
+    var parts = (fullName || "?").trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+
+  function renderTeamDeptBar() {
+    var bar = document.getElementById("teamDeptFilterBar");
+    var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Altro"];
+
+    var html = '<div class="folder-chip' + (activeTeamDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setTeamDeptFilter(\'ALL\')">' +
+      '<span>Tutti (' + teamMembers.length + ')</span>' +
+    '</div>';
+
+    depts.forEach(function(dept) {
+      var cnt = teamMembers.filter(function(m) { return m.dept === dept; }).length;
+      if (cnt === 0 && activeTeamDeptFilter !== dept) return;
+      var col = DEPT_COLORS[dept] || "#b39ddb";
+      var isAct = (activeTeamDeptFilter === dept) ? " active" : "";
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setTeamDeptFilter(\'' + dept + '\')">' +
+        '<span class="folder-dot" style="background:' + col + ';"></span>' +
+        '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
+      '</div>';
+    });
+
+    bar.innerHTML = html;
+  }
+
+  function setTeamDeptFilter(dept) {
+    activeTeamDeptFilter = dept;
+    renderTeamDeptBar();
+    renderTeamMembersList();
+  }
+
+  function renderTeamMembersList() {
+    var listEl = document.getElementById("teamMembersList");
+    var filtered = teamMembers.filter(function(m) {
+      return activeTeamDeptFilter === "ALL" || m.dept === activeTeamDeptFilter;
+    });
+
+    var allActiveCount = teamDelegations.filter(function(d) { return d.status !== "done"; }).length;
+    var html = '<div class="member-card' + (selectedMemberId === "ALL" ? " active" : "") + '" style="--member-color:#b39ddb;" onclick="selectTeamMember(\'ALL\')">' +
+      '<div class="member-avatar" style="background:#b39ddb;">👥</div>' +
+      '<div class="member-info">' +
+        '<div class="member-name">Tutto il Team</div>' +
+        '<div class="member-role">Panoramica completa deleghe</div>' +
+        '<div class="member-stats"><span class="member-count-badge" style="--member-color:#b39ddb;">' + allActiveCount + ' pratiche attive</span></div>' +
+      '</div>' +
+    '</div>';
+
+    if (filtered.length === 0 && teamMembers.length === 0) {
+      html += '<p style="color:var(--muted); font-size:0.84rem; padding:8px;">Nessun dipendente configurato. Clicca su <strong>+ Dipendente</strong> in alto per inserire i tuoi collaboratori.</p>';
+      listEl.innerHTML = html;
+      return;
+    }
+
+    filtered.forEach(function(m) {
+      var col = m.color || "#b39ddb";
+      var isAct = (selectedMemberId === m.id) ? " active" : "";
+      var activeTasks = teamDelegations.filter(function(d) { return d.memberId === m.id && d.status !== "done"; }).length;
+
+      html += '<div class="member-card' + isAct + '" style="--member-color:' + col + ';" onclick="selectTeamMember(\'' + m.id + '\')">' +
+        '<div class="member-avatar" style="background:' + col + ';">' + escapeHtml(getInitials(m.name)) + '</div>' +
+        '<div class="member-info">' +
+          '<div class="member-name">' + escapeHtml(m.name) + '</div>' +
+          '<div class="member-role">' + escapeHtml(m.dept) + (m.role ? ' • ' + escapeHtml(m.role) : '') + '</div>' +
+          '<div class="member-stats"><span class="member-count-badge" style="--member-color:' + col + ';">' + activeTasks + ' in carico</span></div>' +
+        '</div>' +
+        '<button type="button" class="file-icon-btn" title="Modifica scheda dipendente" onclick="event.stopPropagation(); openMemberModal(\'' + m.id + '\')">✏️</button>' +
+      '</div>';
+    });
+
+    listEl.innerHTML = html;
+  }
+
+  function selectTeamMember(memberId) {
+    selectedMemberId = memberId;
+    if (memberId !== "ALL") {
+      var selEl = document.getElementById("newDelMemberSelect");
+      if (selEl) selEl.value = memberId;
+    }
+    renderTeamMembersList();
+    renderTeamDelegationsList();
+  }
+
+  function populateTeamAssignSelect() {
+    var sel = document.getElementById("newDelMemberSelect");
+    if (!sel) return;
+    if (teamMembers.length === 0) {
+      sel.innerHTML = '<option value="">— Crea prima un dipendente —</option>';
+      return;
+    }
+    var html = "";
+    teamMembers.forEach(function(m) {
+      var isSel = (selectedMemberId === m.id) ? " selected" : "";
+      html += '<option value="' + m.id + '"' + isSel + '>' + escapeHtml(m.name) + ' (' + escapeHtml(m.dept) + ')</option>';
+    });
+    sel.innerHTML = html;
+  }
+
+  function renderTeamDelegationsList() {
+    var listEl = document.getElementById("teamDelegationsList");
+    var headerEl = document.getElementById("teamDelegationsHeader");
+    var statusFilter = document.getElementById("teamStatusFilter").value;
+
+    if (selectedMemberId === "ALL") {
+      headerEl.innerText = "📋 Pratiche & Attività Delegate (Tutto il Team)";
+    } else {
+      var mObj = teamMembers.find(function(m) { return m.id === selectedMemberId; });
+      headerEl.innerText = mObj ? ("📋 In carico a: " + mObj.name + " [" + mObj.dept + "]") : "📋 Pratiche Delegate";
+    }
+
+    var filtered = teamDelegations.filter(function(d) {
+      if (selectedMemberId !== "ALL" && d.memberId !== selectedMemberId) return false;
+      if (statusFilter === "ACTIVE") return d.status !== "done";
+      if (statusFilter === "REVIEW") return d.status === "review";
+      return true;
+    });
+
+    filtered.sort(function(a, b) {
+      var aDone = (a.status === "done") ? 1 : 0;
+      var bDone = (b.status === "done") ? 1 : 0;
+      if (aDone !== bDone) return aDone - bDone;
+      return (a.dueDate || "9999-12-31").localeCompare(b.dueDate || "9999-12-31");
+    });
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessuna pratica assegnata in questa vista. Usa la barra qui sopra per delegare un\'attività.</p>';
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(function(d) {
+      var member = teamMembers.find(function(m) { return m.id === d.memberId; });
+      var mName = member ? member.name : "Non assegnato";
+      var mColor = member ? member.color : "#b39ddb";
+      var isDone = (d.status === "done");
+      var dueTxt = d.dueDate ? (" • Scad. " + d.dueDate.split("-").reverse().join("/")) : "";
+
+      return '<div class="delegation-item' + (isDone ? " done" : "") + '" style="--member-color:' + mColor + ';">' +
+        '<div class="del-left">' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleDelegationDone(\'' + d.id + '\')">' + (isDone ? "✓" : "") + '</div>' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="del-title">' + escapeHtml(d.title) + '</div>' +
+            '<div class="del-meta">' +
+              '<span class="file-folder-tag" style="--file-color:' + mColor + ';">👤 ' + escapeHtml(mName) + '</span>' +
+              '<span>' + dueTxt + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">' +
+          '<select class="del-status-select" onchange="changeDelegationStatus(\'' + d.id + '\', this.value)">' +
+            '<option value="todo"' + (d.status === "todo" ? " selected" : "") + '>⏳ Da avviare</option>' +
+            '<option value="doing"' + (d.status === "doing" ? " selected" : "") + '>🔵 In corso</option>' +
+            '<option value="review"' + (d.status === "review" ? " selected" : "") + '>🟠 Da firmare / rivedere</option>' +
+            '<option value="done"' + (d.status === "done" ? " selected" : "") + '>✅ Completata</option>' +
+          '</select>' +
+          '<button type="button" class="memo-del" title="Rimuovi delega" onclick="deleteDelegationItem(\'' + d.id + '\')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  }
+
+  async function addDelegationItem() {
+    var memberId = document.getElementById("newDelMemberSelect").value;
+    var titleIn = document.getElementById("newDelTitleInput");
+    var dueIn = document.getElementById("newDelDueInput");
+    var title = titleIn.value.trim();
+
+    if (!memberId) {
+      alert("Crea prima almeno un dipendente con il pulsante '+ Dipendente' a sinistra.");
+      return;
+    }
+    if (!title) return;
+
+    teamDelegations.push({
+      id: "del_" + Date.now(),
+      memberId: memberId,
+      title: title,
+      dueDate: dueIn.value || "",
+      status: "doing"
+    });
+
+    titleIn.value = "";
+    dueIn.value = "";
+    renderTeamMembersList();
+    renderTeamDelegationsList();
+    await syncTeamToDrive();
+  }
+
+  async function changeDelegationStatus(delId, newStatus) {
+    var item = teamDelegations.find(function(x) { return x.id === delId; });
+    if (!item) return;
+    item.status = newStatus;
+    renderTeamMembersList();
+    renderTeamDelegationsList();
+    await syncTeamToDrive();
+  }
+
+  async function toggleDelegationDone(delId) {
+    var item = teamDelegations.find(function(x) { return x.id === delId; });
+    if (!item) return;
+    item.status = (item.status === "done") ? "doing" : "done";
+    renderTeamMembersList();
+    renderTeamDelegationsList();
+    await syncTeamToDrive();
+  }
+
+  async function deleteDelegationItem(delId) {
+    teamDelegations = teamDelegations.filter(function(x) { return x.id !== delId; });
+    renderTeamMembersList();
+    renderTeamDelegationsList();
+    await syncTeamToDrive();
+  }
+
+  function openMemberModal(memberId) {
+    editingMemberId = memberId;
+    var modalTitle = document.getElementById("memberModalTitle");
+    var nameIn = document.getElementById("memNameInput");
+    var deptIn = document.getElementById("memDeptInput");
+    var roleIn = document.getElementById("memRoleInput");
+    var delBtn = document.getElementById("btnDeleteMemberModal");
+    var picker = document.getElementById("memCustomColorPicker");
+
+    if (memberId) {
+      var m = teamMembers.find(function(x) { return x.id === memberId; });
+      if (!m) return;
+      modalTitle.innerText = "✏️ Modifica Dipendente";
+      nameIn.value = m.name || "";
+      deptIn.value = m.dept || "Segreteria";
+      roleIn.value = m.role || "";
+      selectedMemberColor = m.color || FOLDER_PALETTE[0].hex;
+      delBtn.style.display = "inline-block";
+    } else {
+      modalTitle.innerText = "👤 Nuovo Dipendente / Collaboratore";
+      nameIn.value = "";
+      deptIn.value = "Servizi Sociali";
+      roleIn.value = "";
+      selectedMemberColor = FOLDER_PALETTE[teamMembers.length % FOLDER_PALETTE.length].hex;
+      delBtn.style.display = "none";
+    }
+
+    picker.value = selectedMemberColor;
+    renderMemberColorSwatches();
+    document.getElementById("memberModal").style.display = "flex";
+    nameIn.focus();
+  }
+
+  function renderMemberColorSwatches() {
+    var box = document.getElementById("memColorSwatches");
+    box.innerHTML = FOLDER_PALETTE.map(function(c) {
+      var sel = (c.hex.toLowerCase() === selectedMemberColor.toLowerCase()) ? " selected" : "";
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectMemberColor(\'' + c.hex + '\')"></div>';
+    }).join("");
+  }
+
+  function selectMemberColor(hex) {
+    selectedMemberColor = hex;
+    document.getElementById("memCustomColorPicker").value = hex;
+    renderMemberColorSwatches();
+  }
+
+  async function saveMemberModal() {
+    var name = document.getElementById("memNameInput").value.trim();
+    var dept = document.getElementById("memDeptInput").value;
+    var role = document.getElementById("memRoleInput").value.trim();
+
+    if (!name) {
+      alert("Inserisci il nome del dipendente.");
+      return;
+    }
+
+    if (editingMemberId) {
+      var existing = teamMembers.find(function(x) { return x.id === editingMemberId; });
+      if (existing) {
+        existing.name = name;
+        existing.dept = dept;
+        existing.role = role;
+        existing.color = selectedMemberColor;
+      }
+    } else {
+      var newId = "mem_" + Date.now();
+      teamMembers.push({
+        id: newId,
+        name: name,
+        dept: dept,
+        role: role,
+        color: selectedMemberColor
+      });
+      selectedMemberId = newId;
+    }
+
+    document.getElementById("memberModal").style.display = "none";
+    renderTeamDeptBar();
+    renderTeamMembersList();
+    populateTeamAssignSelect();
+    renderTeamDelegationsList();
+    await syncTeamToDrive();
+  }
+
+  async function deleteMemberFromModal() {
+    if (!editingMemberId) return;
+    var m = teamMembers.find(function(x) { return x.id === editingMemberId; });
+    if (!m) return;
+    if (!confirm("Vuoi rimuovere '" + m.name + "' dal team? (Le pratiche già create resteranno visibili sotto 'Tutto il Team').")) return;
+
+    teamMembers = teamMembers.filter(function(x) { return x.id !== editingMemberId; });
+    if (selectedMemberId === editingMemberId) selectedMemberId = "ALL";
+    document.getElementById("memberModal").style.display = "none";
+    renderTeamDeptBar();
+    renderTeamMembersList();
+    populateTeamAssignSelect();
+    renderTeamDelegationsList();
+    await syncTeamToDrive();
+  }
+
+  // ==================== 7. APPUNTI DRIVE (RICH-TEXT FORMATTATO + ELIMINAZIONE) ====================
   function execRichCmd(cmd) {
     document.execCommand(cmd, false, null);
     var ed = document.getElementById("freeNoteRichEditor");
@@ -2917,7 +3937,7 @@
 
     var parentIds = [rootDriveFolderId].concat(driveSubfolders.map(function(sf) { return sf.id; }));
     var parentsClause = parentIds.map(function(pid) { return "'" + pid + "' in parents"; }).join(" or ");
-    var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_launcher.json' and name != 'pikdash_modulistica_links.json' and trashed = false");
+    var qDocs = encodeURIComponent("(" + parentsClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_launcher.json' and name != 'pikdash_modulistica_links.json' and name != 'pikdash_scadenze.json' and name != 'pikdash_team.json' and trashed = false");
 
     var docsRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qDocs + "&orderBy=modifiedTime desc&pageSize=100&fields=files(id,name,mimeType,modifiedTime,webViewLink,parents)", {
       headers: { "Authorization": "Bearer " + accessToken }
@@ -2972,7 +3992,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.9B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.91B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -3315,7 +4335,7 @@
     }
   }
 
-  // ==================== 6. DOCUMENTI & MODULISTICA (DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ====================
+  // ==================== 8. DOCUMENTI & MODULISTICA ====================
   async function loadModulisticaFromDrive() {
     var modFolderName = document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio";
     document.getElementById("modFolderTitle").innerText = "📄 Documenti & Modulistica";
@@ -3825,7 +4845,7 @@
     await syncModExternalLinksToDrive();
   }
 
-  // ==================== 7. LAUNCHER PORTALI & APP (DRAG & DROP + EDGE/CHROME/FIREFOX) ====================
+  // ==================== 9. LAUNCHER PORTALI & APP ====================
   async function loadLauncherConfigFromDrive() {
     if (!accessToken || !rootDriveFolderId) return;
     try {
