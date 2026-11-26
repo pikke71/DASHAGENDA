@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 0.91B — Agenda, Progetti, Scadenzario, Team, Appunti & Portali</title>
+  <title>PIKDASH 0.92B — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -45,7 +45,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 16px;
+      padding: 8px 14px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
       flex-shrink: 0;
@@ -56,8 +56,8 @@
     .brand-col {
       display: flex;
       align-items: center;
-      gap: 10px;
-      min-width: 195px;
+      gap: 9px;
+      min-width: 190px;
       flex-shrink: 0;
     }
 
@@ -65,8 +65,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 31px;
+      height: 31px;
       flex-shrink: 0;
     }
 
@@ -75,7 +75,7 @@
     .brand-text-wrapper { display: flex; flex-direction: column; gap: 3px; }
 
     .brand-title {
-      font-size: 1.18rem;
+      font-size: 1.14rem;
       font-weight: 850;
       letter-spacing: -0.2px;
       line-height: 1;
@@ -87,7 +87,7 @@
 
     .brand-title .brand-dash { color: var(--lilac); }
     .brand-ver {
-      font-size: 0.69rem;
+      font-size: 0.68rem;
       font-weight: 800;
       letter-spacing: 0.3px;
       padding: 2px 6px;
@@ -96,13 +96,13 @@
       border: 1px solid var(--lilac-glow);
       color: var(--lilac);
     }
-    .brand-sub { font-size: 0.67rem; color: var(--muted); line-height: 1; }
+    .brand-sub { font-size: 0.65rem; color: var(--muted); line-height: 1; }
 
-    /* TILE TABS (8 SCHEDE) */
+    /* TILE TABS (9 SCHEDE) */
     .tile-nav {
       display: grid;
-      grid-template-columns: repeat(8, minmax(84px, 122px));
-      gap: 5px;
+      grid-template-columns: repeat(9, minmax(76px, 112px));
+      gap: 4px;
       background: var(--bg);
       padding: 4px;
       border-radius: 13px;
@@ -114,7 +114,7 @@
       background: var(--surface);
       border: 1px solid transparent;
       border-radius: 9px;
-      padding: 6px 6px;
+      padding: 5px 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -133,10 +133,10 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     }
 
-    .tile-icon { font-size: 0.98rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
+    .tile-icon { font-size: 0.95rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
     .tile-tab.active .tile-icon { color: var(--lilac); }
-    .tile-title { font-size: 0.78rem; font-weight: 700; color: var(--text); }
-    .tile-sub { font-size: 0.61rem; color: var(--muted); white-space: nowrap; }
+    .tile-title { font-size: 0.75rem; font-weight: 700; color: var(--text); }
+    .tile-sub { font-size: 0.59rem; color: var(--muted); white-space: nowrap; }
     .tile-tab.active .tile-sub { color: #d1c4e9; }
 
     .header-right {
@@ -144,14 +144,14 @@
       flex-direction: column;
       align-items: flex-end;
       gap: 4px;
-      min-width: 165px;
+      min-width: 160px;
       flex-shrink: 0;
     }
 
     .header-actions-row { display: flex; align-items: center; gap: 5px; }
 
     .sync-badge {
-      font-size: 0.69rem;
+      font-size: 0.68rem;
       color: var(--muted);
       padding: 2px 8px;
       background: var(--bg);
@@ -599,6 +599,123 @@
       outline: none;
     }
 
+    /* ==================== PREPARAZIONE RIUNIONI (BRIEFING + VERBALE) ==================== */
+    .meeting-search-bar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+    .meeting-search-bar input {
+      flex: 1;
+      min-width: 240px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 13px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      outline: none;
+    }
+    .meeting-search-bar input:focus { border-color: var(--lilac); }
+    .meeting-search-bar select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 11px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      outline: none;
+      max-width: 210px;
+    }
+    .meeting-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.25fr 0.95fr;
+      gap: 14px;
+      overflow: hidden;
+    }
+    .briefing-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding-right: 4px;
+    }
+    .briefing-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 11px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .briefing-sec-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--lilac);
+      padding-bottom: 5px;
+      border-bottom: 1px solid var(--border);
+    }
+    .briefing-sec-head.cyan { color: var(--dash-event); }
+    .briefing-sec-head.orange { color: var(--prio-med); }
+    .briefing-sec-head.green { color: var(--success); }
+    .briefing-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.84rem;
+    }
+    .briefing-item-title { font-weight: 600; color: var(--text); line-height: 1.35; }
+    .briefing-item-sub { font-size: 0.74rem; color: var(--muted); margin-top: 3px; line-height: 1.35; }
+    .meeting-notes-editor {
+      flex: 1;
+      min-height: 180px;
+      overflow-y: auto;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0 0 8px 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 0.88rem;
+      line-height: 1.55;
+      outline: none;
+    }
+    .meeting-notes-editor:focus { border-color: var(--lilac); }
+    .meeting-notes-editor:empty:before {
+      content: attr(data-placeholder);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .meeting-action-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 10px;
+      flex-shrink: 0;
+    }
+
     /* APPUNTI DRIVE & DOCUMENTI */
     .drive-layout { flex: 1; display: grid; grid-template-columns: 430px 1fr; gap: 14px; overflow: hidden; }
     .folders-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
@@ -838,12 +955,12 @@
         </svg>
       </div>
       <div class="brand-text-wrapper">
-        <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.91B</span></span>
+        <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.92B</span></span>
         <span class="brand-sub">Comune di San Martino di Venezze</span>
       </div>
     </div>
 
-    <!-- MENU A 8 SCHEDE -->
+    <!-- MENU A 9 SCHEDE -->
     <nav class="tile-nav">
       <button type="button" class="tile-tab active" data-view="viewPanoramica">
         <span class="tile-icon">📅</span>
@@ -869,6 +986,11 @@
         <span class="tile-icon">👥</span>
         <span class="tile-title">Team</span>
         <span class="tile-sub">Deleghe uffici</span>
+      </button>
+      <button type="button" class="tile-tab" data-view="viewRiunioni">
+        <span class="tile-icon">🎙️</span>
+        <span class="tile-title">Riunioni</span>
+        <span class="tile-sub">Briefing e ODG</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewAppunti">
         <span class="tile-icon">📝</span>
@@ -1125,7 +1247,6 @@
   <!-- ==================== VISTA 5: TEAM & DELEGHE UFFICI ==================== -->
   <section id="viewTeam" class="view-section">
     <div class="team-layout">
-      <!-- COLONNA SINISTRA: COLLABORATORI -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">👥 Collaboratori & Uffici</span>
@@ -1139,7 +1260,6 @@
         </div>
       </div>
 
-      <!-- COLONNA DESTRA: DELEGHE E PRATICHE ASSEGNATE -->
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="teamDelegationsHeader">📋 Pratiche & Attività Delegate</span>
@@ -1164,7 +1284,68 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 6: APPUNTI DRIVE & NOTE FORMATTATE ==================== -->
+  <!-- ==================== VISTA 6: PREPARAZIONE RIUNIONI (BRIEFING & VERBALE) ==================== -->
+  <section id="viewRiunioni" class="view-section">
+    <div class="meeting-search-bar">
+      <input type="text" id="meetingSearchInput" placeholder="🔎 Cerca argomento, parola chiave, pratica o ente (es. Asilo Nido, Cariparo, ULSS, Beverare)...">
+      <select id="meetingMemberFilter" title="Filtra per collaboratore"></select>
+      <select id="meetingProjectFilter" title="Filtra per progetto"></select>
+      <button type="button" id="btnClearMeetingFilter">Pulisci</button>
+    </div>
+
+    <div class="meeting-layout">
+      <!-- COLONNA SINISTRA: DOSSIER ESTRATTO DA TUTTE LE SEZIONI -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="meetingBriefingTitle">🎙️ Dossier Briefing & Elementi Rilevanti</span>
+          <span style="font-size:0.76rem; color:var(--muted);" id="meetingMatchCounter">0 elementi trovati</span>
+        </div>
+
+        <div class="briefing-scroll" id="meetingBriefingResults">
+          <p style="color:var(--muted); font-size:0.86rem;">Scrivi una parola chiave oppure seleziona un dipendente o un progetto nella barra in alto per estrarre automaticamente progetti, deleghe, scadenze, promemoria, appunti e documenti collegati.</p>
+        </div>
+      </div>
+
+      <!-- COLONNA DESTRA: APPUNTI DURANTE LA RIUNIONE & AZIONI -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title">✍️ Verbale & Appunti Riunione</span>
+          <button type="button" id="btnSaveMeetingDoc" class="primary" style="padding:5px 11px; font-size:0.78rem;">☁️ Salva su Drive</button>
+        </div>
+
+        <div class="add-row" style="margin-bottom:8px;">
+          <input type="text" id="meetingTitleInput" placeholder="Titolo riunione (es. Riunione Giunta / Briefing Servizi Sociali)...">
+          <select id="meetingFolderSelect" style="max-width:175px;" title="Cartella Google Drive"></select>
+        </div>
+
+        <div class="rich-toolbar">
+          <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execMeetingCmd('bold')" title="Grassetto"><strong>B</strong></button>
+          <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execMeetingCmd('italic')" title="Corsivo"><em>I</em></button>
+          <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execMeetingCmd('insertUnorderedList')" title="Elenco puntato">• Punti ODG</button>
+          <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execMeetingCmd('insertOrderedList')" title="Elenco numerato">1. Decisioni</button>
+          <button type="button" class="rich-tool-btn" id="btnInsertBriefingSummary" title="Inserisci riepilogo elementi trovati">📥 Importa Briefing</button>
+        </div>
+        <div id="meetingNotesEditor" class="meeting-notes-editor" contenteditable="true" data-placeholder="Annota qui decisioni, punti discussi e attività emerse durante la riunione..."></div>
+
+        <!-- CONVERTI DECISIONE IN AZIONE OPERATIVA -->
+        <div class="meeting-action-bar">
+          <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:var(--dash-event);">⚡ Trasforma subito una decisione in azione:</span>
+          <div class="add-row" style="margin-bottom:0;">
+            <input type="text" id="meetingQuickActionInput" placeholder="Scrivi l'azione emersa dalla riunione...">
+            <select id="meetingQuickActionType" style="max-width:170px;">
+              <option value="DELEGATION">👥 Delega a Team</option>
+              <option value="SCADENZA">⏳ Nuova Scadenza</option>
+              <option value="MEMO_RAPIDE">⚡ Cosa rapida da fare</option>
+              <option value="MEMO_TEL">📞 Telefonata da fare</option>
+            </select>
+            <button type="button" id="btnCreateMeetingAction" class="accent-cyan">Crea</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA 7: APPUNTI DRIVE & NOTE FORMATTATE ==================== -->
   <section id="viewAppunti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -1200,7 +1381,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 7: DOCUMENTI (DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ==================== -->
+  <!-- ==================== VISTA 8: DOCUMENTI (DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ==================== -->
   <section id="viewDocumenti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -1240,7 +1421,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 8: PORTALI & APP ==================== -->
+  <!-- ==================== VISTA 9: PORTALI & APP ==================== -->
   <section id="viewPortali" class="view-section">
     <div class="launcher-toolbar">
       <div class="launcher-filters" id="launcherThemeFilterBar"></div>
@@ -1637,7 +1818,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 0.91B</h3>
+      <h3>⚙️ Configurazione PIKDASH 0.92B</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -1729,6 +1910,9 @@
   var editingMemberId = null;
   var selectedMemberColor = FOLDER_PALETTE[0].hex;
 
+  // Stato Riunioni (Briefing)
+  var lastBriefingTextSummary = "";
+
   // Stato Appunti Drive
   var rootDriveFolderId = null;
   var driveSubfolders = [];
@@ -1817,6 +2001,10 @@
     });
     document.querySelectorAll(".view-section").forEach(function(sec) { sec.classList.remove("active"); });
     document.getElementById(viewId).classList.add("active");
+    if (viewId === "viewRiunioni") {
+      populateMeetingFilters();
+      renderMeetingBriefing();
+    }
   }
 
   function getFolderColorsMap() {
@@ -1894,6 +2082,8 @@
     renderTeamMembersList();
     populateTeamAssignSelect();
     renderTeamDelegationsList();
+    populateMeetingFilters();
+    renderMeetingBriefing();
     renderDriveFoldersBar();
     renderDriveList();
     renderModFilterBar();
@@ -1939,6 +2129,8 @@
     if (sProj) document.getElementById("cfgProjectsList").value = sProj;
     if (sDrive) document.getElementById("cfgDriveFolder").value = sDrive;
     if (sMod) document.getElementById("cfgModFolder").value = sMod;
+
+    document.getElementById("meetingTitleInput").value = "Verbale Riunione del " + new Date().toLocaleDateString("it-IT");
 
     updateClock();
     setInterval(updateClock, 15000);
@@ -2034,6 +2226,23 @@
       if (e.key === "Enter") addDelegationItem();
     });
     document.getElementById("teamStatusFilter").addEventListener("change", renderTeamDelegationsList);
+
+    // Preparazione Riunioni
+    document.getElementById("meetingSearchInput").addEventListener("input", renderMeetingBriefing);
+    document.getElementById("meetingMemberFilter").addEventListener("change", renderMeetingBriefing);
+    document.getElementById("meetingProjectFilter").addEventListener("change", renderMeetingBriefing);
+    document.getElementById("btnClearMeetingFilter").onclick = function() {
+      document.getElementById("meetingSearchInput").value = "";
+      document.getElementById("meetingMemberFilter").value = "ALL";
+      document.getElementById("meetingProjectFilter").value = "ALL";
+      renderMeetingBriefing();
+    };
+    document.getElementById("btnInsertBriefingSummary").onclick = insertBriefingIntoMeetingNotes;
+    document.getElementById("btnSaveMeetingDoc").onclick = saveMeetingNotesToDrive;
+    document.getElementById("btnCreateMeetingAction").onclick = createQuickActionFromMeeting;
+    document.getElementById("meetingQuickActionInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") createQuickActionFromMeeting();
+    });
 
     // Appunti Drive
     document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
@@ -2220,6 +2429,8 @@
       renderTeamMembersList();
       populateTeamAssignSelect();
       renderTeamDelegationsList();
+      populateMeetingFilters();
+      renderMeetingBriefing();
       renderDriveFoldersBar();
       renderDriveList();
       renderModFilterBar();
@@ -2246,6 +2457,7 @@
       saveCachedSnapshot();
       renderDriveFoldersBar();
       renderDriveList();
+      populateMeetingFilters();
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
       setSyncBadge("● Sync " + nowStr, true);
     } catch (err) {
@@ -3077,6 +3289,7 @@
       renderProjectDetail();
       renderModFilterBar();
       renderModItemsList();
+      populateMeetingFilters();
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
       setSyncBadge("● Sync " + nowStr, true);
     } catch (err) {
@@ -3177,6 +3390,7 @@
     renderProjFilterBar();
     renderProjectsList();
     renderProjectDetail();
+    populateMeetingFilters();
     var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
     setSyncBadge("● Sync " + nowStr, true);
   }
@@ -3824,6 +4038,7 @@
     renderTeamMembersList();
     populateTeamAssignSelect();
     renderTeamDelegationsList();
+    populateMeetingFilters();
     await syncTeamToDrive();
   }
 
@@ -3840,10 +4055,389 @@
     renderTeamMembersList();
     populateTeamAssignSelect();
     renderTeamDelegationsList();
+    populateMeetingFilters();
     await syncTeamToDrive();
   }
 
-  // ==================== 7. APPUNTI DRIVE (RICH-TEXT FORMATTATO + ELIMINAZIONE) ====================
+  // ==================== 7. PREPARAZIONE RIUNIONI (BRIEFING TRASVERSALE & VERBALE) ====================
+  function execMeetingCmd(cmd) {
+    document.execCommand(cmd, false, null);
+    var ed = document.getElementById("meetingNotesEditor");
+    if (ed) ed.focus();
+  }
+
+  function populateMeetingFilters() {
+    var memSel = document.getElementById("meetingMemberFilter");
+    var projSel = document.getElementById("meetingProjectFilter");
+    var folderSel = document.getElementById("meetingFolderSelect");
+
+    if (memSel) {
+      var curMem = memSel.value || "ALL";
+      var mHtml = '<option value="ALL">👤 Tutti i dipendenti</option>';
+      teamMembers.forEach(function(m) {
+        mHtml += '<option value="' + m.id + '"' + (curMem === m.id ? " selected" : "") + '>👤 ' + escapeHtml(m.name) + ' (' + escapeHtml(m.dept) + ')</option>';
+      });
+      memSel.innerHTML = mHtml;
+    }
+
+    if (projSel) {
+      var curProj = projSel.value || "ALL";
+      var pHtml = '<option value="ALL">📂 Tutti i progetti</option>';
+      projectsData.forEach(function(p) {
+        pHtml += '<option value="' + p.id + '"' + (curProj === p.id ? " selected" : "") + '>📂 [' + escapeHtml(p.dept) + '] ' + escapeHtml(p.title) + '</option>';
+      });
+      projSel.innerHTML = pHtml;
+    }
+
+    if (folderSel && rootDriveFolderId) {
+      populateFolderSelect(folderSel, rootDriveFolderId);
+    }
+  }
+
+  function renderMeetingBriefing() {
+    var resultsEl = document.getElementById("meetingBriefingResults");
+    var countEl = document.getElementById("meetingMatchCounter");
+    var term = (document.getElementById("meetingSearchInput").value || "").toLowerCase().trim();
+    var filterMemberId = document.getElementById("meetingMemberFilter").value || "ALL";
+    var filterProjectId = document.getElementById("meetingProjectFilter").value || "ALL";
+
+    var hasFilter = (term !== "" || filterMemberId !== "ALL" || filterProjectId !== "ALL");
+    var memberObj = filterMemberId !== "ALL" ? teamMembers.find(function(m) { return m.id === filterMemberId; }) : null;
+    var projectObj = filterProjectId !== "ALL" ? projectsData.find(function(p) { return p.id === filterProjectId; }) : null;
+
+    var searchTokens = [];
+    if (term) searchTokens.push(term);
+    if (memberObj) searchTokens.push(memberObj.name.toLowerCase());
+    if (projectObj) searchTokens.push(projectObj.title.toLowerCase());
+
+    function matchesAnyToken(text) {
+      if (!hasFilter) return true;
+      var low = (text || "").toLowerCase();
+      return searchTokens.some(function(tok) { return low.indexOf(tok) !== -1; });
+    }
+
+    // 1. Progetti rilevanti
+    var matchedProjects = projectsData.filter(function(p) {
+      if (filterProjectId !== "ALL") return p.id === filterProjectId;
+      if (!hasFilter) return !p.done;
+      var stepsTxt = p.steps.map(function(s) { return s.title; }).join(" ");
+      return matchesAnyToken(p.title + " " + p.dept + " " + (p.statusNote || "") + " " + stepsTxt);
+    });
+
+    // 2. Deleghe Team rilevanti
+    var matchedDelegations = teamDelegations.filter(function(d) {
+      if (filterMemberId !== "ALL" && d.memberId !== filterMemberId) return false;
+      if (!hasFilter) return d.status !== "done";
+      var m = teamMembers.find(function(x) { return x.id === d.memberId; });
+      var mName = m ? m.name : "";
+      return matchesAnyToken(d.title + " " + mName);
+    });
+
+    // 3. Scadenze rilevanti
+    var matchedScadenze = scadenzeItems.filter(function(s) {
+      if (!hasFilter) return !s.done && getDaysDiffFromToday(s.dueDate) <= 30;
+      return matchesAnyToken(s.title + " " + (s.sector || "") + " " + (s.note || ""));
+    });
+
+    // 4. Promemoria & Obiettivi rilevanti
+    var matchedMemos = memoItems.filter(function(m) {
+      if (!hasFilter) return !m.done && m.priority === "high";
+      return matchesAnyToken(m.title);
+    });
+    var matchedTasks = weeklyTasks.filter(function(t) {
+      if (!hasFilter) return false;
+      return matchesAnyToken(t.title);
+    });
+
+    // 5. Appunti Drive & Documenti rilevanti
+    var matchedNotes = driveFiles.filter(function(f) {
+      if (!hasFilter) return false;
+      return matchesAnyToken(f.name);
+    });
+    var matchedDocs = getAllUnifiedModules().filter(function(doc) {
+      if (filterProjectId !== "ALL" && doc.projectId === filterProjectId) return true;
+      if (!hasFilter) return false;
+      return matchesAnyToken(doc.title + " " + (doc.sector || "") + " " + (doc.note || ""));
+    });
+
+    // 6. Appuntamenti Calendar della settimana
+    var matchedEvents = weekEvents.filter(function(ev) {
+      if (!hasFilter) return false;
+      return matchesAnyToken(ev.title + " " + (ev.description || ""));
+    });
+
+    var totalMatches =
+      matchedProjects.length + matchedDelegations.length + matchedScadenze.length +
+      matchedMemos.length + matchedTasks.length + matchedNotes.length + matchedDocs.length + matchedEvents.length;
+
+    countEl.innerText = totalMatches + (totalMatches === 1 ? " elemento trovato" : " elementi trovati");
+
+    var summaryLines = [];
+    var html = "";
+
+    if (!hasFilter) {
+      html += '<div style="font-size:0.78rem; color:var(--muted); padding:2px 4px;">📌 <strong>Panoramica rapida pre-riunione</strong> (progetti attivi, deleghe in corso, scadenze entro 30 gg e priorità urgenti). Usa la ricerca sopra per filtrare un tema specifico.</div>';
+    }
+
+    // Sezione Progetti
+    if (matchedProjects.length > 0) {
+      summaryLines.push("PROGETTI & PRATICHE:");
+      html += '<div class="briefing-section"><div class="briefing-sec-head"><span>📂 Progetti & Stato Pratiche (' + matchedProjects.length + ')</span></div>';
+      matchedProjects.forEach(function(p) {
+        var doneSt = p.steps.filter(function(s) { return s.done; }).length;
+        var openSteps = p.steps.filter(function(s) { return !s.done; }).map(function(s) { return s.title; });
+        summaryLines.push("- [" + p.dept + "] " + p.title + (p.statusNote ? " (" + p.statusNote + ")" : ""));
+        html += '<div class="briefing-item">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="briefing-item-title">[' + escapeHtml(p.dept) + '] ' + escapeHtml(p.title) + ' <span style="font-size:0.73rem; color:var(--lilac);">(' + doneSt + '/' + p.steps.length + ' fasi)</span></div>' +
+            (p.statusNote ? '<div class="briefing-item-sub" style="color:var(--dash-event);">📍 Punto situazione: ' + escapeHtml(p.statusNote) + '</div>' : '') +
+            (openSteps.length > 0 ? '<div class="briefing-item-sub">Da completare: ' + escapeHtml(openSteps.join(" • ")) + '</div>' : '') +
+          '</div>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewProgetti\'); selectProject(\'' + p.id + '\')">Apri</button>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Sezione Team & Deleghe
+    if (matchedDelegations.length > 0) {
+      summaryLines.push("DELEGHE TEAM:");
+      var statusLabels = { todo: "Da avviare", doing: "In corso", review: "Da firmare/rivedere", done: "Completata" };
+      html += '<div class="briefing-section"><div class="briefing-sec-head cyan"><span>👥 Attività Delegate al Team (' + matchedDelegations.length + ')</span></div>';
+      matchedDelegations.forEach(function(d) {
+        var m = teamMembers.find(function(x) { return x.id === d.memberId; });
+        var mName = m ? m.name : "Team";
+        summaryLines.push("- " + mName + ": " + d.title + " [" + (statusLabels[d.status] || d.status) + "]");
+        html += '<div class="briefing-item">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="briefing-item-title">' + escapeHtml(d.title) + '</div>' +
+            '<div class="briefing-item-sub">👤 ' + escapeHtml(mName) + ' • Stato: <strong>' + (statusLabels[d.status] || d.status) + '</strong>' + (d.dueDate ? ' • Scad. ' + d.dueDate.split("-").reverse().join("/") : '') + '</div>' +
+          '</div>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewTeam\')">Vai a Team</button>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Sezione Scadenze
+    if (matchedScadenze.length > 0) {
+      summaryLines.push("SCADENZE:");
+      html += '<div class="briefing-section"><div class="briefing-sec-head orange"><span>⏳ Scadenze & Adempimenti (' + matchedScadenze.length + ')</span></div>';
+      matchedScadenze.forEach(function(s) {
+        var fDate = s.dueDate ? s.dueDate.split("-").reverse().join("/") : "";
+        summaryLines.push("- " + fDate + ": " + s.title + " (" + (s.sector || "Generale") + ")");
+        html += '<div class="briefing-item">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="briefing-item-title">' + escapeHtml(s.title) + '</div>' +
+            '<div class="briefing-item-sub">📅 ' + fDate + ' • ' + escapeHtml(s.sector || "Generale") + (s.note ? ' • ' + escapeHtml(s.note) : '') + '</div>' +
+          '</div>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewScadenzario\')">Apri</button>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Sezione Promemoria & Obiettivi
+    if (matchedMemos.length > 0 || matchedTasks.length > 0) {
+      summaryLines.push("PROMEMORIA & OBIETTIVI:");
+      html += '<div class="briefing-section"><div class="briefing-sec-head"><span>☑️ Promemoria & Obiettivi (' + (matchedMemos.length + matchedTasks.length) + ')</span></div>';
+      matchedMemos.forEach(function(m) {
+        summaryLines.push("- [" + m.category + "] " + m.title);
+        html += '<div class="briefing-item">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="briefing-item-title">' + escapeHtml(m.title) + '</div>' +
+            '<div class="briefing-item-sub">Categoria: ' + escapeHtml(m.category) + (m.done ? " • Completato" : " • Da fare") + '</div>' +
+          '</div>' +
+        '</div>';
+      });
+      matchedTasks.forEach(function(t) {
+        summaryLines.push("- [Obiettivo] " + t.title);
+        html += '<div class="briefing-item"><div class="briefing-item-title">🎯 ' + escapeHtml(t.title) + '</div></div>';
+      });
+      html += '</div>';
+    }
+
+    // Sezione Appunti & Documenti
+    if (matchedNotes.length > 0 || matchedDocs.length > 0) {
+      summaryLines.push("APPUNTI & DOCUMENTI:");
+      html += '<div class="briefing-section"><div class="briefing-sec-head green"><span>📝 Appunti & Documenti Correlati (' + (matchedNotes.length + matchedDocs.length) + ')</span></div>';
+      matchedNotes.forEach(function(f) {
+        summaryLines.push("- Appunto Drive: " + f.name);
+        html += '<div class="briefing-item">' +
+          '<div class="briefing-item-title">📝 ' + escapeHtml(f.name) + '</div>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewAppunti\'); openDrivePreview(\'' + f.id + '\')">Leggi</button>' +
+        '</div>';
+      });
+      matchedDocs.forEach(function(doc) {
+        summaryLines.push("- Documento (" + doc.platform + "): " + doc.title);
+        html += '<div class="briefing-item">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="briefing-item-title">📄 ' + escapeHtml(doc.title) + '</div>' +
+            '<div class="briefing-item-sub">' + escapeHtml(doc.platform.toUpperCase()) + ' • ' + escapeHtml(doc.sector || "Generale") + '</div>' +
+          '</div>' +
+          '<button type="button" class="file-icon-btn" onclick="jumpToDocument(\'' + doc.id + '\')">Apri</button>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    // Sezione Appuntamenti Calendar
+    if (matchedEvents.length > 0) {
+      summaryLines.push("AGENDA SETTIMANA:");
+      html += '<div class="briefing-section"><div class="briefing-sec-head cyan"><span>📅 Appuntamenti in Agenda (' + matchedEvents.length + ')</span></div>';
+      matchedEvents.forEach(function(ev) {
+        var fDate = ev.date ? ev.date.split("-").reverse().join("/") : "";
+        summaryLines.push("- " + fDate + " " + ev.startTime + ": " + ev.title);
+        html += '<div class="briefing-item">' +
+          '<div><div class="briefing-item-title">' + escapeHtml(ev.title) + '</div>' +
+          '<div class="briefing-item-sub">📅 ' + fDate + ' • ' + escapeHtml(ev.startTime) + '</div></div>' +
+        '</div>';
+      });
+      html += '</div>';
+    }
+
+    if (totalMatches === 0) {
+      html = '<div style="padding:24px; text-align:center; color:var(--muted);">Nessun elemento trovato per i filtri impostati. Prova con un termine più breve o seleziona "Tutti".</div>';
+    }
+
+    lastBriefingTextSummary = summaryLines.join("\n");
+    resultsEl.innerHTML = html;
+  }
+
+  function insertBriefingIntoMeetingNotes() {
+    var editor = document.getElementById("meetingNotesEditor");
+    if (!lastBriefingTextSummary) {
+      alert("Nessun elemento estratto da importare.");
+      return;
+    }
+    var lines = lastBriefingTextSummary.split("\n");
+    var htmlChunk = "<p><strong>--- PUNTI ESTRATTI PER LA RIUNIONE ---</strong></p><ul>";
+    lines.forEach(function(l) {
+      if (l.indexOf("- ") === 0) {
+        htmlChunk += "<li>" + escapeHtml(l.slice(2)) + "</li>";
+      } else {
+        htmlChunk += "</ul><p><strong>" + escapeHtml(l) + "</strong></p><ul>";
+      }
+    });
+    htmlChunk += "</ul><p><br></p>";
+    editor.innerHTML = editor.innerHTML + htmlChunk;
+  }
+
+  async function saveMeetingNotesToDrive() {
+    if (!accessToken || !rootDriveFolderId) { requestAuth(false); return; }
+    var title = document.getElementById("meetingTitleInput").value.trim() || ("Verbale_Riunione_" + toIsoDate(new Date()));
+    var targetFolderId = document.getElementById("meetingFolderSelect").value || rootDriveFolderId;
+    var editorEl = document.getElementById("meetingNotesEditor");
+    var cleanContentHtml = sanitizeHtmlFragment(editorEl.innerHTML);
+
+    setSyncBadge("Salvataggio verbale su Drive...", false);
+    try {
+      var htmlBody =
+        "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
+        "<h1>" + escapeHtml(title) + "</h1>" +
+        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 0.92B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<hr>" +
+        (cleanContentHtml || "<p></p>") +
+        "</body></html>";
+
+      var metadata = {
+        name: title,
+        mimeType: "application/vnd.google-apps.document",
+        parents: [targetFolderId]
+      };
+
+      var boundary = "-------314159265358979323846";
+      var delimiter = "\r\n--" + boundary + "\r\n";
+      var closeDelim = "\r\n--" + boundary + "--";
+
+      var multipartRequestBody =
+        delimiter +
+        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+        JSON.stringify(metadata) +
+        delimiter +
+        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
+        htmlBody +
+        closeDelim;
+
+      var uploadRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + accessToken,
+          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+        },
+        body: multipartRequestBody
+      });
+      if (!uploadRes.ok) throw new Error("Drive " + uploadRes.status);
+
+      await refreshDriveOnly();
+      alert("Verbale salvato su Google Drive nella sezione Appunti!");
+    } catch (err) {
+      alert("Errore salvataggio verbale: " + err.message);
+    }
+  }
+
+  async function createQuickActionFromMeeting() {
+    var input = document.getElementById("meetingQuickActionInput");
+    var type = document.getElementById("meetingQuickActionType").value;
+    var text = input.value.trim();
+    if (!text) return;
+
+    input.value = "";
+
+    if (type === "DELEGATION") {
+      var filterMem = document.getElementById("meetingMemberFilter").value;
+      var targetMemId = (filterMem !== "ALL") ? filterMem : (teamMembers[0] ? teamMembers[0].id : "");
+      if (!targetMemId) {
+        alert("Crea prima almeno un dipendente nella sezione Team.");
+        return;
+      }
+      teamDelegations.push({
+        id: "del_" + Date.now(),
+        memberId: targetMemId,
+        title: text,
+        dueDate: "",
+        status: "doing"
+      });
+      renderTeamMembersList();
+      renderTeamDelegationsList();
+      renderMeetingBriefing();
+      await syncTeamToDrive();
+      setSyncBadge("● Delega creata", true);
+    } else if (type === "SCADENZA") {
+      scadenzeItems.push({
+        id: "scad_" + Date.now(),
+        title: text,
+        dueDate: toIsoDate(addDays(new Date(), 7)),
+        sector: "Segreteria",
+        freq: "Una tantum",
+        note: "Da riunione del " + new Date().toLocaleDateString("it-IT"),
+        done: false
+      });
+      renderScadFilterBar();
+      renderScadenzeList();
+      renderMeetingBriefing();
+      await syncScadenzeToDrive();
+      setSyncBadge("● Scadenza creata (+7 gg)", true);
+    } else {
+      if (!accessToken || !memoListId) { requestAuth(false); return; }
+      var cat = (type === "MEMO_TEL") ? "TELEFONATE" : "RAPIDE";
+      var encodedTitle = "[" + cat + "|high] " + text;
+      var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(memoListId) + "/tasks", {
+        method: "POST",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ title: encodedTitle })
+      });
+      if (res.ok) {
+        await loadMemosFromTasks();
+        renderAllMemos();
+        renderMeetingBriefing();
+        saveCachedSnapshot();
+        setSyncBadge("● Promemoria aggiunto", true);
+      }
+    }
+  }
+
+  // ==================== 8. APPUNTI DRIVE (RICH-TEXT FORMATTATO + ELIMINAZIONE) ====================
   function execRichCmd(cmd) {
     document.execCommand(cmd, false, null);
     var ed = document.getElementById("freeNoteRichEditor");
@@ -3992,7 +4586,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.91B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.92B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -4335,7 +4929,7 @@
     }
   }
 
-  // ==================== 8. DOCUMENTI & MODULISTICA ====================
+  // ==================== 9. DOCUMENTI & MODULISTICA ====================
   async function loadModulisticaFromDrive() {
     var modFolderName = document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio";
     document.getElementById("modFolderTitle").innerText = "📄 Documenti & Modulistica";
@@ -4845,7 +5439,7 @@
     await syncModExternalLinksToDrive();
   }
 
-  // ==================== 9. LAUNCHER PORTALI & APP ====================
+  // ==================== 10. LAUNCHER PORTALI & APP ====================
   async function loadLauncherConfigFromDrive() {
     if (!accessToken || !rootDriveFolderId) return;
     try {
