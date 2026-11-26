@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH v7 — Agenda, Progetti, Appunti, Modulistica & Portali</title>
+  <title>PIKDASH v8 — Agenda, Progetti, Appunti, Documenti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -52,11 +52,11 @@
       gap: 12px;
     }
 
-    /* LOGO PIKDASH */
+    /* LOGO PIKDASH BENTO (DA IMMAGINE SCELTA) */
     .brand-col {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 11px;
       min-width: 195px;
     }
 
@@ -64,8 +64,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
-      height: 32px;
+      width: 34px;
+      height: 34px;
       flex-shrink: 0;
     }
 
@@ -74,7 +74,7 @@
     .brand-text-wrapper { display: flex; flex-direction: column; gap: 2px; }
 
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.24rem;
       font-weight: 850;
       letter-spacing: -0.2px;
       line-height: 1;
@@ -170,6 +170,11 @@
       font-weight: 600;
     }
     button.accent-cyan:hover { background: rgba(79, 195, 247, 0.25); }
+    button.danger-btn {
+      color: #ff8a80;
+      border-color: rgba(239, 83, 80, 0.4);
+    }
+    button.danger-btn:hover { background: rgba(239, 83, 80, 0.16); border-color: var(--prio-high); }
 
     /* VIEWS */
     .view-section {
@@ -406,8 +411,8 @@
     .memo-del { background: transparent; border: none; color: var(--muted); padding: 4px 6px; font-size: 0.85rem; }
     .memo-del:hover { color: var(--prio-high); background: transparent; }
 
-    /* PROGETTI */
-    .projects-layout { flex: 1; display: grid; grid-template-columns: 440px 1fr; gap: 14px; overflow: hidden; }
+    /* PROGETTI & DOCUMENTI CORRELATI */
+    .projects-layout { flex: 1; display: grid; grid-template-columns: 420px 1fr; gap: 14px; overflow: hidden; }
     .proj-filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
     .proj-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 9px; padding-right: 4px; }
     .proj-card {
@@ -431,18 +436,37 @@
     .proj-mini-bar { height: 5px; background: var(--bg); border-radius: 99px; overflow: hidden; }
     .proj-mini-fill { height: 100%; background: var(--proj-color, var(--lilac)); border-radius: 99px; transition: width 0.25s ease; }
     .proj-detail-empty { flex: 1; display: flex; align-items: center; justify-content: center; text-align: center; color: var(--muted); font-size: 0.9rem; padding: 24px; }
-    .proj-detail-wrap { flex: 1; display: none; flex-direction: column; gap: 12px; overflow: hidden; }
-    .proj-status-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
+    .proj-detail-wrap { flex: 1; display: none; flex-direction: column; gap: 11px; overflow: hidden; }
+    .proj-status-box { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 9px 13px; display: flex; flex-direction: column; gap: 6px; flex-shrink: 0; }
     .proj-status-label { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; color: var(--dash-event); display: flex; justify-content: space-between; align-items: center; }
     .proj-status-input { background: var(--bg); border: 1px solid var(--border); color: var(--text); padding: 7px 10px; border-radius: 7px; font-size: 0.84rem; width: 100%; outline: none; }
-    .proj-step-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: var(--surface); border-radius: 9px; border: 1px solid transparent; }
+    .proj-split-body { flex: 1; display: grid; grid-template-columns: 1.2fr 0.95fr; gap: 12px; overflow: hidden; }
+    .proj-subpanel { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 11px 13px; display: flex; flex-direction: column; overflow: hidden; }
+    .proj-subpanel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-shrink: 0; }
+    .proj-subpanel-title { font-size: 0.73rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--muted); }
+    .proj-step-item { display: flex; align-items: center; gap: 9px; padding: 8px 10px; background: var(--card); border-radius: 8px; border: 1px solid transparent; }
     .proj-step-item:hover { background: var(--card-hover); border-color: var(--border); }
     .proj-step-item.done .task-check { background: var(--lilac); }
     .proj-step-item.done .proj-step-text { text-decoration: line-through; color: var(--muted); }
-    .proj-step-text { flex: 1; font-size: 0.87rem; cursor: pointer; }
-    .proj-step-actions { display: flex; gap: 5px; align-items: center; }
+    .proj-step-text { flex: 1; font-size: 0.85rem; cursor: pointer; }
+    .proj-step-actions { display: flex; gap: 4px; align-items: center; }
+    .proj-doc-chip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 8px 10px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--dash-event);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .proj-doc-chip:hover { background: var(--card-hover); border-color: var(--lilac); }
+    .proj-doc-chip-title { font-size: 0.83rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    /* APPUNTI DRIVE & MODULISTICA */
+    /* APPUNTI DRIVE & DOCUMENTI */
     .drive-layout { flex: 1; display: grid; grid-template-columns: 430px 1fr; gap: 14px; overflow: hidden; }
     .folders-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; flex-shrink: 0; }
     .folder-chip {
@@ -484,6 +508,7 @@
     .drive-file-title { font-size: 0.87rem; font-weight: 600; color: var(--text); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .drive-file-meta { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; color: var(--muted); flex-wrap: wrap; }
     .file-folder-tag { padding: 1px 7px; border-radius: 5px; font-weight: 600; font-size: 0.69rem; background: rgba(255,255,255,0.06); color: var(--file-color, var(--lilac)); }
+    .proj-link-tag { padding: 1px 7px; border-radius: 5px; font-weight: 600; font-size: 0.68rem; background: rgba(179, 157, 219, 0.16); color: var(--lilac); }
     .platform-badge { padding: 1px 6px; border-radius: 4px; font-weight: 700; font-size: 0.66rem; text-transform: uppercase; }
     .platform-badge.gdrive { background: rgba(129, 199, 132, 0.16); color: #81c784; }
     .platform-badge.onedrive { background: rgba(41, 182, 246, 0.18); color: #4fc3f7; }
@@ -493,6 +518,7 @@
     .file-actions { display: flex; gap: 4px; flex-shrink: 0; }
     .file-icon-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 5px 8px; border-radius: 6px; font-size: 0.75rem; }
     .file-icon-btn:hover { color: var(--text); border-color: var(--lilac); }
+    .file-icon-btn.del:hover { color: #ff8a80; border-color: var(--prio-high); }
     .file-icon-btn.fav-active { color: #ffd54f; border-color: rgba(255, 213, 79, 0.45); }
 
     .drive-preview-header-actions { display: flex; align-items: center; gap: 8px; }
@@ -508,14 +534,7 @@
       color: #e2e5e9;
     }
 
-    .pdf-embed-frame {
-      width: 100%;
-      height: 100%;
-      border: none;
-      border-radius: 8px;
-      background: #1a1c22;
-    }
-
+    .pdf-embed-frame { width: 100%; height: 100%; border: none; border-radius: 8px; background: #1a1c22; }
     .ext-module-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -528,7 +547,7 @@
       gap: 12px;
     }
 
-    /* PORTALI & APP LAUNCHER */
+    /* PORTALI & APP LAUNCHER (CON DRAG & DROP) */
     .launcher-toolbar {
       background: var(--card);
       border: 1px solid var(--border);
@@ -558,20 +577,26 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 10px;
-      cursor: pointer;
+      cursor: grab;
       transition: all 0.16s ease;
       text-decoration: none;
       color: var(--text);
+      user-select: none;
     }
+    .launch-tile:active { cursor: grabbing; }
     .launch-tile:hover { background: var(--card-hover); border-color: var(--tile-accent, var(--lilac)); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.28); }
+    .launch-tile.dragging { opacity: 0.45; transform: scale(0.98); border-style: dashed; }
+    .launch-tile.drag-over { border: 2px dashed var(--dash-event); background: rgba(79, 195, 247, 0.08); }
+
     .launch-tile-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
     .launch-icon-box { width: 42px; height: 42px; border-radius: 10px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.45rem; flex-shrink: 0; }
-    .launch-tile-actions { display: flex; gap: 4px; opacity: 0.35; transition: opacity 0.15s; }
+    .launch-tile-actions { display: flex; gap: 4px; opacity: 0.45; transition: opacity 0.15s; }
     .launch-tile:hover .launch-tile-actions { opacity: 1; }
     .launch-mini-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 3px 6px; border-radius: 5px; font-size: 0.72rem; }
     .launch-title { font-size: 0.94rem; font-weight: 700; color: var(--text); line-height: 1.25; }
     .launch-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.35; }
     .launch-footer { display: flex; justify-content: space-between; align-items: center; font-size: 0.7rem; color: var(--tile-accent, var(--lilac)); font-weight: 600; margin-top: 2px; }
+    .browser-pill { font-size: 0.65rem; padding: 1px 6px; border-radius: 4px; background: rgba(255,255,255,0.07); color: var(--muted); }
 
     .emoji-picker-grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 6px; margin-top: 6px; background: var(--bg); padding: 8px; border-radius: 8px; border: 1px solid var(--border); }
     .emoji-opt { background: var(--surface); border: 1px solid transparent; border-radius: 6px; padding: 5px 0; text-align: center; font-size: 1.15rem; cursor: pointer; }
@@ -580,7 +605,7 @@
 
     /* MODALS */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.74); display: none; align-items: center; justify-content: center; z-index: 50; }
-    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: 480px; max-width: 94vw; }
+    .modal { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: 490px; max-width: 94vw; }
     .modal.wide { width: 620px; }
     .modal h3 { margin-bottom: 14px; font-size: 1.05rem; }
     .modal label { display: block; font-size: 0.81rem; color: var(--muted); margin: 10px 0 4px; }
@@ -610,13 +635,20 @@
 
   <header>
     <div class="brand-col">
+      <!-- LOGO PIKDASH BENTO (9 TASSELLI LILLA/CIANO) -->
       <div class="logo-container">
-        <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="32" height="32" rx="10" fill="#181A1F"/>
-          <rect x="1.5" y="1.5" width="29" height="29" rx="8.5" stroke="#2C303A" stroke-width="3"/>
-          <path d="M12 9H17C20.866 9 24 11.2386 24 14C24 16.7614 20.866 19 17 19H12" stroke="#B39DDB" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M12 9V24" stroke="#4FC3F7" stroke-width="3.5" stroke-linecap="round"/>
-          <circle cx="17.5" cy="14" r="2" fill="#4FC3F7"/>
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Colonna 1: tassello alto-sx + barra verticale alta -->
+          <rect x="2" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+          <rect x="2" y="13.5" width="9" height="20.5" rx="2.5" fill="#B39DDB"/>
+          <!-- Colonna 2: due tasselli lilla + uno ciano in basso -->
+          <rect x="13.5" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+          <rect x="13.5" y="13.5" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+          <rect x="13.5" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+          <!-- Colonna 3: tre tasselli ciano -->
+          <rect x="25" y="2" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+          <rect x="25" y="13.5" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+          <rect x="25" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
         </svg>
       </div>
       <div class="brand-text-wrapper">
@@ -640,16 +672,16 @@
       <button type="button" class="tile-tab" data-view="viewProgetti">
         <span class="tile-icon">📂</span>
         <span class="tile-title">Progetti</span>
-        <span class="tile-sub">Pratiche e fasi</span>
+        <span class="tile-sub">Pratiche, fasi e atti</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewAppunti">
         <span class="tile-icon">📝</span>
         <span class="tile-title">Appunti</span>
         <span class="tile-sub">Drive e note libere</span>
       </button>
-      <button type="button" class="tile-tab" data-view="viewModulistica">
+      <button type="button" class="tile-tab" data-view="viewDocumenti">
         <span class="tile-icon">📄</span>
-        <span class="tile-title">Modulistica</span>
+        <span class="tile-title">Documenti</span>
         <span class="tile-sub">Drive, OneDrive & SP</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewPortali">
@@ -810,7 +842,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 3: PROGETTI ==================== -->
+  <!-- ==================== VISTA 3: PROGETTI (FASI + DOCUMENTAZIONE CORRELATA) ==================== -->
   <section id="viewProgetti" class="view-section">
     <div class="projects-layout">
       <div class="card">
@@ -830,18 +862,18 @@
         <div class="card-header">
           <span class="card-title" id="projDetailHeaderTitle">Dettaglio Progetto</span>
           <div id="projDetailTopActions" style="display:none; gap:8px; align-items:center;">
-            <button type="button" id="btnOpenProjDriveFolder" class="accent-cyan" style="padding:5px 10px; font-size:0.77rem; display:none;">📁 Cartella Drive</button>
+            <button type="button" id="btnOpenProjDriveFolder" class="accent-cyan" style="padding:5px 10px; font-size:0.77rem; display:none;">📁 Cartella Appunti</button>
             <button type="button" id="btnEditProject" style="padding:5px 10px; font-size:0.77rem;">✏️ Modifica</button>
-            <button type="button" id="btnDeleteProject" style="padding:5px 9px; font-size:0.77rem; color:#ff8a80; border-color:rgba(239,83,80,0.4);">🗑️</button>
+            <button type="button" id="btnDeleteProject" class="danger-btn" style="padding:5px 9px; font-size:0.77rem;">🗑️</button>
           </div>
         </div>
 
         <div class="proj-detail-empty" id="projDetailEmpty">
-          Seleziona un progetto dall'elenco a sinistra per gestire le fasi step-by-step, aggiornare lo stato di avanzamento o aprire la cartella appunti collegata.
+          Seleziona un progetto dall'elenco a sinistra per gestire le fasi step-by-step, aggiornare il punto situazione o consultare la documentazione (PDF, Word, OneDrive, SharePoint) collegata alla pratica.
         </div>
 
         <div class="proj-detail-wrap" id="projDetailWrap">
-          <div class="progress-wrap" style="margin-bottom:2px;">
+          <div class="progress-wrap" style="margin-bottom:0;">
             <div class="progress-bar"><div class="progress-fill" id="projDetailProgressFill"></div></div>
             <span class="progress-pct" id="projDetailProgressPct">0%</span>
           </div>
@@ -851,15 +883,30 @@
               <span>📍 Punto situazione / Nota di blocco</span>
               <button type="button" id="btnSaveProjStatusNote" style="padding:3px 9px; font-size:0.72rem;">Salva nota</button>
             </div>
-            <input type="text" id="projStatusNoteInput" class="proj-status-input" placeholder="Es. In attesa preventivo, Bozza inviata al Sindaco, Da pubblicare all'Albo...">
+            <input type="text" id="projStatusNoteInput" class="proj-status-input" placeholder="Es. In attesa parere ULSS, Bozza determina inviata per firma...">
           </div>
 
-          <div class="add-row" style="margin-bottom:2px;">
-            <input type="text" id="newProjStepInput" placeholder="+ Aggiungi fase o passaggio operativo (es. Predisposizione determina)...">
-            <button type="button" id="btnAddProjStep" class="primary">Aggiungi fase</button>
-          </div>
+          <!-- CORPO DIVISO IN 2: FASI OPERATIVE A SINISTRA + DOCUMENTI CORRELATI A DESTRA -->
+          <div class="proj-split-body">
+            <div class="proj-subpanel">
+              <div class="proj-subpanel-head">
+                <span class="proj-subpanel-title">✅ Fasi & Passaggi Operativi</span>
+              </div>
+              <div class="add-row" style="margin-bottom:7px;">
+                <input type="text" id="newProjStepInput" placeholder="+ Aggiungi fase...">
+                <button type="button" id="btnAddProjStep" class="primary" style="padding:6px 10px;">+</button>
+              </div>
+              <div class="tasks-list" id="projStepsList"></div>
+            </div>
 
-          <div class="tasks-list" id="projStepsList"></div>
+            <div class="proj-subpanel">
+              <div class="proj-subpanel-head">
+                <span class="proj-subpanel-title">📎 Documentazione Correlata</span>
+                <button type="button" id="btnLinkDocToProject" class="accent-cyan" style="padding:3px 9px; font-size:0.73rem;">+ Collega Atto/Link</button>
+              </div>
+              <div class="tasks-list" id="projLinkedDocsList"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -892,6 +939,7 @@
           <div class="drive-preview-header-actions" id="previewActionsBar" style="display:none;">
             <button type="button" id="btnRenameSelectedDoc" style="padding:5px 10px; font-size:0.78rem;">✏️ Rinomina</button>
             <button type="button" id="btnMoveSelectedDoc" style="padding:5px 10px; font-size:0.78rem;">📁 Sposta</button>
+            <button type="button" id="btnDeleteSelectedDoc" class="danger-btn" style="padding:5px 10px; font-size:0.78rem;">🗑️ Elimina</button>
             <a id="btnOpenDocExternal" href="#" target="_blank" style="background:var(--lilac); color:#121316; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; text-decoration:none;">↗ Google Docs</a>
           </div>
         </div>
@@ -900,50 +948,52 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 5: MODULISTICA (GOOGLE DRIVE + ONEDRIVE / SHAREPOINT) ==================== -->
-  <section id="viewModulistica" class="view-section">
+  <!-- ==================== VISTA 5: DOCUMENTI (GOOGLE DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ==================== -->
+  <section id="viewDocumenti" class="view-section">
     <div class="drive-layout">
       <div class="card">
         <div class="card-header">
-          <span class="card-title" id="modFolderTitle">📄 Modulistica Ufficio</span>
+          <span class="card-title" id="modFolderTitle">📄 Documenti & Modulistica</span>
           <div style="display:flex; gap:6px;">
             <button type="button" id="btnNewModLink" class="accent-cyan" style="padding:4px 10px; font-size:0.76rem;">+ Link OneDrive / SP</button>
-            <button type="button" id="btnRefreshModulistica" style="padding:4px 9px; font-size:0.76rem;" title="Aggiorna Modulistica">↻</button>
+            <button type="button" id="btnRefreshModulistica" style="padding:4px 9px; font-size:0.76rem;" title="Aggiorna Documenti">↻</button>
           </div>
         </div>
 
         <div class="folders-bar" id="modFilterBar"></div>
 
-        <input type="text" id="modSearchInput" class="drive-search" placeholder="🔎 Cerca modulo PDF, Word, OneDrive o SharePoint...">
+        <input type="text" id="modSearchInput" class="drive-search" placeholder="🔎 Cerca documento PDF, Word, OneDrive, SharePoint o progetto...">
         <div class="drive-list" id="modItemsList">
-          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza per leggere la cartella Modulistica Ufficio su Google Drive o aggiungi collegamenti a OneDrive / SharePoint.</p>
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza per leggere i documenti da Google Drive o aggiungi collegamenti a OneDrive / SharePoint.</p>
         </div>
       </div>
 
       <div class="card">
         <div class="card-header">
-          <span class="card-title" id="modPreviewTitle" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Anteprima & Apertura Modulo</span>
+          <span class="card-title" id="modPreviewTitle" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Anteprima & Apertura Documento</span>
           <div class="drive-preview-header-actions" id="modPreviewActions" style="display:none;">
+            <button type="button" id="btnAssignDocToProject" style="padding:5px 10px; font-size:0.78rem;">📂 Collega a Progetto</button>
             <button type="button" id="btnEditSelectedModLink" style="padding:5px 10px; font-size:0.78rem; display:none;">✏️ Modifica Link</button>
-            <a id="btnOpenModExternal" href="#" target="_blank" rel="noopener noreferrer" style="background:var(--lilac); color:#121316; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; text-decoration:none;">↗ Apri File / Portale</a>
+            <a id="btnOpenModExternal" href="#" target="_blank" rel="noopener noreferrer" style="background:var(--lilac); color:#121316; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; text-decoration:none;">↗ Apri File</a>
           </div>
         </div>
         <div class="drive-preview-body" id="modPreviewBody" style="padding:14px;">
           <div style="padding:10px; color:var(--muted);">
             Seleziona un documento dall'elenco a sinistra:<br><br>
-            • I <strong>PDF e i documenti salvati nella cartella Google Drive "Modulistica Ufficio"</strong> mostrano qui l'anteprima immediata e si aggiornano automaticamente ogni volta che carichi file su Drive.<br><br>
-            • I <strong>collegamenti a OneDrive, SharePoint o portali esterni</strong> creati con <em>"+ Link OneDrive / SP"</em> appaiono nello stesso elenco filtrabile per servizio e si aprono con un clic.
+            • I <strong>PDF e i file Word/Docs salvati nella cartella Google Drive "Modulistica Ufficio"</strong> mostrano qui l'anteprima immediata.<br><br>
+            • I <strong>collegamenti a OneDrive, SharePoint o portali esterni</strong> creati con <em>"+ Link OneDrive / SP"</em> possono essere associati a un <strong>Progetto</strong> e aperti indifferentemente da questa sezione o dalla scheda Progetti.
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ==================== VISTA 6: PORTALI & APP ==================== -->
+  <!-- ==================== VISTA 6: PORTALI & APP (DRAG & DROP + SCELTA BROWSER) ==================== -->
   <section id="viewPortali" class="view-section">
     <div class="launcher-toolbar">
       <div class="launcher-filters" id="launcherThemeFilterBar"></div>
       <div class="launcher-right-tools">
+        <span style="font-size:0.74rem; color:var(--muted);">✋ Trascina i riquadri per riordinarli</span>
         <input type="text" id="launcherSearchInput" class="launcher-search" placeholder="🔎 Cerca portale, app o strumento...">
         <button type="button" id="btnNewLauncherItem" class="primary">+ Nuovo Pulsante</button>
       </div>
@@ -952,12 +1002,12 @@
     <div class="launcher-scroll-area" id="launcherGridContainer"></div>
   </section>
 
-  <!-- MODALE COLLEGAMENTO MODULISTICA (ONEDRIVE / SHAREPOINT / ESTERNO) -->
+  <!-- MODALE COLLEGAMENTO DOCUMENTO (ONEDRIVE / SHAREPOINT / PROGETTO) -->
   <div class="modal-backdrop" id="modLinkModal">
     <div class="modal">
-      <h3 id="modLinkModalTitle">🔗 Nuovo Collegamento Modulistica (OneDrive / SharePoint)</h3>
-      <label>Nome del Modulo / Documento:</label>
-      <input type="text" id="modLinkTitleInput" placeholder="Es. Schema Determina D.Lgs. 36/2023, Modulo Ferie...">
+      <h3 id="modLinkModalTitle">🔗 Nuovo Collegamento Documento (OneDrive / SharePoint)</h3>
+      <label>Nome del Documento / Modulo:</label>
+      <input type="text" id="modLinkTitleInput" placeholder="Es. Richiesta parere ULSS Asilo Nido, Schema Determina...">
 
       <div class="modal-row-2">
         <div>
@@ -979,31 +1029,52 @@
         </div>
       </div>
 
-      <label>Settore / Categoria:</label>
-      <input type="text" id="modLinkSectorInput" list="modSectorsDatalist" placeholder="Es. Segreteria, Servizi Sociali, Anagrafe...">
-      <datalist id="modSectorsDatalist">
-        <option value="Segreteria">
-        <option value="Servizi Sociali">
-        <option value="Anagrafe">
-        <option value="Biblioteca">
-        <option value="Gare & Contratti">
-        <option value="Personale">
-      </datalist>
+      <div class="modal-row-2">
+        <div>
+          <label>Settore / Categoria:</label>
+          <input type="text" id="modLinkSectorInput" list="modSectorsDatalist" placeholder="Es. Segreteria, Servizi Sociali...">
+          <datalist id="modSectorsDatalist">
+            <option value="Segreteria">
+            <option value="Servizi Sociali">
+            <option value="Anagrafe">
+            <option value="Biblioteca">
+            <option value="Gare & Contratti">
+          </datalist>
+        </div>
+        <div>
+          <label>Collega al Progetto (facoltativo):</label>
+          <select id="modLinkProjectSelect"></select>
+        </div>
+      </div>
 
       <label>Link Condiviso (OneDrive, SharePoint o URL diretto):</label>
       <input type="text" id="modLinkUrlInput" placeholder="https://...incolla qui il link di condivisione OneDrive o SharePoint">
 
-      <label>Note / Istruzioni compilazione (facoltativo):</label>
-      <input type="text" id="modLinkNoteInput" placeholder="Es. Modello aggiornato a novembre 2026 - cartella Ufficio Segreteria">
+      <label>Note / Riferimenti (facoltativo):</label>
+      <input type="text" id="modLinkNoteInput" placeholder="Es. Bozza inviata a ULSS 5 Polesana">
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
         <button type="button" id="btnCancelModLinkModal">Annulla</button>
-        <button type="button" id="btnSaveModLinkModal" class="primary">Salva Collegamento</button>
+        <button type="button" id="btnSaveModLinkModal" class="primary">Salva Documento</button>
       </div>
     </div>
   </div>
 
-  <!-- MODALE PULSANTE PORTALE / APP -->
+  <!-- MODALE ASSOCIA DOCUMENTO ESISTENTE A PROGETTO -->
+  <div class="modal-backdrop" id="assignProjDocModal">
+    <div class="modal">
+      <h3>📂 Collega Documento a Progetto</h3>
+      <p id="assignProjDocLabel" style="font-size:0.85rem; color:var(--muted); margin-bottom:10px;"></p>
+      <label>Seleziona il Progetto da associare:</label>
+      <select id="assignProjDocSelect"></select>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button type="button" id="btnCancelAssignProjDoc">Annulla</button>
+        <button type="button" id="btnConfirmAssignProjDoc" class="primary">Salva Collegamento</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE PULSANTE PORTALE / APP (CON SCELTA BROWSER) -->
   <div class="modal-backdrop" id="launcherModal">
     <div class="modal">
       <h3 id="launcherModalTitle">🚀 Nuovo Pulsante Rapido</h3>
@@ -1030,12 +1101,11 @@
 
       <div class="modal-row-2">
         <div>
-          <label>Tipo Risorsa (Etichetta):</label>
-          <select id="lncTypeInput">
-            <option value="Portale Web">🌐 Portale Web</option>
-            <option value="Web App">⚡ Web App</option>
-            <option value="Modulo PDF">📕 Modulo PDF</option>
-            <option value="Documento / Cartella">📁 Documento / Cartella</option>
+          <label>Browser di apertura:</label>
+          <select id="lncBrowserInput">
+            <option value="default">🌐 Browser Predefinito</option>
+            <option value="edge">🔷 Microsoft Edge (Windows)</option>
+            <option value="chrome">🟡 Google Chrome</option>
           </select>
         </div>
         <div>
@@ -1047,8 +1117,21 @@
       <label>Scegli icona rapida:</label>
       <div class="emoji-picker-grid" id="lncEmojiPicker"></div>
 
-      <label>Colore Accento Scheda:</label>
-      <div class="color-swatches" id="lncColorSwatches"></div>
+      <div class="modal-row-2">
+        <div>
+          <label>Tipo Risorsa (Etichetta):</label>
+          <select id="lncTypeInput">
+            <option value="Portale Web">Portale Web</option>
+            <option value="Web App">Web App</option>
+            <option value="Modulo PDF">Modulo PDF</option>
+            <option value="Documento / Cartella">Documento / Cartella</option>
+          </select>
+        </div>
+        <div>
+          <label>Colore Accento:</label>
+          <div class="color-swatches" id="lncColorSwatches" style="margin-top:6px;"></div>
+        </div>
+      </div>
 
       <label>Descrizione breve (facoltativa):</label>
       <input type="text" id="lncDescInput" placeholder="Es. Accesso SPID/CIE per certificati anagrafici">
@@ -1065,7 +1148,7 @@
     <div class="modal">
       <h3 id="projectModalTitle">📂 Nuovo Progetto</h3>
       <label>Titolo Progetto / Pratica:</label>
-      <input type="text" id="projTitleInput" placeholder="Es. Affidamento Asilo Nido, Bando Fondazione Cariparo...">
+      <input type="text" id="projTitleInput" placeholder="Es. Apertura Nuovo Asilo Nido, Bando Fondazione Cariparo...">
 
       <div class="modal-row-2">
         <div>
@@ -1087,8 +1170,8 @@
       <label>Collega Cartella Appunti Drive (facoltativo):</label>
       <select id="projDriveFolderInput"></select>
 
-      <label>Nota iniziale / Obiettivo del progetto:</label>
-      <input type="text" id="projInitNoteInput" placeholder="Es. Predisposizione atti di gara entro fine mese">
+      <label>Punto situazione iniziale / Obiettivo del progetto:</label>
+      <input type="text" id="projInitNoteInput" placeholder="Es. Rilascio autorizzazione e parere ULSS">
 
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
         <button type="button" id="btnCancelProjectModal">Annulla</button>
@@ -1138,7 +1221,7 @@
       <textarea id="evDescInput" rows="3" placeholder="Eventuali note o riferimenti..."></textarea>
 
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:18px;">
-        <button type="button" id="btnDeleteEventModal" style="color:#ff8a80; border-color:rgba(239,83,80,0.4); display:none;">🗑️ Elimina</button>
+        <button type="button" id="btnDeleteEventModal" class="danger-btn" style="display:none;">🗑️ Elimina</button>
         <div style="display:flex; gap:8px; margin-left:auto;">
           <button type="button" id="btnCancelEventModal">Annulla</button>
           <button type="button" id="btnSaveEventModal" class="primary">Salva su Calendar</button>
@@ -1215,7 +1298,7 @@
       <input type="text" id="cfgProjectsList" value="Dashboard Progetti">
       <label>Cartella Google Drive — Appunti Scanner:</label>
       <input type="text" id="cfgDriveFolder" value="Appunti Scanner">
-      <label>Cartella Google Drive — Modulistica Ufficio:</label>
+      <label>Cartella Google Drive — Documenti & Modulistica:</label>
       <input type="text" id="cfgModFolder" value="Modulistica Ufficio">
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
         <button type="button" id="btnCloseSettings">Chiudi</button>
@@ -1224,7 +1307,7 @@
     </div>
   </div>
 <!-- FINE PARTE 1 -->
-<!-- INIZIO PARTE 2 -->
+<!-- INIZIO PARTE 2A -->
 <script>
   var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive";
   var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
@@ -1249,11 +1332,11 @@
     "Generale": "#f48fb1"
   };
   var DEFAULT_LAUNCHER_ITEMS = [
-    { id: "lnc_1", title: "Comune San Martino di Venezze", theme: "Portali PA & Enti", type: "Portale Web", icon: "🏛️", color: "#b39ddb", url: "https://www.comune.sanmartinodivenezze.ro.it", desc: "Sito istituzionale, albo pretorio e amministrazione trasparente" },
-    { id: "lnc_2", title: "ANPR — Anagrafe Nazionale", theme: "Servizi Sociali & Anagrafe", type: "Portale Web", icon: "🪪", color: "#64b5f6", url: "https://www.anagrafenazionale.interno.it", desc: "Portale servizi demografici e stato civile" },
-    { id: "lnc_3", title: "INPS — Servizi Enti / SIUSS", theme: "Servizi Sociali & Anagrafe", type: "Portale Web", icon: "👨‍👩‍👧", color: "#81c784", url: "https://www.inps.it", desc: "Consultazione ISEE, assegni e prestazioni sociali" },
-    { id: "lnc_4", title: "Scanner Agenda Mobile", theme: "Web App & Strumenti", type: "Web App", icon: "📱", color: "#4fc3f7", url: "https://pikke71.github.io/APPAGENDA/", desc: "Acquisizione pagine planner e-ink e OCR appunti" },
-    { id: "lnc_5", title: "AUDPIK Music Player", theme: "Web App & Strumenti", type: "Web App", icon: "🎵", color: "#f48fb1", url: "https://pikke71.github.io/AUDPIK/", desc: "Streaming libreria musicale da Google Drive" }
+    { id: "lnc_1", title: "Comune San Martino di Venezze", theme: "Portali PA & Enti", type: "Portale Web", browser: "default", icon: "🏛️", color: "#b39ddb", url: "https://www.comune.sanmartinodivenezze.ro.it", desc: "Sito istituzionale, albo pretorio e amministrazione trasparente" },
+    { id: "lnc_2", title: "ANPR — Anagrafe Nazionale", theme: "Servizi Sociali & Anagrafe", type: "Portale Web", browser: "default", icon: "🪪", color: "#64b5f6", url: "https://www.anagrafenazionale.interno.it", desc: "Portale servizi demografici e stato civile" },
+    { id: "lnc_3", title: "INPS — Servizi Enti / SIUSS", theme: "Servizi Sociali & Anagrafe", type: "Portale Web", browser: "default", icon: "👨‍👩‍👧", color: "#81c784", url: "https://www.inps.it", desc: "Consultazione ISEE, assegni e prestazioni sociali" },
+    { id: "lnc_4", title: "Scanner Agenda Mobile", theme: "Web App & Strumenti", type: "Web App", browser: "default", icon: "📱", color: "#4fc3f7", url: "https://pikke71.github.io/APPAGENDA/", desc: "Acquisizione pagine planner e-ink e OCR appunti" },
+    { id: "lnc_5", title: "AUDPIK Music Player", theme: "Web App & Strumenti", type: "Web App", browser: "default", icon: "🎵", color: "#f48fb1", url: "https://pikke71.github.io/AUDPIK/", desc: "Streaming libreria musicale da Google Drive" }
   ];
   var AUTO_SYNC_MS = 5 * 60 * 1000;
 
@@ -1288,16 +1371,18 @@
   var selectedSwatchColor = FOLDER_PALETTE[0].hex;
   var movingDocId = null;
 
-  // Stato Modulistica (Google Drive + Collegamenti OneDrive / SharePoint)
+  // Stato Documenti & Modulistica (Google Drive + Collegamenti OneDrive / SharePoint + Progetti)
   var modRootFolderId = null;
   var modSubfolders = [];
   var modDriveFiles = [];
   var modExternalLinks = [];
   var modLinksConfigFileId = null;
   var modFavorites = [];
+  var docProjectMap = {};
   var activeModFilter = "ALL";
   var selectedModItemId = null;
   var editingModLinkId = null;
+  var assigningDocId = null;
 
   // Stato Launcher Portali & App
   var launcherItems = [];
@@ -1305,6 +1390,7 @@
   var activeLauncherTheme = "ALL";
   var editingLauncherId = null;
   var selectedLauncherColor = FOLDER_PALETTE[0].hex;
+  var draggedLauncherId = null;
 
   function getMonday(d) {
     var date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
@@ -1391,6 +1477,7 @@
       var cachedModFiles = JSON.parse(localStorage.getItem("dash_cache_mod_files") || "[]");
       var cachedModLinks = JSON.parse(localStorage.getItem("dash_cache_mod_links") || "[]");
       var cachedModFavs = JSON.parse(localStorage.getItem("dash_cache_mod_favs") || "[]");
+      var cachedDocProjMap = JSON.parse(localStorage.getItem("dash_cache_doc_proj_map") || "{}");
       var cachedLauncher = JSON.parse(localStorage.getItem("dash_cache_launcher") || "null");
 
       if (cachedEv.length) weekEvents = cachedEv;
@@ -1402,6 +1489,7 @@
       if (cachedModFiles.length) modDriveFiles = cachedModFiles;
       if (cachedModLinks.length) modExternalLinks = cachedModLinks;
       if (cachedModFavs.length) modFavorites = cachedModFavs;
+      if (cachedDocProjMap && typeof cachedDocProjMap === "object") docProjectMap = cachedDocProjMap;
       launcherItems = Array.isArray(cachedLauncher) ? cachedLauncher : DEFAULT_LAUNCHER_ITEMS.slice();
     } catch (e) {
       launcherItems = DEFAULT_LAUNCHER_ITEMS.slice();
@@ -1434,6 +1522,7 @@
       localStorage.setItem("dash_cache_mod_files", JSON.stringify(modDriveFiles));
       localStorage.setItem("dash_cache_mod_links", JSON.stringify(modExternalLinks));
       localStorage.setItem("dash_cache_mod_favs", JSON.stringify(modFavorites));
+      localStorage.setItem("dash_cache_doc_proj_map", JSON.stringify(docProjectMap));
       localStorage.setItem("dash_cache_launcher", JSON.stringify(launcherItems));
     } catch (e) {}
     updateSummaryKpis();
@@ -1499,6 +1588,7 @@
     document.getElementById("btnSaveEventModal").onclick = saveEventFromModal;
     document.getElementById("btnDeleteEventModal").onclick = deleteEventFromModal;
 
+    // Progetti & Documentazione correlata
     document.getElementById("btnNewProject").onclick = function() { openProjectModal(null); };
     document.getElementById("btnEditProject").onclick = function() {
       if (selectedProjectId) openProjectModal(selectedProjectId);
@@ -1513,6 +1603,9 @@
     document.getElementById("newProjStepInput").addEventListener("keypress", function(e) {
       if (e.key === "Enter") addProjectStep();
     });
+    document.getElementById("btnLinkDocToProject").onclick = function() {
+      if (selectedProjectId) openModLinkModal(null, selectedProjectId);
+    };
     document.getElementById("btnOpenProjDriveFolder").onclick = function() {
       var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
       if (!proj || !proj.driveFolderId) return;
@@ -1522,11 +1615,15 @@
       renderDriveList();
     };
 
+    // Appunti Drive (inclusa eliminazione)
     document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
     document.getElementById("btnCancelFreeNote").onclick = function() {
       document.getElementById("freeNoteModal").style.display = "none";
     };
     document.getElementById("btnSaveFreeNote").onclick = saveFreeNoteToDrive;
+    document.getElementById("btnDeleteSelectedDoc").onclick = function() {
+      if (selectedDriveFileId) deleteDriveFile(selectedDriveFileId);
+    };
 
     document.getElementById("btnOpenSettings").onclick = function() {
       document.getElementById("settingsModal").style.display = "flex";
@@ -1564,8 +1661,8 @@
       if (selectedDriveFileId) openMoveDocModal(selectedDriveFileId);
     };
 
-    // Modulistica (Drive + OneDrive / SharePoint)
-    document.getElementById("btnNewModLink").onclick = function() { openModLinkModal(null); };
+    // Documenti & Modulistica (Drive + OneDrive / SharePoint + Associazione a Progetto)
+    document.getElementById("btnNewModLink").onclick = function() { openModLinkModal(null, null); };
     document.getElementById("btnCancelModLinkModal").onclick = function() {
       document.getElementById("modLinkModal").style.display = "none";
     };
@@ -1576,9 +1673,16 @@
     document.getElementById("modSearchInput").addEventListener("input", renderModItemsList);
     document.getElementById("btnEditSelectedModLink").onclick = function() {
       if (selectedModItemId && selectedModItemId.indexOf("ext_") === 0) {
-        openModLinkModal(selectedModItemId);
+        openModLinkModal(selectedModItemId, null);
       }
     };
+    document.getElementById("btnAssignDocToProject").onclick = function() {
+      if (selectedModItemId) openAssignProjDocModal(selectedModItemId);
+    };
+    document.getElementById("btnCancelAssignProjDoc").onclick = function() {
+      document.getElementById("assignProjDocModal").style.display = "none";
+    };
+    document.getElementById("btnConfirmAssignProjDoc").onclick = confirmAssignDocToProject;
 
     // Launcher Portali & App
     document.getElementById("btnNewLauncherItem").onclick = function() { openLauncherModal(null); };
@@ -1721,16 +1825,18 @@
   }
 
   async function refreshModulisticaOnly() {
-    setSyncBadge("Aggiornamento Modulistica...", false);
+    setSyncBadge("Aggiornamento Documenti...", false);
     try {
       await loadModulisticaFromDrive();
       saveCachedSnapshot();
       renderModFilterBar();
       renderModItemsList();
+      renderProjectsList();
+      renderProjectDetail();
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
       setSyncBadge("● Sync " + nowStr, true);
     } catch (err) {
-      setSyncBadge("Errore Modulistica", false);
+      setSyncBadge("Errore Documenti", false);
     }
   }
 
@@ -2050,7 +2156,8 @@
     document.getElementById("tasksCounter").innerText = doneCount + "/" + total + " completati";
     document.getElementById("tasksProgressFill").style.width = pct + "%";
     document.getElementById("tasksProgressPct").innerText = pct + "%";
-
+<!-- FINE PARTE 2A -->
+<!-- INIZIO PARTE 2B -->
     if (total === 0) {
       listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun obiettivo in lista.</p>';
       return;
@@ -2226,7 +2333,7 @@
     });
   }
 
-  // ==================== 4. PROGETTI ====================
+  // ==================== 4. PROGETTI & DOCUMENTAZIONE CORRELATA ====================
   function parseProjectHeader(rawTitle) {
     var m = (rawTitle || "").match(/^\[([^\]]+)\]\s*(.*)$/);
     if (m) return { dept: m[1].trim(), title: m[2].trim() };
@@ -2331,12 +2438,15 @@
       return;
     }
 
+    var allDocs = getAllUnifiedModules();
+
     container.innerHTML = filtered.map(function(p) {
       var col = DEPT_COLORS[p.dept] || "#b39ddb";
       var totalSteps = p.steps.length;
       var doneSteps = p.steps.filter(function(s) { return s.done; }).length;
       var pct = totalSteps === 0 ? (p.done ? 100 : 0) : Math.round((doneSteps / totalSteps) * 100);
       var dueLabel = p.due ? ("Scad. " + p.due.split("-").reverse().join("/")) : "Nessuna scadenza";
+      var docsCount = allDocs.filter(function(d) { return d.projectId === p.id; }).length;
       var isAct = (p.id === selectedProjectId) ? " active" : "";
 
       return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject(\'' + p.id + '\')">' +
@@ -2345,7 +2455,7 @@
           '<span class="proj-dept-pill" style="--proj-color:' + col + ';">' + escapeHtml(p.dept) + '</span>' +
         '</div>' +
         '<div class="proj-card-meta">' +
-          '<span>' + doneSteps + '/' + totalSteps + ' fasi (' + pct + '%)</span>' +
+          '<span>' + doneSteps + '/' + totalSteps + ' fasi (' + pct + '%) • 📎 ' + docsCount + ' doc</span>' +
           '<span>' + dueLabel + '</span>' +
         '</div>' +
         '<div class="proj-mini-bar"><div class="proj-mini-fill" style="width:' + pct + '%; background:' + col + ';"></div></div>' +
@@ -2396,27 +2506,52 @@
 
     var stepsListEl = document.getElementById("projStepsList");
     if (totalSteps === 0) {
-      stepsListEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessuna fase operativa inserita. Aggiungi qui sopra i vari passaggi del progetto.</p>';
-      return;
+      stepsListEl.innerHTML = '<p style="color:var(--muted); font-size:0.83rem;">Nessuna fase operativa inserita.</p>';
+    } else {
+      var sortedSteps = proj.steps.slice().sort(function(a, b) {
+        if (a.done === b.done) return 0;
+        return a.done ? 1 : -1;
+      });
+
+      stepsListEl.innerHTML = sortedSteps.map(function(step) {
+        var safeStepTitle = step.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        var safeProjTitle = proj.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        return '<div class="proj-step-item' + (step.done ? " done" : "") + '">' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep(\'' + step.id + '\')">' + (step.done ? "✓" : "") + '</div>' +
+          '<div class="proj-step-text" onclick="toggleProjectStep(\'' + step.id + '\')">' + escapeHtml(step.title) + '</div>' +
+          '<div class="proj-step-actions">' +
+            '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, \'[' + safeProjTitle + '] ' + safeStepTitle + '\')">📅</button>' +
+            '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep(\'' + step.id + '\')">✕</button>' +
+          '</div>' +
+        '</div>';
+      }).join("");
     }
 
-    var sortedSteps = proj.steps.slice().sort(function(a, b) {
-      if (a.done === b.done) return 0;
-      return a.done ? 1 : -1;
-    });
+    var docsListEl = document.getElementById("projLinkedDocsList");
+    var linkedDocs = getAllUnifiedModules().filter(function(d) { return d.projectId === proj.id; });
 
-    stepsListEl.innerHTML = sortedSteps.map(function(step) {
-      var safeStepTitle = step.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-      var safeProjTitle = proj.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-      return '<div class="proj-step-item' + (step.done ? " done" : "") + '">' +
-        '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep(\'' + step.id + '\')">' + (step.done ? "✓" : "") + '</div>' +
-        '<div class="proj-step-text" onclick="toggleProjectStep(\'' + step.id + '\')">' + escapeHtml(step.title) + '</div>' +
-        '<div class="proj-step-actions">' +
-          '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, \'[' + safeProjTitle + '] ' + safeStepTitle + '\')">📅</button>' +
-          '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep(\'' + step.id + '\')">✕</button>' +
-        '</div>' +
-      '</div>';
-    }).join("");
+    if (linkedDocs.length === 0) {
+      docsListEl.innerHTML = '<p style="color:var(--muted); font-size:0.82rem; line-height:1.4;">Nessun documento collegato.<br>Usa <strong>+ Collega Atto/Link</strong> qui sopra oppure associa un file dalla sezione <strong>Documenti</strong>.</p>';
+    } else {
+      var platIcons = { gdrive: "📄", onedrive: "☁️", sharepoint: "🔷", external: "🌐" };
+      docsListEl.innerHTML = linkedDocs.map(function(doc) {
+        var ico = platIcons[doc.platform] || "📄";
+        return '<div class="proj-doc-chip" onclick="jumpToDocument(\'' + doc.id + '\')" title="Apri anteprima nella sezione Documenti">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="proj-doc-chip-title">' + ico + ' ' + escapeHtml(doc.title) + '</div>' +
+            '<div style="font-size:0.69rem; color:var(--muted); margin-top:2px;">' + escapeHtml(doc.format || doc.platform.toUpperCase()) + '</div>' +
+          '</div>' +
+          '<a href="' + escapeHtml(doc.url || "#") + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="file-icon-btn" title="Apri file direttamente">↗</a>' +
+        '</div>';
+      }).join("");
+    }
+  }
+
+  function jumpToDocument(docId) {
+    switchMainView("viewDocumenti");
+    activeModFilter = "ALL";
+    renderModFilterBar();
+    openModItemPreview(docId);
   }
 
   function openProjectModal(projId) {
@@ -2505,6 +2640,8 @@
       renderProjFilterBar();
       renderProjectsList();
       renderProjectDetail();
+      renderModFilterBar();
+      renderModItemsList();
       var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
       setSyncBadge("● Sync " + nowStr, true);
     } catch (err) {
@@ -2609,7 +2746,7 @@
     setSyncBadge("● Sync " + nowStr, true);
   }
 
-  // ==================== 5. APPUNTI DRIVE, NOTE LIBERE & CARTELLE COLORATE ====================
+  // ==================== 5. APPUNTI DRIVE (CON ELIMINAZIONE NEL CESTINO DRIVE) ====================
   async function loadDriveNotesAndFolders() {
     var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
     document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
@@ -2890,9 +3027,43 @@
         '<div class="file-actions" onclick="event.stopPropagation()">' +
           '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile(\'' + f.id + '\')">✏️</button>' +
           '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal(\'' + f.id + '\')">📁</button>' +
+          '<button type="button" class="file-icon-btn del" title="Sposta nel cestino di Drive" onclick="deleteDriveFile(\'' + f.id + '\')">🗑️</button>' +
         '</div>' +
       '</div>';
     }).join("");
+  }
+
+  async function deleteDriveFile(fileId) {
+    if (!accessToken) { requestAuth(false); return; }
+    var file = driveFiles.find(function(f) { return f.id === fileId; });
+    if (!file) return;
+
+    if (!confirm("Vuoi eliminare l'appunto '" + file.name + "' (verrà spostato nel cestino di Google Drive)?")) return;
+
+    setSyncBadge("Eliminazione appunto...", false);
+    try {
+      var res = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId), {
+        method: "PATCH",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ trashed: true })
+      });
+      if (!res.ok) throw new Error("Drive " + res.status);
+
+      driveFiles = driveFiles.filter(function(f) { return f.id !== fileId; });
+      if (selectedDriveFileId === fileId) {
+        selectedDriveFileId = null;
+        document.getElementById("drivePreviewTitle").innerText = "Anteprima Documento";
+        document.getElementById("previewActionsBar").style.display = "none";
+        document.getElementById("drivePreviewBody").innerText = "Appunto spostato nel cestino di Google Drive.";
+      }
+      saveCachedSnapshot();
+      renderDriveFoldersBar();
+      renderDriveList();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setSyncBadge("● Sync " + nowStr, true);
+    } catch (err) {
+      alert("Impossibile eliminare l'appunto: " + err.message);
+    }
   }
 
   async function renameDriveFile(fileId) {
@@ -3005,10 +3176,10 @@
     }
   }
 
-  // ==================== 6. MODULISTICA (GOOGLE DRIVE + ONEDRIVE / SHAREPOINT) ====================
+  // ==================== 6. DOCUMENTI & MODULISTICA (DRIVE + ONEDRIVE / SHAREPOINT + PROGETTI) ====================
   async function loadModulisticaFromDrive() {
     var modFolderName = document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio";
-    document.getElementById("modFolderTitle").innerText = "📄 " + modFolderName;
+    document.getElementById("modFolderTitle").innerText = "📄 Documenti & Modulistica";
 
     var qRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
     var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
@@ -3059,6 +3230,7 @@
         title: doc.name,
         platform: "gdrive",
         mimeType: doc.mimeType,
+        format: (doc.mimeType || "").indexOf("pdf") !== -1 ? "PDF" : "Google Drive",
         sector: sfObj ? sfObj.name : "Generale",
         url: doc.webViewLink || "",
         modifiedTime: doc.modifiedTime || ""
@@ -3080,6 +3252,9 @@
           var parsed = await dlRes.json();
           if (Array.isArray(parsed)) {
             modExternalLinks = parsed;
+          } else if (parsed && typeof parsed === "object") {
+            modExternalLinks = Array.isArray(parsed.links) ? parsed.links : [];
+            docProjectMap = (parsed.projectMap && typeof parsed.projectMap === "object") ? parsed.projectMap : docProjectMap;
           }
         }
       }
@@ -3091,7 +3266,8 @@
     if (!accessToken || !modRootFolderId) return;
 
     try {
-      var jsonContent = JSON.stringify(modExternalLinks, null, 2);
+      var payloadObj = { links: modExternalLinks, projectMap: docProjectMap };
+      var jsonContent = JSON.stringify(payloadObj, null, 2);
       if (modLinksConfigFileId) {
         await fetch("https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(modLinksConfigFileId) + "?uploadType=media", {
           method: "PATCH",
@@ -3132,6 +3308,9 @@
   }
 
   function getAllUnifiedModules() {
+    var gdFormatted = modDriveFiles.map(function(f) {
+      return Object.assign({}, f, { projectId: docProjectMap[f.id] || "" });
+    });
     var extFormatted = modExternalLinks.map(function(link) {
       return {
         id: link.id,
@@ -3139,12 +3318,13 @@
         platform: link.platform || "onedrive",
         format: link.format || "Documento",
         sector: link.sector || "Generale",
+        projectId: link.projectId || docProjectMap[link.id] || "",
         url: link.url,
         note: link.note || "",
         modifiedTime: link.modifiedTime || ""
       };
     });
-    return modDriveFiles.concat(extFormatted);
+    return gdFormatted.concat(extFormatted);
   }
 
   function renderModFilterBar() {
@@ -3152,6 +3332,7 @@
     var allItems = getAllUnifiedModules();
 
     var favCount = allItems.filter(function(i) { return modFavorites.indexOf(i.id) !== -1; }).length;
+    var projLinkedCount = allItems.filter(function(i) { return !!i.projectId; }).length;
     var odCount = allItems.filter(function(i) { return i.platform === "onedrive"; }).length;
     var spCount = allItems.filter(function(i) { return i.platform === "sharepoint"; }).length;
 
@@ -3162,6 +3343,12 @@
     if (favCount > 0 || activeModFilter === "FAV") {
       html += '<div class="folder-chip' + (activeModFilter === "FAV" ? " active" : "") + '" style="--chip-color:#ffd54f;" onclick="setModFilter(\'FAV\')">' +
         '<span>⭐ Preferiti (' + favCount + ')</span>' +
+      '</div>';
+    }
+
+    if (projLinkedCount > 0 || activeModFilter === "HAS_PROJ") {
+      html += '<div class="folder-chip' + (activeModFilter === "HAS_PROJ" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter(\'HAS_PROJ\')">' +
+        '<span>📂 Con Progetto (' + projLinkedCount + ')</span>' +
       '</div>';
     }
 
@@ -3220,14 +3407,19 @@
     var allItems = getAllUnifiedModules();
 
     var filtered = allItems.filter(function(item) {
+      var projObj = item.projectId ? projectsData.find(function(p) { return p.id === item.projectId; }) : null;
+      var projTitle = projObj ? projObj.title : "";
+
       var matchTerm = !term ||
         (item.title || "").toLowerCase().indexOf(term) !== -1 ||
         (item.sector || "").toLowerCase().indexOf(term) !== -1 ||
-        (item.note || "").toLowerCase().indexOf(term) !== -1;
+        (item.note || "").toLowerCase().indexOf(term) !== -1 ||
+        projTitle.toLowerCase().indexOf(term) !== -1;
       if (!matchTerm) return false;
 
       if (activeModFilter === "ALL") return true;
       if (activeModFilter === "FAV") return modFavorites.indexOf(item.id) !== -1;
+      if (activeModFilter === "HAS_PROJ") return !!item.projectId;
       if (activeModFilter === "ONEDRIVE") return item.platform === "onedrive";
       if (activeModFilter === "SHAREPOINT") return item.platform === "sharepoint";
       if (activeModFilter.indexOf("SEC:") === 0) {
@@ -3244,7 +3436,7 @@
     });
 
     if (filtered.length === 0) {
-      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun modulo trovato. Salva file nella cartella <strong>Modulistica Ufficio</strong> su Google Drive oppure clicca su <strong>+ Link OneDrive / SP</strong>.</p>';
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun documento trovato. Salva file nella cartella <strong>Modulistica Ufficio</strong> su Google Drive oppure clicca su <strong>+ Link OneDrive / SP</strong>.</p>';
       return;
     }
 
@@ -3262,9 +3454,14 @@
       var borderCol = item.platform === "onedrive" ? "#29b6f6" : (item.platform === "sharepoint" ? "#26a69a" : secCol);
       var iconEmoji = item.platform === "onedrive" ? "☁️" : (item.platform === "sharepoint" ? "🔷" : ((item.mimeType || "").indexOf("pdf") !== -1 ? "📕" : "📘"));
 
+      var projObj = item.projectId ? projectsData.find(function(p) { return p.id === item.projectId; }) : null;
+      var projTagHtml = projObj
+        ? '<span class="proj-link-tag" title="Collegato al progetto">📂 ' + escapeHtml(projObj.title) + '</span>'
+        : '';
+
       var extActions = item.platform !== "gdrive"
-        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal(\'' + item.id + '\')">✏️</button>' +
-          '<button type="button" class="file-icon-btn" title="Elimina collegamento" onclick="deleteModExternalLink(\'' + item.id + '\')">✕</button>'
+        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal(\'' + item.id + '\', null)">✏️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina collegamento" onclick="deleteModExternalLink(\'' + item.id + '\')">✕</button>'
         : '';
 
       return '<div class="drive-file-card' + isAct + '" style="--file-color:' + borderCol + ';" onclick="openModItemPreview(\'' + item.id + '\')">' +
@@ -3273,6 +3470,7 @@
           '<div class="drive-file-meta">' +
             '<span class="platform-badge ' + item.platform + '">' + (platformLabels[item.platform] || "Drive") + '</span>' +
             '<span class="file-folder-tag" style="--file-color:' + secCol + ';">' + escapeHtml(item.sector || "Generale") + '</span>' +
+            projTagHtml +
           '</div>' +
         '</div>' +
         '<div class="file-actions" onclick="event.stopPropagation()">' +
@@ -3313,15 +3511,17 @@
     } else {
       var platTitle = item.platform === "onedrive" ? "Microsoft OneDrive" : (item.platform === "sharepoint" ? "Microsoft SharePoint" : "Risorsa Esterna");
       var platColor = item.platform === "onedrive" ? "#29b6f6" : (item.platform === "sharepoint" ? "#26a69a" : "#ffb74d");
+      var projObj = item.projectId ? projectsData.find(function(p) { return p.id === item.projectId; }) : null;
 
       bodyEl.innerHTML =
         '<div class="ext-module-card" style="border-top:4px solid ' + platColor + ';">' +
-          '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+          '<div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">' +
             '<span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:' + platColor + ';">' + platTitle + '</span>' +
             '<span class="file-folder-tag" style="--file-color:#b39ddb;">' + escapeHtml(item.sector || "Generale") + '</span>' +
           '</div>' +
           '<h3 style="font-size:1.15rem; color:var(--text);">' + escapeHtml(item.title) + '</h3>' +
           '<div style="font-size:0.84rem; color:var(--muted);">Formato: <strong style="color:var(--text);">' + escapeHtml(item.format || "Documento") + '</strong></div>' +
+          (projObj ? '<div style="font-size:0.84rem; color:var(--lilac);">📂 Progetto collegato: <strong>' + escapeHtml(projObj.title) + '</strong></div>' : '') +
           (item.note ? '<div style="background:var(--surface); padding:10px 12px; border-radius:8px; font-size:0.85rem; color:#d1d5db;">' + escapeHtml(item.note) + '</div>' : '') +
           '<div style="font-size:0.75rem; color:var(--muted); word-break:break-all;">' + escapeHtml(item.url) + '</div>' +
           '<a href="' + escapeHtml(item.url) + '" target="_blank" rel="noopener noreferrer" style="background:' + platColor + '; color:#111215; text-align:center; padding:11px 16px; border-radius:9px; font-weight:700; text-decoration:none; margin-top:6px;">↗ Apri documento su ' + platTitle + '</a>' +
@@ -3329,24 +3529,68 @@
     }
   }
 
-  function openModLinkModal(linkId) {
+  function populateProjectsSelect(selectEl, defaultProjId) {
+    var html = '<option value="">— Nessun progetto collegato —</option>';
+    projectsData.forEach(function(p) {
+      var sel = (p.id === defaultProjId) ? " selected" : "";
+      html += '<option value="' + p.id + '"' + sel + '>📂 [' + escapeHtml(p.dept) + '] ' + escapeHtml(p.title) + '</option>';
+    });
+    selectEl.innerHTML = html;
+  }
+
+  function openAssignProjDocModal(docId) {
+    var item = getAllUnifiedModules().find(function(i) { return i.id === docId; });
+    if (!item) return;
+    assigningDocId = docId;
+    document.getElementById("assignProjDocLabel").innerText = "Documento: " + item.title;
+    populateProjectsSelect(document.getElementById("assignProjDocSelect"), item.projectId || "");
+    document.getElementById("assignProjDocModal").style.display = "flex";
+  }
+
+  async function confirmAssignDocToProject() {
+    var targetProjId = document.getElementById("assignProjDocSelect").value;
+    document.getElementById("assignProjDocModal").style.display = "none";
+    if (!assigningDocId) return;
+
+    if (targetProjId) {
+      docProjectMap[assigningDocId] = targetProjId;
+    } else {
+      delete docProjectMap[assigningDocId];
+    }
+
+    var extItem = modExternalLinks.find(function(x) { return x.id === assigningDocId; });
+    if (extItem) {
+      extItem.projectId = targetProjId;
+    }
+
+    renderModFilterBar();
+    renderModItemsList();
+    if (selectedModItemId === assigningDocId) openModItemPreview(assigningDocId);
+    renderProjectsList();
+    renderProjectDetail();
+    await syncModExternalLinksToDrive();
+  }
+
+  function openModLinkModal(linkId, preselectProjectId) {
     editingModLinkId = linkId;
     var modalTitle = document.getElementById("modLinkModalTitle");
     var titleIn = document.getElementById("modLinkTitleInput");
     var platIn = document.getElementById("modLinkPlatformInput");
     var fmtIn = document.getElementById("modLinkFormatInput");
     var secIn = document.getElementById("modLinkSectorInput");
+    var projSel = document.getElementById("modLinkProjectSelect");
     var urlIn = document.getElementById("modLinkUrlInput");
     var noteIn = document.getElementById("modLinkNoteInput");
 
     if (linkId) {
       var item = modExternalLinks.find(function(x) { return x.id === linkId; });
       if (!item) return;
-      modalTitle.innerText = "✏️ Modifica Collegamento Modulistica";
+      modalTitle.innerText = "✏️ Modifica Collegamento Documento";
       titleIn.value = item.title || "";
       platIn.value = item.platform || "onedrive";
       fmtIn.value = item.format || "Word (.docx)";
       secIn.value = item.sector || "Segreteria";
+      populateProjectsSelect(projSel, item.projectId || "");
       urlIn.value = item.url || "";
       noteIn.value = item.note || "";
     } else {
@@ -3354,7 +3598,9 @@
       titleIn.value = "";
       platIn.value = "onedrive";
       fmtIn.value = "Word (.docx)";
-      secIn.value = "Segreteria";
+      var preProj = preselectProjectId ? projectsData.find(function(p) { return p.id === preselectProjectId; }) : null;
+      secIn.value = preProj ? preProj.dept : "Segreteria";
+      populateProjectsSelect(projSel, preselectProjectId || "");
       urlIn.value = "https://";
       noteIn.value = "";
     }
@@ -3368,11 +3614,12 @@
     var platform = document.getElementById("modLinkPlatformInput").value;
     var format = document.getElementById("modLinkFormatInput").value;
     var sector = document.getElementById("modLinkSectorInput").value.trim() || "Generale";
+    var projectId = document.getElementById("modLinkProjectSelect").value || "";
     var url = document.getElementById("modLinkUrlInput").value.trim();
     var note = document.getElementById("modLinkNoteInput").value.trim();
 
     if (!title || !url) {
-      alert("Inserisci il nome del modulo e il collegamento.");
+      alert("Inserisci il nome del documento e il collegamento.");
       return;
     }
 
@@ -3387,9 +3634,12 @@
         existing.platform = platform;
         existing.format = format;
         existing.sector = sector;
+        existing.projectId = projectId;
         existing.url = url;
         existing.note = note;
         existing.modifiedTime = new Date().toISOString();
+        if (projectId) docProjectMap[existing.id] = projectId;
+        else delete docProjectMap[existing.id];
       }
     } else {
       var newId = "ext_" + Date.now();
@@ -3399,16 +3649,20 @@
         platform: platform,
         format: format,
         sector: sector,
+        projectId: projectId,
         url: url,
         note: note,
         modifiedTime: new Date().toISOString()
       });
+      if (projectId) docProjectMap[newId] = projectId;
       selectedModItemId = newId;
     }
 
     document.getElementById("modLinkModal").style.display = "none";
     renderModFilterBar();
     renderModItemsList();
+    renderProjectsList();
+    renderProjectDetail();
     if (selectedModItemId) openModItemPreview(selectedModItemId);
     await syncModExternalLinksToDrive();
   }
@@ -3419,6 +3673,7 @@
     if (!confirm("Vuoi rimuovere il collegamento '" + item.title + "'?")) return;
 
     modExternalLinks = modExternalLinks.filter(function(x) { return x.id !== linkId; });
+    delete docProjectMap[linkId];
     if (selectedModItemId === linkId) {
       selectedModItemId = null;
       document.getElementById("modPreviewActions").style.display = "none";
@@ -3426,10 +3681,12 @@
     }
     renderModFilterBar();
     renderModItemsList();
+    renderProjectsList();
+    renderProjectDetail();
     await syncModExternalLinksToDrive();
   }
 
-  // ==================== 7. LAUNCHER PORTALI & APP ====================
+  // ==================== 7. LAUNCHER PORTALI & APP (DRAG & DROP + SCELTA BROWSER) ====================
   async function loadLauncherConfigFromDrive() {
     if (!accessToken || !rootDriveFolderId) return;
     try {
@@ -3498,6 +3755,18 @@
         }
       }
     } catch (e) {}
+  }
+
+  function resolveLaunchUrl(item) {
+    var rawUrl = (item.url || "#").trim();
+    var br = item.browser || "default";
+    if (br === "edge" && /^https?:\/\//i.test(rawUrl)) {
+      return "microsoft-edge:" + rawUrl;
+    }
+    if (br === "chrome" && /^https?:\/\//i.test(rawUrl)) {
+      return "googlechrome://navigate?url=" + encodeURIComponent(rawUrl);
+    }
+    return rawUrl;
   }
 
   function getLauncherThemes() {
@@ -3571,6 +3840,8 @@
       groups[th].push(item);
     });
 
+    var browserNames = { default: "", edge: "Edge", chrome: "Chrome" };
+
     var html = "";
     Object.keys(groups).forEach(function(themeName) {
       var items = groups[themeName];
@@ -3583,8 +3854,18 @@
 
       items.forEach(function(item) {
         var accent = item.color || "#b39ddb";
-        var safeUrl = escapeHtml(item.url || "#");
-        html += '<a class="launch-tile" href="' + safeUrl + '" target="_blank" rel="noopener noreferrer" style="--tile-accent:' + accent + ';">' +
+        var finalHref = escapeHtml(resolveLaunchUrl(item));
+        var isCustomProtocol = (item.browser === "edge" || item.browser === "chrome");
+        var targetAttr = isCustomProtocol ? "" : ' target="_blank" rel="noopener noreferrer"';
+        var brLabel = browserNames[item.browser || "default"];
+        var brBadge = brLabel ? '<span class="browser-pill">' + brLabel + '</span>' : '';
+
+        html += '<a class="launch-tile" draggable="true" data-lnc-id="' + item.id + '" href="' + finalHref + '"' + targetAttr + ' style="--tile-accent:' + accent + ';" ' +
+          'ondragstart="handleTileDragStart(event, \'' + item.id + '\')" ' +
+          'ondragover="handleTileDragOver(event)" ' +
+          'ondragleave="handleTileDragLeave(event)" ' +
+          'ondrop="handleTileDrop(event, \'' + item.id + '\')" ' +
+          'ondragend="handleTileDragEnd(event)">' +
           '<div class="launch-tile-top">' +
             '<div class="launch-icon-box">' + escapeHtml(item.icon || "🌐") + '</div>' +
             '<div class="launch-tile-actions" onclick="event.preventDefault(); event.stopPropagation();">' +
@@ -3598,7 +3879,7 @@
           '</div>' +
           '<div class="launch-footer">' +
             '<span>' + escapeHtml(item.type || "Portale Web") + '</span>' +
-            '<span>Apri ↗</span>' +
+            '<div style="display:flex; align-items:center; gap:6px;">' + brBadge + '<span>Apri ↗</span></div>' +
           '</div>' +
         '</a>';
       });
@@ -3609,12 +3890,60 @@
     container.innerHTML = html;
   }
 
+  function handleTileDragStart(e, itemId) {
+    draggedLauncherId = itemId;
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", itemId);
+    if (e.currentTarget) e.currentTarget.classList.add("dragging");
+  }
+
+  function handleTileDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    if (e.currentTarget) e.currentTarget.classList.add("drag-over");
+  }
+
+  function handleTileDragLeave(e) {
+    if (e.currentTarget) e.currentTarget.classList.remove("drag-over");
+  }
+
+  function handleTileDragEnd(e) {
+    document.querySelectorAll(".launch-tile").forEach(function(el) {
+      el.classList.remove("dragging");
+      el.classList.remove("drag-over");
+    });
+  }
+
+  async function handleTileDrop(e, targetId) {
+    e.preventDefault();
+    e.stopPropagation();
+    handleTileDragEnd(e);
+
+    if (!draggedLauncherId || draggedLauncherId === targetId) return;
+
+    var fromIdx = launcherItems.findIndex(function(x) { return x.id === draggedLauncherId; });
+    var toIdx = launcherItems.findIndex(function(x) { return x.id === targetId; });
+    if (fromIdx === -1 || toIdx === -1) return;
+
+    var movedItem = launcherItems.splice(fromIdx, 1)[0];
+    if (launcherItems[toIdx] && launcherItems[toIdx].theme) {
+      movedItem.theme = launcherItems[toIdx].theme;
+    }
+    launcherItems.splice(toIdx, 0, movedItem);
+    draggedLauncherId = null;
+
+    renderLauncherThemeBar();
+    renderLauncherGrid();
+    await syncLauncherConfigToDrive();
+  }
+
   function openLauncherModal(itemId) {
     editingLauncherId = itemId;
     var modalTitle = document.getElementById("launcherModalTitle");
     var titleIn = document.getElementById("lncTitleInput");
     var themeIn = document.getElementById("lncThemeInput");
     var urlIn = document.getElementById("lncUrlInput");
+    var browserIn = document.getElementById("lncBrowserInput");
     var typeIn = document.getElementById("lncTypeInput");
     var iconIn = document.getElementById("lncIconInput");
     var descIn = document.getElementById("lncDescInput");
@@ -3626,6 +3955,7 @@
       titleIn.value = item.title || "";
       themeIn.value = item.theme || "Portali PA & Enti";
       urlIn.value = item.url || "";
+      browserIn.value = item.browser || "default";
       typeIn.value = item.type || "Portale Web";
       iconIn.value = item.icon || "🌐";
       descIn.value = item.desc || "";
@@ -3635,6 +3965,7 @@
       titleIn.value = "";
       themeIn.value = (activeLauncherTheme !== "ALL") ? activeLauncherTheme : "Portali PA & Enti";
       urlIn.value = "https://";
+      browserIn.value = "default";
       typeIn.value = "Portale Web";
       iconIn.value = "🏛️";
       descIn.value = "";
@@ -3678,6 +4009,7 @@
     var title = document.getElementById("lncTitleInput").value.trim();
     var theme = document.getElementById("lncThemeInput").value.trim() || "Generale";
     var url = document.getElementById("lncUrlInput").value.trim();
+    var browser = document.getElementById("lncBrowserInput").value || "default";
     var type = document.getElementById("lncTypeInput").value;
     var icon = document.getElementById("lncIconInput").value.trim() || "🌐";
     var desc = document.getElementById("lncDescInput").value.trim();
@@ -3697,6 +4029,7 @@
         existing.title = title;
         existing.theme = theme;
         existing.url = url;
+        existing.browser = browser;
         existing.type = type;
         existing.icon = icon;
         existing.color = selectedLauncherColor;
@@ -3708,6 +4041,7 @@
         title: title,
         theme: theme,
         url: url,
+        browser: browser,
         type: type,
         icon: icon,
         color: selectedLauncherColor,
@@ -3742,3 +4076,4 @@
 </script>
 </body>
 </html>
+<!-- FINE PARTE 2B -->
