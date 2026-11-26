@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH v8 — Agenda, Progetti, Appunti, Documenti & Portali</title>
+  <title>PIKDASH 0.9B — Agenda, Progetti, Appunti, Documenti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -52,12 +52,12 @@
       gap: 12px;
     }
 
-    /* LOGO PIKDASH BENTO (DA IMMAGINE SCELTA) */
+    /* LOGO PIKDASH BENTO + VERSIONE */
     .brand-col {
       display: flex;
       align-items: center;
       gap: 11px;
-      min-width: 195px;
+      min-width: 215px;
     }
 
     .logo-container {
@@ -71,7 +71,7 @@
 
     .logo-container svg { width: 100%; height: 100%; }
 
-    .brand-text-wrapper { display: flex; flex-direction: column; gap: 2px; }
+    .brand-text-wrapper { display: flex; flex-direction: column; gap: 3px; }
 
     .brand-title {
       font-size: 1.24rem;
@@ -81,9 +81,20 @@
       color: var(--text);
       display: flex;
       align-items: center;
+      gap: 6px;
     }
 
     .brand-title .brand-dash { color: var(--lilac); }
+    .brand-ver {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: var(--lilac-dim);
+      border: 1px solid var(--lilac-glow);
+      color: var(--lilac);
+    }
     .brand-sub { font-size: 0.69rem; color: var(--muted); line-height: 1; }
 
     /* TILE TABS (6 SCHEDE) */
@@ -529,10 +540,66 @@
       border-radius: 10px;
       padding: 18px 22px;
       line-height: 1.6;
-      font-size: 0.91rem;
-      white-space: pre-wrap;
+      font-size: 0.92rem;
       color: #e2e5e9;
     }
+
+    /* STILE CONTENUTO RICH-TEXT IN ANTEPRIMA APPUNTI */
+    .rich-preview-content p { margin-bottom: 10px; }
+    .rich-preview-content ul, .rich-preview-content ol { margin: 8px 0 12px 22px; }
+    .rich-preview-content li { margin-bottom: 4px; }
+    .rich-preview-content strong, .rich-preview-content b { color: #ffffff; font-weight: 700; }
+    .rich-preview-content a { color: var(--dash-event); text-decoration: underline; }
+    .rich-preview-content h1, .rich-preview-content h2, .rich-preview-content h3 {
+      color: var(--lilac);
+      margin: 12px 0 6px;
+      line-height: 1.3;
+    }
+
+    /* EDITOR RICH-TEXT NEL MODALE NUOVO APPUNTO */
+    .rich-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 7px 9px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 8px 8px 0 0;
+    }
+    .rich-tool-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 4px 9px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .rich-tool-btn:hover { border-color: var(--lilac); background: var(--card-hover); }
+    .rich-editor-area {
+      width: 100%;
+      min-height: 220px;
+      max-height: 360px;
+      overflow-y: auto;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 0 0 8px 8px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.55;
+      outline: none;
+    }
+    .rich-editor-area:focus { border-color: var(--lilac); }
+    .rich-editor-area:empty:before {
+      content: attr(data-placeholder);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    .rich-editor-area ul, .rich-editor-area ol { margin-left: 22px; margin-bottom: 8px; }
+    .rich-editor-area a { color: var(--dash-event); }
 
     .pdf-embed-frame { width: 100%; height: 100%; border: none; border-radius: 8px; background: #1a1c22; }
     .ext-module-card {
@@ -606,7 +673,7 @@
     /* MODALS */
     .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.74); display: none; align-items: center; justify-content: center; z-index: 50; }
     .modal { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 22px; width: 490px; max-width: 94vw; }
-    .modal.wide { width: 620px; }
+    .modal.wide { width: 650px; }
     .modal h3 { margin-bottom: 14px; font-size: 1.05rem; }
     .modal label { display: block; font-size: 0.81rem; color: var(--muted); margin: 10px 0 4px; }
     .modal input, .modal select, .modal textarea {
@@ -635,24 +702,21 @@
 
   <header>
     <div class="brand-col">
-      <!-- LOGO PIKDASH BENTO (9 TASSELLI LILLA/CIANO) -->
+      <!-- LOGO PIKDASH BENTO -->
       <div class="logo-container">
         <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Colonna 1: tassello alto-sx + barra verticale alta -->
           <rect x="2" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
           <rect x="2" y="13.5" width="9" height="20.5" rx="2.5" fill="#B39DDB"/>
-          <!-- Colonna 2: due tasselli lilla + uno ciano in basso -->
           <rect x="13.5" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
           <rect x="13.5" y="13.5" width="9" height="9" rx="2.5" fill="#B39DDB"/>
           <rect x="13.5" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
-          <!-- Colonna 3: tre tasselli ciano -->
           <rect x="25" y="2" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
           <rect x="25" y="13.5" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
           <rect x="25" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
         </svg>
       </div>
       <div class="brand-text-wrapper">
-        <span class="brand-title">PIK<span class="brand-dash">DASH</span></span>
+        <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.9B</span></span>
         <span class="brand-sub">Comune di San Martino di Venezze</span>
       </div>
     </div>
@@ -667,7 +731,7 @@
       <button type="button" class="tile-tab" data-view="viewPromemoria">
         <span class="tile-icon">☑️</span>
         <span class="tile-title">Promemoria</span>
-        <span class="tile-sub">Contatti e verifiche</span>
+        <span class="tile-sub">Contatti e rapide</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewProgetti">
         <span class="tile-icon">📂</span>
@@ -677,7 +741,7 @@
       <button type="button" class="tile-tab" data-view="viewAppunti">
         <span class="tile-icon">📝</span>
         <span class="tile-title">Appunti</span>
-        <span class="tile-sub">Drive e note libere</span>
+        <span class="tile-sub">Drive e note ricche</span>
       </button>
       <button type="button" class="tile-tab" data-view="viewDocumenti">
         <span class="tile-icon">📄</span>
@@ -789,13 +853,13 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 2: PROMEMORIA & CONTATTI ==================== -->
+  <!-- ==================== VISTA 2: PROMEMORIA & COSE RAPIDE DA FARE ==================== -->
   <section id="viewPromemoria" class="view-section">
     <div class="quick-memo-bar">
       <select id="memoCategory">
         <option value="TELEFONATE">📞 Telefonate da richiamare</option>
         <option value="PERSONE">👤 Persone da contattare</option>
-        <option value="VERIFICARE">🔍 Cose da verificare</option>
+        <option value="RAPIDE">⚡ Cose rapide da fare</option>
         <option value="IDEE">💡 Idee e promemoria</option>
       </select>
       <select id="memoPriority">
@@ -803,7 +867,7 @@
         <option value="med" selected>🟡 Media</option>
         <option value="low">🟣 Normale</option>
       </select>
-      <input type="text" id="memoInput" placeholder="Scrivi qui nome, numero o promemoria e premi Invio...">
+      <input type="text" id="memoInput" placeholder="Scrivi qui nome, numero o attività rapida e premi Invio...">
       <button type="button" id="btnAddMemo" class="primary">+ Aggiungi</button>
     </div>
 
@@ -826,10 +890,10 @@
 
       <div class="card">
         <div class="card-header">
-          <span class="card-title">🔍 Cose da verificare</span>
-          <span style="font-size:0.76rem; color:var(--muted);" id="cnt-VERIFICARE">0</span>
+          <span class="card-title">⚡ Cose rapide da fare</span>
+          <span style="font-size:0.76rem; color:var(--muted);" id="cnt-RAPIDE">0</span>
         </div>
-        <div class="tasks-list" id="list-VERIFICARE"></div>
+        <div class="tasks-list" id="list-RAPIDE"></div>
       </div>
 
       <div class="card">
@@ -886,7 +950,6 @@
             <input type="text" id="projStatusNoteInput" class="proj-status-input" placeholder="Es. In attesa parere ULSS, Bozza determina inviata per firma...">
           </div>
 
-          <!-- CORPO DIVISO IN 2: FASI OPERATIVE A SINISTRA + DOCUMENTI CORRELATI A DESTRA -->
           <div class="proj-split-body">
             <div class="proj-subpanel">
               <div class="proj-subpanel-head">
@@ -912,7 +975,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 4: APPUNTI DRIVE & NOTE LIBERE ==================== -->
+  <!-- ==================== VISTA 4: APPUNTI DRIVE & NOTE FORMATTATE ==================== -->
   <section id="viewAppunti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -943,7 +1006,7 @@
             <a id="btnOpenDocExternal" href="#" target="_blank" style="background:var(--lilac); color:#121316; padding:6px 12px; border-radius:8px; font-size:0.8rem; font-weight:600; text-decoration:none;">↗ Google Docs</a>
           </div>
         </div>
-        <div class="drive-preview-body" id="drivePreviewBody">Seleziona un documento dall'elenco a sinistra oppure clicca su "+ Nuovo Appunto" per scrivere una nota libera e salvarla su Google Drive nella cartella colorata che preferisci.</div>
+        <div class="drive-preview-body rich-preview-content" id="drivePreviewBody">Seleziona un documento dall'elenco a sinistra oppure clicca su "+ Nuovo Appunto" per scrivere o incollare una nota formattata su Google Drive nella cartella colorata che preferisci.</div>
       </div>
     </div>
   </section>
@@ -1074,7 +1137,7 @@
     </div>
   </div>
 
-  <!-- MODALE PULSANTE PORTALE / APP (CON SCELTA BROWSER) -->
+  <!-- MODALE PULSANTE PORTALE / APP (CON SCELTA BROWSER INCLUSO FIREFOX) -->
   <div class="modal-backdrop" id="launcherModal">
     <div class="modal">
       <h3 id="launcherModalTitle">🚀 Nuovo Pulsante Rapido</h3>
@@ -1104,8 +1167,9 @@
           <label>Browser di apertura:</label>
           <select id="lncBrowserInput">
             <option value="default">🌐 Browser Predefinito</option>
-            <option value="edge">🔷 Microsoft Edge (Windows)</option>
+            <option value="edge">🔷 Microsoft Edge</option>
             <option value="chrome">🟡 Google Chrome</option>
+            <option value="firefox">🦊 Mozilla Firefox</option>
           </select>
         </div>
         <div>
@@ -1230,10 +1294,10 @@
     </div>
   </div>
 
-  <!-- MODALE CREA APPUNTO LIBERO SU DRIVE -->
+  <!-- MODALE CREA APPUNTO FORMATTATO SU DRIVE (RICH-TEXT EDITOR) -->
   <div class="modal-backdrop" id="freeNoteModal">
     <div class="modal wide">
-      <h3>📝 Nuovo Appunto Libero (Google Docs)</h3>
+      <h3>📝 Nuovo Appunto Formattato (Google Docs)</h3>
       <div class="modal-row-2">
         <div>
           <label>Titolo Appunto:</label>
@@ -1244,8 +1308,16 @@
           <select id="freeNoteFolderSelect"></select>
         </div>
       </div>
-      <label>Testo dell'appunto:</label>
-      <textarea id="freeNoteBodyInput" rows="10" placeholder="Scrivi qui il testo dell'appunto..."></textarea>
+      <label>Testo dell'appunto (supporta incolla formattato da Gemini/Web):</label>
+      <div class="rich-toolbar">
+        <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execRichCmd('bold')" title="Grassetto"><strong>B</strong></button>
+        <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execRichCmd('italic')" title="Corsivo"><em>I</em></button>
+        <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execRichCmd('underline')" title="Sottolineato"><u>U</u></button>
+        <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execRichCmd('insertUnorderedList')" title="Elenco puntato">• Elenco</button>
+        <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execRichCmd('insertOrderedList')" title="Elenco numerato">1. Elenco</button>
+        <button type="button" class="rich-tool-btn" onmousedown="event.preventDefault(); execRichCmd('removeFormat')" title="Rimuovi formattazione">🧹 Pulisci</button>
+      </div>
+      <div id="freeNoteRichEditor" class="rich-editor-area" contenteditable="true" data-placeholder="Scrivi qui oppure incolla (Ctrl+V) mantenendo grassetti, elenchi e link..."></div>
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
         <button type="button" id="btnCancelFreeNote">Annulla</button>
         <button type="button" id="btnSaveFreeNote" class="primary">☁️ Salva su Google Drive</button>
@@ -1285,14 +1357,14 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH</h3>
+      <h3>⚙️ Configurazione PIKDASH 0.9B</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
       <input type="text" id="cfgClientId" value="944286670464-v1j1vdvo2pik0t5jjvm89k3c1od3nh0f.apps.googleusercontent.com">
       <label>Lista Tasks — Obiettivi Settimanali:</label>
       <input type="text" id="cfgTasksList" value="Obiettivi Settimanali">
-      <label>Lista Tasks — Promemoria & Contatti:</label>
+      <label>Lista Tasks — Promemoria & Cose Rapide:</label>
       <input type="text" id="cfgMemoList" value="Dashboard Promemoria">
       <label>Lista Tasks — Progetti:</label>
       <input type="text" id="cfgProjectsList" value="Dashboard Progetti">
@@ -1307,7 +1379,7 @@
     </div>
   </div>
 <!-- FINE PARTE 1 -->
-<!-- INIZIO PARTE 2A -->
+<!-- INIZIO PARTE 2 -->
 <script>
   var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive";
   var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
@@ -1371,7 +1443,7 @@
   var selectedSwatchColor = FOLDER_PALETTE[0].hex;
   var movingDocId = null;
 
-  // Stato Documenti & Modulistica (Google Drive + Collegamenti OneDrive / SharePoint + Progetti)
+  // Stato Documenti & Modulistica
   var modRootFolderId = null;
   var modSubfolders = [];
   var modDriveFiles = [];
@@ -1615,7 +1687,7 @@
       renderDriveList();
     };
 
-    // Appunti Drive (inclusa eliminazione)
+    // Appunti Drive (formattazione + eliminazione)
     document.getElementById("btnNewFreeNote").onclick = openFreeNoteModal;
     document.getElementById("btnCancelFreeNote").onclick = function() {
       document.getElementById("freeNoteModal").style.display = "none";
@@ -1661,7 +1733,7 @@
       if (selectedDriveFileId) openMoveDocModal(selectedDriveFileId);
     };
 
-    // Documenti & Modulistica (Drive + OneDrive / SharePoint + Associazione a Progetto)
+    // Documenti & Modulistica
     document.getElementById("btnNewModLink").onclick = function() { openModLinkModal(null, null); };
     document.getElementById("btnCancelModLinkModal").onclick = function() {
       document.getElementById("modLinkModal").style.display = "none";
@@ -2156,8 +2228,7 @@
     document.getElementById("tasksCounter").innerText = doneCount + "/" + total + " completati";
     document.getElementById("tasksProgressFill").style.width = pct + "%";
     document.getElementById("tasksProgressPct").innerText = pct + "%";
-<!-- FINE PARTE 2A -->
-<!-- INIZIO PARTE 2B -->
+
     if (total === 0) {
       listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun obiettivo in lista.</p>';
       return;
@@ -2212,13 +2283,16 @@
       saveCachedSnapshot();
     }
   }
-
-  // ==================== 3. PROMEMORIA & CONTATTI ====================
+<!-- FINE PARTE 2 -->
+<!-- INIZIO PARTE 3 -->
+  // ==================== 3. PROMEMORIA & COSE RAPIDE DA FARE ====================
   function parseMemoTitle(rawTitle) {
-    var match = (rawTitle || "").match(/^\[(TELEFONATE|PERSONE|VERIFICARE|IDEE)\|(high|med|low)\]\s*(.*)$/i);
+    var match = (rawTitle || "").match(/^\[(TELEFONATE|PERSONE|RAPIDE|VERIFICARE|IDEE)\|(high|med|low)\]\s*(.*)$/i);
     if (match) {
+      var cat = match[1].toUpperCase();
+      if (cat === "VERIFICARE") cat = "RAPIDE";
       return {
-        category: match[1].toUpperCase(),
+        category: cat,
         priority: match[2].toLowerCase(),
         title: match[3]
       };
@@ -2249,7 +2323,7 @@
   }
 
   function renderAllMemos() {
-    var cats = ["TELEFONATE", "PERSONE", "VERIFICARE", "IDEE"];
+    var cats = ["TELEFONATE", "PERSONE", "RAPIDE", "IDEE"];
     var prioWeight = { high: 1, med: 2, low: 3 };
     var prioLabels = { high: "Urgente", med: "Media", low: "Normale" };
 
@@ -2257,7 +2331,10 @@
       var listEl = document.getElementById("list-" + cat);
       var cntEl = document.getElementById("cnt-" + cat);
       var items = memoItems
-        .filter(function(m) { return m.category === cat; })
+        .filter(function(m) {
+          if (cat === "RAPIDE") return m.category === "RAPIDE" || m.category === "VERIFICARE";
+          return m.category === cat;
+        })
         .sort(function(a, b) {
           if (a.done !== b.done) return a.done ? 1 : -1;
           return (prioWeight[a.priority] || 3) - (prioWeight[b.priority] || 3);
@@ -2746,7 +2823,62 @@
     setSyncBadge("● Sync " + nowStr, true);
   }
 
-  // ==================== 5. APPUNTI DRIVE (CON ELIMINAZIONE NEL CESTINO DRIVE) ====================
+  // ==================== 5. APPUNTI DRIVE (RICH-TEXT FORMATTATO + ELIMINAZIONE) ====================
+  function execRichCmd(cmd) {
+    document.execCommand(cmd, false, null);
+    var ed = document.getElementById("freeNoteRichEditor");
+    if (ed) ed.focus();
+  }
+
+  function sanitizeHtmlFragment(rawHtml) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(rawHtml || "", "text/html");
+    var allowedTags = {
+      P: 1, BR: 1, B: 1, STRONG: 1, I: 1, EM: 1, U: 1,
+      UL: 1, OL: 1, LI: 1, H1: 1, H2: 1, H3: 1, A: 1, DIV: 1, SPAN: 1, BLOCKQUOTE: 1, HR: 1
+    };
+
+    function cleanNode(node) {
+      var children = Array.prototype.slice.call(node.childNodes);
+      children.forEach(function(child) {
+        if (child.nodeType === 1) {
+          var tag = child.tagName.toUpperCase();
+          if (tag === "SCRIPT" || tag === "STYLE" || tag === "META" || tag === "LINK") {
+            node.removeChild(child);
+            return;
+          }
+          if (!allowedTags[tag]) {
+            cleanNode(child);
+            while (child.firstChild) {
+              node.insertBefore(child.firstChild, child);
+            }
+            node.removeChild(child);
+            return;
+          }
+          var attrs = Array.prototype.slice.call(child.attributes);
+          attrs.forEach(function(attr) {
+            var aName = attr.name.toLowerCase();
+            if (tag === "A" && aName === "href") {
+              var hrefVal = attr.value.trim();
+              if (!/^https?:\/\//i.test(hrefVal) && !/^mailto:/i.test(hrefVal)) {
+                child.removeAttribute("href");
+              } else {
+                child.setAttribute("target", "_blank");
+                child.setAttribute("rel", "noopener noreferrer");
+              }
+            } else {
+              child.removeAttribute(attr.name);
+            }
+          });
+          cleanNode(child);
+        }
+      });
+    }
+
+    cleanNode(doc.body);
+    return doc.body.innerHTML;
+  }
+
   async function loadDriveNotesAndFolders() {
     var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
     document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
@@ -2817,31 +2949,32 @@
     if (!accessToken || !rootDriveFolderId) { requestAuth(false); return; }
     var todayStr = new Date().toLocaleDateString("it-IT");
     document.getElementById("freeNoteTitleInput").value = "Nota del " + todayStr;
-    document.getElementById("freeNoteBodyInput").value = "";
+    document.getElementById("freeNoteRichEditor").innerHTML = "";
 
     var defaultTarget = (activeFolderFilter !== "ALL" && activeFolderFilter !== "ROOT") ? activeFolderFilter : rootDriveFolderId;
     populateFolderSelect(document.getElementById("freeNoteFolderSelect"), defaultTarget);
 
     document.getElementById("freeNoteModal").style.display = "flex";
-    document.getElementById("freeNoteTitleInput").focus();
+    document.getElementById("freeNoteRichEditor").focus();
   }
 
   async function saveFreeNoteToDrive() {
     var title = document.getElementById("freeNoteTitleInput").value.trim() || ("Nota_" + toIsoDate(new Date()));
     var targetFolderId = document.getElementById("freeNoteFolderSelect").value || rootDriveFolderId;
-    var bodyText = document.getElementById("freeNoteBodyInput").value.trim();
+    var editorEl = document.getElementById("freeNoteRichEditor");
+    var cleanContentHtml = sanitizeHtmlFragment(editorEl.innerHTML);
 
     if (!accessToken) return;
     document.getElementById("freeNoteModal").style.display = "none";
-    setSyncBadge("Creazione appunto su Drive...", false);
+    setSyncBadge("Creazione appunto formattato...", false);
 
     try {
-      var escapedBody = escapeHtml(bodyText).replace(/\n/g, "<br>");
       var htmlBody =
-        "<html><body style='font-family:Arial,sans-serif;line-height:1.5;'>" +
+        "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH il " + new Date().toLocaleDateString("it-IT") + "</p>" +
-        "<hr><p>" + escapedBody + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.9B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<hr>" +
+        (cleanContentHtml || "<p></p>") +
         "</body></html>";
 
       var metadata = {
@@ -3027,7 +3160,7 @@
         '<div class="file-actions" onclick="event.stopPropagation()">' +
           '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile(\'' + f.id + '\')">✏️</button>' +
           '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal(\'' + f.id + '\')">📁</button>' +
-          '<button type="button" class="file-icon-btn del" title="Sposta nel cestino di Drive" onclick="deleteDriveFile(\'' + f.id + '\')">🗑️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina appunto (Cestino Drive)" onclick="deleteDriveFile(\'' + f.id + '\')">🗑️</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -3161,16 +3294,22 @@
       return;
     }
 
-    bodyEl.innerText = "Caricamento contenuto documento...";
+    bodyEl.innerText = "Caricamento contenuto formattato...";
     try {
-      var exportUrl = (file.mimeType === "application/vnd.google-apps.document")
-        ? ("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "/export?mimeType=text/plain")
-        : ("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "?alt=media");
-
-      var res = await fetch(exportUrl, { headers: { "Authorization": "Bearer " + accessToken } });
-      if (!res.ok) throw new Error("Impossibile leggere il contenuto (" + res.status + ")");
-      var text = await res.text();
-      bodyEl.innerText = text.trim() || "(Documento vuoto)";
+      if (file.mimeType === "application/vnd.google-apps.document") {
+        var exportHtmlUrl = "https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "/export?mimeType=text/html";
+        var res = await fetch(exportHtmlUrl, { headers: { "Authorization": "Bearer " + accessToken } });
+        if (!res.ok) throw new Error("Impossibile leggere il contenuto (" + res.status + ")");
+        var htmlText = await res.text();
+        var cleanHtml = sanitizeHtmlFragment(htmlText);
+        bodyEl.innerHTML = cleanHtml.trim() || "<p style='color:var(--muted);'>(Documento vuoto)</p>";
+      } else {
+        var rawUrl = "https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "?alt=media";
+        var rawRes = await fetch(rawUrl, { headers: { "Authorization": "Bearer " + accessToken } });
+        if (!rawRes.ok) throw new Error("Impossibile leggere il contenuto (" + rawRes.status + ")");
+        var plainText = await rawRes.text();
+        bodyEl.innerText = plainText.trim() || "(Documento vuoto)";
+      }
     } catch (err) {
       bodyEl.innerText = "Anteprima non disponibile direttamente (" + err.message + "). Usa il pulsante 'Google Docs' in alto a destra.";
     }
@@ -3686,7 +3825,7 @@
     await syncModExternalLinksToDrive();
   }
 
-  // ==================== 7. LAUNCHER PORTALI & APP (DRAG & DROP + SCELTA BROWSER) ====================
+  // ==================== 7. LAUNCHER PORTALI & APP (DRAG & DROP + EDGE/CHROME/FIREFOX) ====================
   async function loadLauncherConfigFromDrive() {
     if (!accessToken || !rootDriveFolderId) return;
     try {
@@ -3766,6 +3905,9 @@
     if (br === "chrome" && /^https?:\/\//i.test(rawUrl)) {
       return "googlechrome://navigate?url=" + encodeURIComponent(rawUrl);
     }
+    if (br === "firefox" && /^https?:\/\//i.test(rawUrl)) {
+      return "firefox://open-url?url=" + encodeURIComponent(rawUrl);
+    }
     return rawUrl;
   }
 
@@ -3840,7 +3982,7 @@
       groups[th].push(item);
     });
 
-    var browserNames = { default: "", edge: "Edge", chrome: "Chrome" };
+    var browserNames = { default: "", edge: "Edge", chrome: "Chrome", firefox: "Firefox" };
 
     var html = "";
     Object.keys(groups).forEach(function(themeName) {
@@ -3855,7 +3997,7 @@
       items.forEach(function(item) {
         var accent = item.color || "#b39ddb";
         var finalHref = escapeHtml(resolveLaunchUrl(item));
-        var isCustomProtocol = (item.browser === "edge" || item.browser === "chrome");
+        var isCustomProtocol = (item.browser === "edge" || item.browser === "chrome" || item.browser === "firefox");
         var targetAttr = isCustomProtocol ? "" : ' target="_blank" rel="noopener noreferrer"';
         var brLabel = browserNames[item.browser || "default"];
         var brBadge = brLabel ? '<span class="browser-pill">' + brLabel + '</span>' : '';
@@ -4076,4 +4218,4 @@
 </script>
 </body>
 </html>
-<!-- FINE PARTE 2B -->
+<!-- FINE PARTE 3 -->
