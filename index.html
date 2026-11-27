@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 1.2A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
+  <title>PIKDASH 1.3A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer>
 
 </script>
@@ -1378,7 +1378,7 @@
           </svg>
         </div>
         <div class="brand-text-wrapper">
-          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.2A</span></span>
+          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.3A</span></span>
           <span class="brand-sub">Comune di San Martino di Venezze</span>
         </div>
       </div>
@@ -1729,10 +1729,12 @@
         <div class="launcher-filters" id="scadTopicFilterBar"></div>
       </div>
       <div class="launcher-right-tools" style="flex-wrap:wrap; justify-content:flex-end;">
-        <span class="sync-badge" id="pdsAutoSyncStatus" title="Sincronizzazione automatica con lapostadelsindaco.it">🌐 PA Sync: pronto</span>
+        <span class="sync-badge" id="pdsAutoSyncStatus" title="Sincronizzazione automatica con paweb.it">🌐 PA Sync: pronto</span>
         <input type="text" id="scadSearchInput" class="launcher-search" placeholder="🔎 Cerca scadenza, argomento o ente...">
-        <button type="button" id="btnOpenPdsImportModal" class="accent-cyan" title="Importa / Configura scadenze da La Posta del Sindaco">📥 La Posta del Sindaco</button>
+        <a href="https://formula.edkeditore.it/formula/index.php?page=scad" target="_blank" rel="noopener noreferrer" style="background:rgba(179,157,219,0.16); color:var(--lilac); border:1px solid var(--lilac-glow); padding:6px 10px; border-radius:8px; font-size:0.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Apri Formula Scadenzario in una nuova scheda per copiare le voci">📘 Formula ↗</a>
+        <button type="button" id="btnOpenPdsImportModal" class="accent-cyan" title="Importa / Incolla testo / Configura PAWeb">📥 Importa / Incolla</button>
         <button type="button" onclick="printSectionClean()" style="padding:6px 10px; font-size:0.8rem;" title="Stampa elenco scadenze">🖨️ Stampa</button>
+        <button type="button" id="btnClearAllScadenze" class="danger-btn" style="padding:6px 10px; font-size:0.8rem;" title="Svuota ed elimina tutte le scadenze">🧹 Svuota Tutto</button>
         <button type="button" id="btnNewScadenza" class="primary">+ Nuova Scadenza</button>
       </div>
     </div>
@@ -2007,9 +2009,12 @@
   <!-- MODALE IMPORTAZIONE & SYNC AUTOMATICO DA LA POSTA DEL SINDACO -->
   <div class="modal-backdrop" id="pdsImportModal">
     <div class="modal wide">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-        <h3 style="margin:0;">🌐 Scadenzario PA — La Posta del Sindaco</h3>
-        <a href="https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione" target="_blank" rel="noopener noreferrer" style="font-size:0.76rem; color:var(--dash-event); text-decoration:none;">Apri portale ↗</a>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; flex-wrap:wrap;">
+        <h3 style="margin:0;">🌐 Importazione Scadenze PA</h3>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <a href="https://formula.edkeditore.it/formula/index.php?page=scad" target="_blank" rel="noopener noreferrer" style="font-size:0.76rem; color:var(--lilac); font-weight:700; text-decoration:none;">📘 Formula Scadenzario ↗</a>
+          <a href="https://www.paweb.it/scadenzario.php?bdinr=007&color=E1E2E3&font=00607F" target="_blank" rel="noopener noreferrer" style="font-size:0.76rem; color:var(--dash-event); text-decoration:none;">🌐 PAWeb ↗</a>
+        </div>
       </div>
 
       <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:10px;">
@@ -2382,7 +2387,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 1.2A</h3>
+      <h3>⚙️ Configurazione PIKDASH 1.3A</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -4923,7 +4928,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.2A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.3A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -5174,7 +5179,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.2A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.3A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -6419,7 +6424,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  // ==================== ESTENSIONI PIKDASH 1.2A ====================
+  // ==================== ESTENSIONI PIKDASH 1.3A ====================
   var currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   var monthEventsCache = [];
 
@@ -6775,7 +6780,7 @@
     renderTasks();
   });
 
-  // ==================== ESTENSIONI PIKDASH 1.2A ====================
+  // ==================== ESTENSIONI PIKDASH 1.3A ====================
 
   // A. Automazione Ricorrenze nello Scadenzario
   function computeNextRecurringDate(isoDateStr, freq) {
@@ -7066,7 +7071,7 @@
   function exportFullBackupJson() {
     var payload = {
       app: "PIKDASH",
-      version: "1.2A",
+      version: "1.3A",
       exportedAt: new Date().toISOString(),
       scadenzeItems: scadenzeItems,
       teamMembers: teamMembers,
@@ -7187,7 +7192,7 @@
 
 
 
-  // ==================== ESTENSIONI PIKDASH 1.2A ====================
+  // ==================== ESTENSIONI PIKDASH 1.3A ====================
   var noteProjectMap = {};
 
   try {
@@ -7575,7 +7580,7 @@
 
 
 
-  // ==================== ESTENSIONI PIKDASH 1.2A: SCADENZARIO PA & COLORI ARGOMENTI ====================
+  // ==================== ESTENSIONI PIKDASH 1.3A: SCADENZARIO PA & COLORI ARGOMENTI ====================
   var TOPIC_COLOR_MAP = {
     "Affari Generali": "#b39ddb",
     "Segreteria": "#9575cd",
@@ -8514,6 +8519,46 @@
         fetchPdsDeadlinesForMonth(toIsoDate(new Date()).slice(0, 7), true);
       }, 2500);
     }
+  });
+
+
+
+  // ==================== ESTENSIONI PIKDASH 1.3A: PULSANTE RAPIDO FORMULA & SVUOTA SCADENZARIO ====================
+  async function clearAllScadenze() {
+    if (!scadenzeItems || scadenzeItems.length === 0) {
+      alert("Lo scadenzario è già vuoto.");
+      return;
+    }
+    var total = scadenzeItems.length;
+    if (!confirm("⚠️ ATTENZIONE: Vuoi svuotare ed eliminare definitivamente TUTTE le " + total + " scadenze presenti nello scadenzario (incluse quelle importate in automatico)?\n\nL'operazione aggiornerà anche il salvataggio su Google Drive.")) {
+      return;
+    }
+
+    // Registra come ignorate anche quelle importate da PAWeb così non vengono re-importate al sync successivo
+    try {
+      var dismissed = JSON.parse(localStorage.getItem("dash_pds_dismissed") || "[]");
+      scadenzeItems.forEach(function(s) {
+        if (s.source === "paweb" || s.source === "lapostadelsindaco") {
+          var sig = (s.dueDate || "") + "|" + (s.title || "").toLowerCase().slice(0, 50);
+          if (dismissed.indexOf(sig) === -1) dismissed.push(sig);
+        }
+      });
+      localStorage.setItem("dash_pds_dismissed", JSON.stringify(dismissed));
+    } catch (e) {}
+
+    scadenzeItems = [];
+    pdsFetchedCandidates = [];
+    activeScadTopicFilter = "ALL";
+    renderScadFilterBar();
+    renderScadenzeList();
+    renderPdsFetchedList();
+    await syncScadenzeToDrive();
+    setSyncBadge("● Scadenzario svuotato", true);
+  }
+
+  window.addEventListener("load", function() {
+    var btnClearAll = document.getElementById("btnClearAllScadenze");
+    if (btnClearAll) btnClearAll.onclick = clearAllScadenze;
   });
 
 </script>
