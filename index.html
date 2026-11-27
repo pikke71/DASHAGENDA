@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 1.3A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
+  <title>PIKDASH 1.4A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer>
 
 </script>
@@ -1378,7 +1378,7 @@
           </svg>
         </div>
         <div class="brand-text-wrapper">
-          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.3A</span></span>
+          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.4A</span></span>
           <span class="brand-sub">Comune di San Martino di Venezze</span>
         </div>
       </div>
@@ -1729,10 +1729,9 @@
         <div class="launcher-filters" id="scadTopicFilterBar"></div>
       </div>
       <div class="launcher-right-tools" style="flex-wrap:wrap; justify-content:flex-end;">
-        <span class="sync-badge" id="pdsAutoSyncStatus" title="Sincronizzazione automatica con paweb.it">🌐 PA Sync: pronto</span>
+        <span class="sync-badge" id="pdsAutoSyncStatus" title="Stato lettura La Posta del Sindaco">📰 Posta del Sindaco</span>
         <input type="text" id="scadSearchInput" class="launcher-search" placeholder="🔎 Cerca scadenza, argomento o ente...">
-        <a href="https://formula.edkeditore.it/formula/index.php?page=scad" target="_blank" rel="noopener noreferrer" style="background:rgba(179,157,219,0.16); color:var(--lilac); border:1px solid var(--lilac-glow); padding:6px 10px; border-radius:8px; font-size:0.78rem; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:4px;" title="Apri Formula Scadenzario in una nuova scheda per copiare le voci">📘 Formula ↗</a>
-        <button type="button" id="btnOpenPdsImportModal" class="accent-cyan" title="Importa / Incolla testo / Configura PAWeb">📥 Importa / Incolla</button>
+        <button type="button" id="btnOpenPdsImportModal" class="accent-cyan" title="Importa o incolla scadenze da La Posta del Sindaco">📥 La Posta del Sindaco</button>
         <button type="button" onclick="printSectionClean()" style="padding:6px 10px; font-size:0.8rem;" title="Stampa elenco scadenze">🖨️ Stampa</button>
         <button type="button" id="btnClearAllScadenze" class="danger-btn" style="padding:6px 10px; font-size:0.8rem;" title="Svuota ed elimina tutte le scadenze">🧹 Svuota Tutto</button>
         <button type="button" id="btnNewScadenza" class="primary">+ Nuova Scadenza</button>
@@ -2010,11 +2009,8 @@
   <div class="modal-backdrop" id="pdsImportModal">
     <div class="modal wide">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:8px; flex-wrap:wrap;">
-        <h3 style="margin:0;">🌐 Importazione Scadenze PA</h3>
-        <div style="display:flex; align-items:center; gap:10px;">
-          <a href="https://formula.edkeditore.it/formula/index.php?page=scad" target="_blank" rel="noopener noreferrer" style="font-size:0.76rem; color:var(--lilac); font-weight:700; text-decoration:none;">📘 Formula Scadenzario ↗</a>
-          <a href="https://www.paweb.it/scadenzario.php?bdinr=007&color=E1E2E3&font=00607F" target="_blank" rel="noopener noreferrer" style="font-size:0.76rem; color:var(--dash-event); text-decoration:none;">🌐 PAWeb ↗</a>
-        </div>
+        <h3 style="margin:0;">📰 Scadenzario — La Posta del Sindaco</h3>
+        <a href="https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione" target="_blank" rel="noopener noreferrer" style="font-size:0.78rem; color:var(--dash-event); font-weight:700; text-decoration:none;">Apri La Posta del Sindaco ↗</a>
       </div>
 
       <div style="background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:10px 12px; margin-bottom:10px;">
@@ -2041,7 +2037,7 @@
       </div>
 
       <div id="pdsPasteBox" style="display:none; margin-bottom:8px;">
-        <textarea id="pdsRawPasteInput" rows="3" placeholder="Incolla qui eventuali scadenze copiate dalla pagina di La Posta del Sindaco e premi 'Analizza testo'..."></textarea>
+        <textarea id="pdsRawPasteInput" rows="5" placeholder="Apri La Posta del Sindaco, copia le scadenze (data, argomento, titolo/descrizione) e incollale qui, poi premi 'Analizza testo incollato'..."></textarea>
         <button type="button" id="btnParsePastedPds" class="accent-cyan" style="margin-top:5px; padding:4px 10px; font-size:0.76rem;">Analizza testo incollato</button>
       </div>
 
@@ -2387,7 +2383,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 1.3A</h3>
+      <h3>⚙️ Configurazione PIKDASH 1.4A</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -4928,7 +4924,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.3A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.4A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -5179,7 +5175,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.3A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.4A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -6424,7 +6420,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  // ==================== ESTENSIONI PIKDASH 1.3A ====================
+  // ==================== ESTENSIONI PIKDASH 1.4A ====================
   var currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   var monthEventsCache = [];
 
@@ -6780,7 +6776,7 @@
     renderTasks();
   });
 
-  // ==================== ESTENSIONI PIKDASH 1.3A ====================
+  // ==================== ESTENSIONI PIKDASH 1.4A ====================
 
   // A. Automazione Ricorrenze nello Scadenzario
   function computeNextRecurringDate(isoDateStr, freq) {
@@ -7071,7 +7067,7 @@
   function exportFullBackupJson() {
     var payload = {
       app: "PIKDASH",
-      version: "1.3A",
+      version: "1.4A",
       exportedAt: new Date().toISOString(),
       scadenzeItems: scadenzeItems,
       teamMembers: teamMembers,
@@ -7192,7 +7188,7 @@
 
 
 
-  // ==================== ESTENSIONI PIKDASH 1.3A ====================
+  // ==================== ESTENSIONI PIKDASH 1.4A ====================
   var noteProjectMap = {};
 
   try {
@@ -7580,7 +7576,7 @@
 
 
 
-  // ==================== ESTENSIONI PIKDASH 1.3A: SCADENZARIO PA & COLORI ARGOMENTI ====================
+  // ==================== ESTENSIONI PIKDASH 1.4A: SCADENZARIO PA & COLORI ARGOMENTI ====================
   var TOPIC_COLOR_MAP = {
     "Affari Generali": "#b39ddb",
     "Segreteria": "#9575cd",
@@ -8047,41 +8043,144 @@
     return found;
   }
 
-    async function fetchPdsDeadlinesForMonth(yearMonthStr, silentAutoMode) {
+      function extractPostaDelSindacoItems(rawText, fallbackYear, fallbackMonth) {
+    var lines = (rawText || "").split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+    var found = [];
+    var seenKeys = {};
+    var currentDate = "";
+    var currentTopic = "Affari Generali";
+
+    var topicPatterns = [
+      { re: /^(affari\s*generali|segreteria|organi\s*istituzionali)$/i, topic: "Affari Generali" },
+      { re: /^(servizi\s*sociali|sociale|assistenza|scuola|istruzione)$/i, topic: "Servizi Sociali" },
+      { re: /^(demografici|servizi\s*demografici|anagrafe|stato\s*civile|elettorale)$/i, topic: "Demografici" },
+      { re: /^(ragioneria|contabilit[àa]|bilancio|finanza)$/i, topic: "Ragioneria" },
+      { re: /^(tributi|fiscalit[àa]|imu|tari)$/i, topic: "Tributi" },
+      { re: /^(personale|risorse\s*umane|dipendenti)$/i, topic: "Personale" },
+      { re: /^(ufficio\s*tecnico|lavori\s*pubblici|territorio|edilizia)$/i, topic: "Ufficio Tecnico" },
+      { re: /^(gare\s*&\s*contratti|appalti|contratti\s*pubblici)$/i, topic: "Gare & Contratti" }
+    ];
+
+    function matchExactTopic(str) {
+      for (var t = 0; t < topicPatterns.length; t++) {
+        if (topicPatterns[t].re.test(str)) return topicPatterns[t].topic;
+      }
+      return "";
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, "$1").trim();
+      if (!line || line.length < 3) continue;
+
+      if (/^(menu|cerca|accedi|abbonati|cookie|privacy|accetto|scadenzario pubblica amministrazione)/i.test(line)) {
+        continue;
+      }
+
+      var exactTopic = matchExactTopic(line);
+      if (exactTopic) {
+        currentTopic = exactTopic;
+        continue;
+      }
+
+      var parsedDate = parseItalianDateToIso(line, fallbackYear, fallbackMonth);
+      if (parsedDate && line.length <= 36) {
+        currentDate = parsedDate;
+        continue;
+      }
+
+      var itemDate = parsedDate || currentDate || (String(fallbackYear) + "-" + String(fallbackMonth).padStart(2, "0") + "-28");
+
+      // Se la riga contiene un prefisso tipo "Argomento: titolo" o "[Argomento] titolo"
+      var detectedTopic = currentTopic;
+      var workingTitle = line;
+      var bracketMatch = workingTitle.match(/^\[([^\]]+)\]\s*(.+)$/);
+      if (bracketMatch) {
+        detectedTopic = normalizePdsTopic(bracketMatch[1]);
+        workingTitle = bracketMatch[2].trim();
+      } else {
+        var colonMatch = workingTitle.match(/^(Affari Generali|Servizi Sociali|Demografici|Anagrafe|Ragioneria|Contabilità|Tributi|Personale|Ufficio Tecnico|Segreteria|Gare & Contratti)\s*[:\-–]\s*(.+)$/i);
+        if (colonMatch) {
+          detectedTopic = normalizePdsTopic(colonMatch[1]);
+          workingTitle = colonMatch[2].trim();
+        } else {
+          if (/ragioneri|bilanci|contabil|tesorer|rendiconto/i.test(workingTitle)) detectedTopic = "Ragioneria";
+          else if (/tribut|imu|tari/i.test(workingTitle)) detectedTopic = "Tributi";
+          else if (/anagraf|demograf|stato civile|aire|elettoral/i.test(workingTitle)) detectedTopic = "Demografici";
+          else if (/social|scuol|nido|isee|disabil/i.test(workingTitle)) detectedTopic = "Servizi Sociali";
+          else if (/personal|stipend|uniemens|assunzion/i.test(workingTitle)) detectedTopic = "Personale";
+          else if (/tecnic|lavori pubblici|appalt|cig|anac/i.test(workingTitle)) detectedTopic = "Ufficio Tecnico";
+        }
+      }
+
+      workingTitle = workingTitle
+        .replace(/^\d{1,2}[\/\.-]\d{1,2}[\/\.-]\d{2,4}\s*[-–:]?\s*/, "")
+        .trim();
+
+      if (workingTitle.length < 8) continue;
+
+      var note = "Fonte: La Posta del Sindaco";
+      if (workingTitle.length > 150) {
+        var dotIdx = workingTitle.indexOf(". ");
+        if (dotIdx > 25 && dotIdx < 145) {
+          note = workingTitle.slice(dotIdx + 2).slice(0, 220);
+          workingTitle = workingTitle.slice(0, dotIdx + 1);
+        } else {
+          workingTitle = workingTitle.slice(0, 125) + "...";
+        }
+      }
+
+      var sig = itemDate + "|" + workingTitle.toLowerCase().slice(0, 55);
+      if (seenKeys[sig]) continue;
+      seenKeys[sig] = true;
+
+      found.push({
+        title: workingTitle,
+        dueDate: itemDate,
+        sector: detectedTopic,
+        note: note,
+        url: "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione?date=" + itemDate,
+        selected: true
+      });
+    }
+
+    return found;
+  }
+
+  async function fetchPdsDeadlinesForMonth(yearMonthStr, silentAutoMode) {
     var statusBadge = document.getElementById("pdsAutoSyncStatus");
     var modalStatus = document.getElementById("pdsFetchStatusLabel");
     if (statusBadge) {
-      statusBadge.innerText = "🌐 PA Sync: lettura...";
+      statusBadge.innerText = "📰 Posta del Sindaco: verifica...";
       statusBadge.classList.remove("live");
     }
-    if (modalStatus) modalStatus.innerText = "Connessione a paweb.it in corso...";
+    if (modalStatus) modalStatus.innerText = "Verifica accesso automatico a lapostadelsindaco.it...";
 
     var parts = (yearMonthStr || toIsoDate(new Date()).slice(0, 7)).split("-");
     var y = parseInt(parts[0], 10);
     var m = parseInt(parts[1], 10);
-    var pawebUrl = "https://www.paweb.it/scadenzario.php?bdinr=007&color=E1E2E3&font=00607F";
+    var lastDay = new Date(y, m, 0).getDate();
+    var targetUrl = "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione?date=" + y + "-" + String(m).padStart(2, "0") + "-" + String(lastDay).padStart(2, "0");
 
     var rawPayload = "";
     var isMarkdownReader = false;
 
     var sources = [
-      { url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(pawebUrl), mode: "html" },
-      { url: "https://api.allorigins.win/get?url=" + encodeURIComponent(pawebUrl), mode: "allorigins_json" },
-      { url: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(pawebUrl), mode: "html" },
-      { url: "https://r.jina.ai/" + pawebUrl, mode: "markdown" }
+      { url: "https://r.jina.ai/" + targetUrl, mode: "markdown" },
+      { url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl), mode: "html" },
+      { url: "https://api.allorigins.win/get?url=" + encodeURIComponent(targetUrl), mode: "allorigins_json" }
     ];
 
     for (var i = 0; i < sources.length; i++) {
       try {
         var controller = new AbortController();
-        var timer = setTimeout(function() { controller.abort(); }, 9000);
+        var timer = setTimeout(function() { controller.abort(); }, 7000);
         var res = await fetch(sources[i].url, { signal: controller.signal });
         clearTimeout(timer);
         if (!res.ok) continue;
 
         if (sources[i].mode === "allorigins_json") {
           var j = await res.json();
-          if (j && j.contents && j.contents.length > 400) {
+          if (j && j.contents && j.contents.length > 400 && !/403 Forbidden|Access Denied|Cloudflare/i.test(j.contents.slice(0, 600))) {
             rawPayload = j.contents;
             isMarkdownReader = false;
             break;
@@ -8098,8 +8197,10 @@
     }
 
     if (!rawPayload) {
-      if (statusBadge) statusBadge.innerText = "🌐 PA Sync: offline/proxy";
-      if (modalStatus) modalStatus.innerText = "PAWeb non raggiungibile al momento. Puoi aprire il portale dal link in alto a destra e usare '📋 Incolla testo dal sito'.";
+      if (statusBadge) statusBadge.innerText = "📰 Posta del Sindaco: usa Incolla";
+      if (modalStatus) modalStatus.innerText = "Il portale blocca la lettura automatica da proxy: clicca su 'Apri La Posta del Sindaco ↗' in alto a destra, copia le scadenze e incollale con '📋 Incolla testo dal sito'.";
+      var pasteBox = document.getElementById("pdsPasteBox");
+      if (pasteBox && !silentAutoMode) pasteBox.style.display = "block";
       return [];
     }
 
@@ -8107,12 +8208,11 @@
     if (!isMarkdownReader) {
       var parser = new DOMParser();
       var dom = parser.parseFromString(rawPayload, "text/html");
-      // Rimuovi script, style, header/footer inutili
       dom.querySelectorAll("script, style, nav, footer").forEach(function(el) { el.remove(); });
       textForParser = (dom.body && dom.body.innerText) ? dom.body.innerText : rawPayload.replace(/<[^>]+>/g, "\n");
     }
 
-    var extracted = extractPawebDeadlinesFromText(textForParser, y, m);
+    var extracted = extractPostaDelSindacoItems(textForParser, y, m);
     pdsFetchedCandidates = extracted;
 
     var dismissedIds = [];
@@ -8133,11 +8233,11 @@
           title: cand.title,
           dueDate: cand.dueDate,
           sector: cand.sector,
-          kind: "Scadenza PA (PAWeb)",
-          source: "paweb",
+          kind: "Scadenza PA (La Posta del Sindaco)",
+          source: "lapostadelsindaco",
           url: cand.url,
           freq: "Una tantum",
-          note: cand.note || "Fonte: PAWeb Scadenzario",
+          note: cand.note || "Fonte: La Posta del Sindaco",
           done: false
         });
         cand.alreadyExists = true;
@@ -8153,119 +8253,19 @@
 
     var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
     if (statusBadge) {
-      statusBadge.innerText = "🌐 PA Sync " + nowStr + (newlyAddedCount > 0 ? " (+" + newlyAddedCount + ")" : "");
+      statusBadge.innerText = "📰 Posta del Sindaco " + nowStr + (newlyAddedCount > 0 ? " (+" + newlyAddedCount + ")" : "");
       statusBadge.classList.add("live");
     }
     if (modalStatus) {
       modalStatus.innerText = extracted.length > 0
-        ? ("Estratte " + extracted.length + " scadenze da PAWeb per argomento e data.")
-        : "Nessuna scadenza rilevata automaticamente. Puoi incollare il testo copiato da PAWeb.";
+        ? ("Estratte " + extracted.length + " scadenze da La Posta del Sindaco.")
+        : "Nessuna scadenza rilevata automaticamente. Usa '📋 Incolla testo dal sito' per importare le righe copiate.";
     }
 
     renderPdsFetchedList();
     return extracted;
   }
 
-  function extractPawebDeadlinesFromText(rawText, fallbackYear, fallbackMonth) {
-    var lines = (rawText || "").split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
-    var found = [];
-    var seenKeys = {};
-
-    var knownPawebSections = [
-      "Adempimenti previdenziali",
-      "Affari generali",
-      "Contabilità e Bilancio",
-      "Finanza e mutui",
-      "Fisco e Tributi",
-      "Gestione del Territorio",
-      "Personale",
-      "Revisione e controlli",
-      "Servizi demografici",
-      "Servizi sociali"
-    ];
-
-    var currentTopic = "Affari Generali";
-    var currentDate = "";
-
-    var weekdayMonthRegex = /^(?:luned[iì]|marted[iì]|mercoled[iì]|gioved[iì]|venerd[iì]|sabato|domenica)\s+(\d{1,2})\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)(?:\s+(\d{4}))?$/i;
-    var monthMap = {
-      gennaio: "01", febbraio: "02", marzo: "03", aprile: "04",
-      maggio: "05", giugno: "06", luglio: "07", agosto: "08",
-      settembre: "09", ottobre: "10", novembre: "11", dicembre: "12"
-    };
-
-    for (var i = 0; i < lines.length; i++) {
-      var line = lines[i].replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, "$1").trim();
-      if (!line || line.length < 4) continue;
-
-      // Controlla se la riga è una sezione/argomento di PAWeb
-      var matchedSec = knownPawebSections.find(function(sec) {
-        return line.toLowerCase() === sec.toLowerCase();
-      });
-      if (matchedSec) {
-        currentTopic = normalizePdsTopic(matchedSec);
-        continue;
-      }
-
-      // Controlla se la riga è una data tipo "lunedì 30 novembre" o "martedì 01 dicembre"
-      var wm = line.match(weekdayMonthRegex);
-      if (wm) {
-        var dd = String(parseInt(wm[1], 10)).padStart(2, "0");
-        var mm = monthMap[wm[2].toLowerCase()] || String(fallbackMonth).padStart(2, "0");
-        var yy = wm[3] || String(fallbackYear);
-        // Se siamo a fine anno (nov/dic) e la scadenza è a gennaio, usa l'anno successivo
-        if (!wm[3] && fallbackMonth >= 11 && parseInt(mm, 10) <= 2) {
-          yy = String(fallbackYear + 1);
-        }
-        currentDate = yy + "-" + mm + "-" + dd;
-        continue;
-      }
-
-      var isoOrDmy = parseItalianDateToIso(line, fallbackYear, fallbackMonth);
-      if (isoOrDmy && line.length <= 35) {
-        currentDate = isoOrDmy;
-        continue;
-      }
-
-      // Salta intestazioni sito / cookie / footer
-      if (/^(bdi\s*-|questo sito utilizza|accetto|toggle navigation|home\b|chi siamo|privacy|contatti|paweb|gruppo_cel|scadenzario\b|info legali|rete vendita|lavora con noi|strumenti|forum scadenzario|assistenza|via giuseppe|copyright)/i.test(line)) {
-        continue;
-      }
-
-      if (!currentDate) continue;
-
-      // Su PAWeb, una voce ha un titolo breve/medio e spesso una descrizione più lunga subito dopo
-      var title = line;
-      var note = "Fonte: PAWeb Scadenzario";
-      if (title.length > 140) {
-        // Se la riga è molto lunga, estrai la prima frase come titolo e il resto come nota
-        var splitIdx = title.indexOf(". ");
-        if (splitIdx > 25 && splitIdx < 150) {
-          note = title.slice(splitIdx + 2).slice(0, 220);
-          title = title.slice(0, splitIdx + 1);
-        } else {
-          title = title.slice(0, 120) + "...";
-        }
-      }
-
-      var dedupKey = currentDate + "|" + title.toLowerCase().slice(0, 55);
-      if (seenKeys[dedupKey]) continue;
-      seenKeys[dedupKey] = true;
-
-      found.push({
-        title: title,
-        dueDate: currentDate,
-        sector: currentTopic,
-        note: note,
-        url: "https://www.paweb.it/scadenzario.php?bdinr=007&color=E1E2E3&font=00607F",
-        selected: true
-      });
-    }
-
-    return found;
-  }
-
-  // Aggiorna anche parsePastedPdsText per usare extractPawebDeadlinesFromText
   parsePastedPdsText = function() {
     var raw = document.getElementById("pdsRawPasteInput").value || "";
     var monthVal = document.getElementById("pdsTargetMonthInput").value || toIsoDate(new Date()).slice(0, 7);
@@ -8273,14 +8273,11 @@
     var y = parseInt(parts[0], 10);
     var m = parseInt(parts[1], 10);
 
-    var parsed = extractPawebDeadlinesFromText(raw, y, m);
+    var parsed = extractPostaDelSindacoItems(raw, y, m);
     if (parsed.length === 0) {
-      alert("Non sono riuscito a riconoscere scadenze nel testo incollato.");
+      alert("Non sono riuscito a riconoscere scadenze nel testo incollato. Controlla che ci siano data o titolo dell'adempimento.");
       return;
     }
-
-    var dismissedIds = [];
-    try { dismissedIds = JSON.parse(localStorage.getItem("dash_pds_dismissed") || "[]"); } catch (e) {}
 
     parsed.forEach(function(cand) {
       var sig = cand.dueDate + "|" + cand.title.toLowerCase().slice(0, 50);
@@ -8291,7 +8288,7 @@
     });
 
     pdsFetchedCandidates = parsed;
-    document.getElementById("pdsFetchStatusLabel").innerText = "Estratte " + parsed.length + " scadenze dal testo incollato.";
+    document.getElementById("pdsFetchStatusLabel").innerText = "Estratte " + parsed.length + " scadenze da La Posta del Sindaco.";
     renderPdsFetchedList();
   };
 
@@ -8523,7 +8520,7 @@
 
 
 
-  // ==================== ESTENSIONI PIKDASH 1.3A: PULSANTE RAPIDO FORMULA & SVUOTA SCADENZARIO ====================
+  // ==================== ESTENSIONI PIKDASH 1.4A: PULSANTE RAPIDO FORMULA & SVUOTA SCADENZARIO ====================
   async function clearAllScadenze() {
     if (!scadenzeItems || scadenzeItems.length === 0) {
       alert("Lo scadenzario è già vuoto.");
