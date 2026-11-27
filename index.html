@@ -3,8 +3,394 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 0.93B — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <title>PIKDASH 1.0A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
+  <script src="https://accounts.google.com/gsi/client" async defer>
+  // ==================== ESTENSIONI PIKDASH 1.0A ====================
+
+  // A. Automazione Ricorrenze nello Scadenzario
+  function computeNextRecurringDate(isoDateStr, freq) {
+    if (!isoDateStr) return toIsoDate(new Date());
+    var parts = isoDateStr.split("-");
+    var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    if (freq === "Mensile") d.setMonth(d.getMonth() + 1);
+    else if (freq === "Trimestrale") d.setMonth(d.getMonth() + 3);
+    else if (freq === "Semestrale") d.setMonth(d.getMonth() + 6);
+    else if (freq === "Annuale") d.setFullYear(d.getFullYear() + 1);
+    return toIsoDate(d);
+  }
+
+  toggleScadenzaDone = async function(scadId) {
+    var item = scadenzeItems.find(function(x) { return x.id === scadId; });
+    if (!item) return;
+    var wasDone = !!item.done;
+    item.done = !wasDone;
+
+    if (!wasDone && item.freq && item.freq !== "Una tantum") {
+      var nextDate = computeNextRecurringDate(item.dueDate, item.freq);
+      var formattedNext = nextDate.split("-").reverse().join("/");
+      if (confirm("Questa scadenza ha ricorrenza '" + item.freq + "'.\nVuoi generare automaticamente la prossima scadenza al " + formattedNext + "?")) {
+        scadenzeItems.push({
+          id: "scad_" + Date.now(),
+          title: item.title,
+          dueDate: nextDate,
+          sector: item.sector,
+          freq: item.freq,
+          note: item.note,
+          done: false
+        });
+      }
+    }
+
+    renderScadFilterBar();
+    renderScadenzeList();
+    await syncScadenzeToDrive();
+  };
+
+  // B. Feed News Comunali (Comune di San Martino di Venezze)
+  async function loadComuneNewsFeed() {
+    var container = document.getElementById("comuneNewsTickerList");
+    if (!container) return;
+
+    var cachedNews = [];
+    try {
+      cachedNews = JSON.parse(localStorage.getItem("dash_cache_comune_news") || "[]");
+    } catch (e) {}
+
+    if (cachedNews.length > 0) {
+      renderComuneNewsList(cachedNews);
+    }
+
+    var rssUrl = "https://www.comune.sanmartinodivenezze.ro.it/it/news/feed";
+    var proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssUrl);
+
+    try {
+      var res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error("Feed non raggiungibile");
+      var json = await res.json();
+      if (!json || !json.contents) throw new Error("Feed vuoto");
+
+      var parser = new DOMParser();
+      var xml = parser.parseFromString(json.contents, "text/xml");
+      var items = Array.prototype.slice.call(xml.querySelectorAll("item")).slice(0, 6);
+
+      if (items.length > 0) {
+        var parsedItems = items.map(function(it) {
+          var titleEl = it.querySelector("title");
+          var linkEl = it.querySelector("link");
+          var pubEl = it.querySelector("pubDate");
+          var dateFormatted = "";
+          if (pubEl && pubEl.textContent) {
+            var dt = new Date(pubEl.textContent);
+            if (!isNaN(dt.getTime())) {
+              dateFormatted = dt.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
+            }
+          }
+          return {
+            title: titleEl ? titleEl.textContent.trim() : "Avviso comunale",
+            link: linkEl ? linkEl.textContent.trim() : "https://www.comune.sanmartinodivenezze.ro.it",
+            date: dateFormatted
+          };
+        });
+
+        localStorage.setItem("dash_cache_comune_news", JSON.stringify(parsedItems));
+        renderComuneNewsList(parsedItems);
+      }
+    } catch (err) {
+      if (cachedNews.length === 0) {
+        container.innerHTML = '<a class="news-ticker-link" href="https://www.comune.sanmartinodivenezze.ro.it/it/news" target="_blank" rel="noopener noreferrer">🌐 Apri Albo Pretorio e News del Comune di San Martino di Venezze ↗</a>';
+      }
+    }
+  }
+
+  function renderComuneNewsList(items) {
+    var container = document.getElementById("comuneNewsTickerList");
+    if (!container || !items || items.length === 0) return;
+
+    container.innerHTML = items.map(function(n) {
+      var dSpan = n.date ? '<span class="news-ticker-date">[' + escapeHtml(n.date) + ']</span>' : '';
+      return '<a class="news-ticker-link" href="' + escapeHtml(n.link) + '" target="_blank" rel="noopener noreferrer" title="' + escapeHtml(n.title) + '">' +
+        dSpan + '<span>' + escapeHtml(n.title) + '</span>' +
+      '</a>';
+    }).join('<span style="color:var(--border);">•</span>');
+  }
+
+  // C. Ricerca Globale Istantanea (Ctrl+K)
+  function openGlobalSearchModal() {
+    var modal = document.getElementById("globalSearchModal");
+    var input = document.getElementById("globalSearchInput");
+    modal.style.display = "flex";
+    input.value = "";
+    renderGlobalSearchResults("");
+    input.focus();
+  }
+
+  function renderGlobalSearchResults(rawTerm) {
+    var box = document.getElementById("globalSearchResults");
+    var term = (rawTerm || "").toLowerCase().trim();
+
+    if (!term) {
+      box.innerHTML = '<p style="color:var(--muted); font-size:0.84rem; text-align:center; padding:18px;">Digita almeno 2 caratteri per cercare contemporaneamente in Agenda, Progetti, Scadenze, Team, Appunti, Documenti e Portali.</p>';
+      return;
+    }
+
+    var hits = [];
+
+    weekEvents.forEach(function(ev) {
+      if ((ev.title + " " + (ev.description || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Agenda",
+          title: ev.title,
+          sub: ev.date.split("-").reverse().join("/") + " • " + ev.startTime,
+          action: function() {
+            selectedDateStr = ev.date;
+            switchMainView("viewPanoramica");
+            renderWeekGrid();
+            renderDayDetail();
+          }
+        });
+      }
+    });
+
+    projectsData.forEach(function(p) {
+      var stepsTxt = p.steps.map(function(s) { return s.title; }).join(" ");
+      if ((p.title + " " + p.dept + " " + (p.statusNote || "") + " " + stepsTxt).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Progetto",
+          title: "[" + p.dept + "] " + p.title,
+          sub: p.statusNote || (p.steps.length + " fasi operative"),
+          action: function() {
+            switchMainView("viewProgetti");
+            selectProject(p.id);
+          }
+        });
+      }
+    });
+
+    scadenzeItems.forEach(function(s) {
+      if ((s.title + " " + (s.sector || "") + " " + (s.note || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Scadenza",
+          title: s.title,
+          sub: (s.dueDate ? s.dueDate.split("-").reverse().join("/") : "") + " • " + (s.sector || "Generale"),
+          action: function() {
+            switchMainView("viewScadenzario");
+            document.getElementById("scadSearchInput").value = s.title;
+            renderScadenzeList();
+          }
+        });
+      }
+    });
+
+    teamDelegations.forEach(function(d) {
+      var m = teamMembers.find(function(x) { return x.id === d.memberId; });
+      var mName = m ? m.name : "Team";
+      if ((d.title + " " + mName).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Delega Team",
+          title: d.title,
+          sub: "In carico a: " + mName,
+          action: function() {
+            switchMainView("viewTeam");
+            if (m) selectTeamMember(m.id);
+          }
+        });
+      }
+    });
+
+    memoItems.forEach(function(m) {
+      if (m.title.toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Promemoria",
+          title: m.title,
+          sub: m.category,
+          action: function() { switchMainView("viewPromemoria"); }
+        });
+      }
+    });
+
+    driveFiles.forEach(function(f) {
+      if (f.name.toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Appunto",
+          title: f.name,
+          sub: "Google Drive",
+          action: function() {
+            switchMainView("viewAppunti");
+            openDrivePreview(f.id);
+          }
+        });
+      }
+    });
+
+    getAllUnifiedModules().forEach(function(doc) {
+      if ((doc.title + " " + (doc.sector || "") + " " + (doc.note || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Documento",
+          title: doc.title,
+          sub: doc.platform.toUpperCase() + " • " + (doc.sector || "Generale"),
+          action: function() { jumpToDocument(doc.id); }
+        });
+      }
+    });
+
+    launcherItems.forEach(function(l) {
+      if ((l.title + " " + (l.desc || "") + " " + (l.theme || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Portale / App",
+          title: l.title,
+          sub: l.theme,
+          action: function() { switchMainView("viewPortali"); }
+        });
+      }
+    });
+
+    if (hits.length === 0) {
+      box.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-align:center; padding:18px;">Nessun risultato trovato per "' + escapeHtml(rawTerm) + '".</p>';
+      return;
+    }
+
+    box.innerHTML = "";
+    hits.slice(0, 30).forEach(function(hit) {
+      var row = document.createElement("div");
+      row.className = "gs-item";
+      row.innerHTML =
+        '<div style="min-width:0; flex:1;">' +
+          '<div style="font-size:0.88rem; font-weight:600; color:var(--text);">' + escapeHtml(hit.title) + '</div>' +
+          '<div style="font-size:0.73rem; color:var(--muted); margin-top:2px;">' + escapeHtml(hit.sub) + '</div>' +
+        '</div>' +
+        '<span class="gs-badge">' + escapeHtml(hit.type) + '</span>';
+      row.onclick = function() {
+        document.getElementById("globalSearchModal").style.display = "none";
+        hit.action();
+      };
+      box.appendChild(row);
+    });
+  }
+
+  // D. Esportazione / Importazione Backup Completo JSON
+  function exportFullBackupJson() {
+    var payload = {
+      app: "PIKDASH",
+      version: "1.0A",
+      exportedAt: new Date().toISOString(),
+      scadenzeItems: scadenzeItems,
+      teamMembers: teamMembers,
+      teamDelegations: teamDelegations,
+      modExternalLinks: modExternalLinks,
+      modFavorites: modFavorites,
+      docProjectMap: docProjectMap,
+      launcherItems: launcherItems,
+      folderColors: getFolderColorsMap()
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "PIKDASH_Backup_" + toIsoDate(new Date()) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function importFullBackupJson(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = async function(e) {
+      try {
+        var data = JSON.parse(e.target.result);
+        if (!data || data.app !== "PIKDASH") {
+          alert("File di backup non valido.");
+          return;
+        }
+        if (!confirm("Vuoi ripristinare il backup del " + (data.exportedAt || "").slice(0, 10) + "? I dati locali di Team, Scadenze, Portali e Link verranno aggiornati.")) return;
+
+        if (Array.isArray(data.scadenzeItems)) scadenzeItems = data.scadenzeItems;
+        if (Array.isArray(data.teamMembers)) teamMembers = data.teamMembers;
+        if (Array.isArray(data.teamDelegations)) teamDelegations = data.teamDelegations;
+        if (Array.isArray(data.modExternalLinks)) modExternalLinks = data.modExternalLinks;
+        if (Array.isArray(data.modFavorites)) modFavorites = data.modFavorites;
+        if (data.docProjectMap && typeof data.docProjectMap === "object") docProjectMap = data.docProjectMap;
+        if (Array.isArray(data.launcherItems)) launcherItems = data.launcherItems;
+        if (data.folderColors && typeof data.folderColors === "object") {
+          localStorage.setItem("dash_folder_colors", JSON.stringify(data.folderColors));
+        }
+
+        saveCachedSnapshot();
+        renderScadFilterBar();
+        renderScadenzeList();
+        renderTeamDeptBar();
+        renderTeamMembersList();
+        populateTeamAssignSelect();
+        renderTeamDelegationsList();
+        renderModFilterBar();
+        renderModItemsList();
+        renderLauncherThemeBar();
+        renderLauncherGrid();
+
+        if (accessToken) {
+          await Promise.all([
+            syncScadenzeToDrive(),
+            syncTeamToDrive(),
+            syncModExternalLinksToDrive(),
+            syncLauncherConfigToDrive()
+          ]);
+        }
+        document.getElementById("settingsModal").style.display = "none";
+        alert("Backup ripristinato con successo!");
+      } catch (err) {
+        alert("Errore lettura file JSON: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  window.addEventListener("keydown", function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openGlobalSearchModal();
+    } else if (e.key === "Escape") {
+      document.getElementById("globalSearchModal").style.display = "none";
+    }
+  });
+
+  window.addEventListener("load", function() {
+    var btnGlobal = document.getElementById("btnGlobalSearch");
+    if (btnGlobal) btnGlobal.onclick = openGlobalSearchModal;
+
+    var btnCloseGlobal = document.getElementById("btnCloseGlobalSearch");
+    if (btnCloseGlobal) {
+      btnCloseGlobal.onclick = function() {
+        document.getElementById("globalSearchModal").style.display = "none";
+      };
+    }
+
+    var globalInput = document.getElementById("globalSearchInput");
+    if (globalInput) {
+      globalInput.addEventListener("input", function() {
+        renderGlobalSearchResults(this.value);
+      });
+    }
+
+    var btnRefreshNews = document.getElementById("btnRefreshComuneNews");
+    if (btnRefreshNews) btnRefreshNews.onclick = loadComuneNewsFeed;
+
+    var btnExport = document.getElementById("btnExportFullBackup");
+    if (btnExport) btnExport.onclick = exportFullBackupJson;
+
+    var btnImport = document.getElementById("btnImportFullBackup");
+    var fileInput = document.getElementById("importBackupFileInput");
+    if (btnImport && fileInput) {
+      btnImport.onclick = function() { fileInput.click(); };
+      fileInput.onchange = function() {
+        if (this.files && this.files[0]) importFullBackupJson(this.files[0]);
+      };
+    }
+
+    loadComuneNewsFeed();
+  });
+
+</script>
   <style>
     :root {
       --bg: #111215;
@@ -1060,6 +1446,142 @@
 
     ::-webkit-scrollbar { width: 5px; height: 5px; }
     ::-webkit-scrollbar-thumb { background: #333742; border-radius: 99px; }
+
+    /* RICERCA GLOBALE (CTRL+K) */
+    .global-search-modal { width: 620px; max-width: 95vw; padding: 18px; }
+    .global-search-input {
+      width: 100%;
+      background: var(--bg);
+      border: 2px solid var(--lilac);
+      color: var(--text);
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 0.98rem;
+      outline: none;
+      margin-bottom: 12px;
+    }
+    .global-search-results {
+      max-height: 380px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .gs-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 9px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.14s ease;
+    }
+    .gs-item:hover { background: var(--card-hover); border-color: var(--lilac); }
+    .gs-badge {
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--lilac-dim);
+      color: var(--lilac);
+      flex-shrink: 0;
+    }
+
+    /* FEED NEWS COMUNALI */
+    .news-ticker-bar {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .news-ticker-badge {
+      font-size: 0.69rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--dash-event);
+      background: rgba(79, 195, 247, 0.14);
+      padding: 2px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .news-ticker-list {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 0.79rem;
+    }
+    .news-ticker-link {
+      color: var(--text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      transition: background 0.15s;
+    }
+    .news-ticker-link:hover { background: var(--card-hover); color: var(--lilac); }
+    .news-ticker-date { color: var(--muted); font-size: 0.71rem; }
+
+    /* STAMPA / ESPORTAZIONE PDF PULITA (@media print) */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #111111 !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      header, .summary-strip, .news-ticker-bar, .meeting-search-bar, .meeting-action-bar,
+      .rich-toolbar, button, .file-icon-btn, .memo-del, .modal-backdrop {
+        display: none !important;
+      }
+      .view-section {
+        display: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+      }
+      .view-section.active {
+        display: block !important;
+      }
+      .meeting-layout, .projects-layout {
+        display: block !important;
+        overflow: visible !important;
+      }
+      .card, .briefing-section, .briefing-item, .proj-subpanel, .proj-status-box {
+        background: #ffffff !important;
+        color: #111111 !important;
+        border: 1px solid #cccccc !important;
+        box-shadow: none !important;
+        margin-bottom: 12px !important;
+        overflow: visible !important;
+      }
+      .briefing-scroll, .tasks-list, .meeting-notes-editor {
+        overflow: visible !important;
+        max-height: none !important;
+        color: #111111 !important;
+        background: #ffffff !important;
+      }
+      .card-title, .briefing-sec-head, .briefing-item-title, .proj-subpanel-title {
+        color: #000000 !important;
+      }
+      .briefing-item-sub, .muted {
+        color: #444444 !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1142,6 +1664,10 @@
 
     <!-- PULSANTI DESTRA DI PARI ALTEZZA ALLE SCHEDE -->
     <div class="header-right">
+      <button type="button" id="btnGlobalSearch" class="header-tall-btn" title="Ricerca globale istantanea (Ctrl+K)">
+        <span class="btn-ico">🔍</span>
+        <span>Cerca</span>
+      </button>
       <button type="button" id="btnNewEventTop" class="accent-cyan header-tall-btn">
         <span class="btn-ico">➕</span>
         <span>Appuntamento</span>
@@ -1183,6 +1709,15 @@
         </div>
       </div>
     </div>
+
+    <div class="news-ticker-bar">
+      <span class="news-ticker-badge">📰 Albo & News Comune</span>
+      <div class="news-ticker-list" id="comuneNewsTickerList">
+        <span style="color:var(--muted);">Caricamento ultime notizie istituzionali...</span>
+      </div>
+      <button type="button" id="btnRefreshComuneNews" style="padding:3px 8px; font-size:0.72rem;" title="Aggiorna feed news comunale">↻</button>
+    </div>
+
 
     <div class="top-row">
       <div class="card">
@@ -1354,6 +1889,7 @@
         <div class="card-header">
           <span class="card-title" id="projDetailHeaderTitle">Dettaglio Progetto</span>
           <div id="projDetailTopActions" style="display:none; gap:8px; align-items:center;">
+            <button type="button" onclick="window.print()" style="padding:5px 10px; font-size:0.77rem;" title="Stampa o salva PDF scheda progetto">🖨️ Stampa / PDF</button>
             <button type="button" id="btnOpenProjDriveFolder" class="accent-cyan" style="padding:5px 10px; font-size:0.77rem; display:none;">📁 Cartella Appunti</button>
             <button type="button" id="btnEditProject" style="padding:5px 10px; font-size:0.77rem;">✏️ Modifica</button>
             <button type="button" id="btnDeleteProject" class="danger-btn" style="padding:5px 9px; font-size:0.77rem;">🗑️</button>
@@ -1471,7 +2007,10 @@
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="meetingBriefingTitle">🎙️ Dossier Briefing & Elementi Rilevanti</span>
-          <span style="font-size:0.76rem; color:var(--muted);" id="meetingMatchCounter">0 elementi trovati</span>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.76rem; color:var(--muted);" id="meetingMatchCounter">0 elementi trovati</span>
+            <button type="button" onclick="window.print()" style="padding:4px 9px; font-size:0.74rem;" title="Stampa o esporta PDF del Dossier Riunione">🖨️ Stampa / PDF</button>
+          </div>
         </div>
 
         <div class="briefing-scroll" id="meetingBriefingResults">
@@ -1990,7 +2529,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 0.93B</h3>
+      <h3>⚙️ Configurazione PIKDASH 1.0A</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -2005,9 +2544,32 @@
       <input type="text" id="cfgDriveFolder" value="Appunti Scanner">
       <label>Cartella Google Drive — Documenti & Modulistica:</label>
       <input type="text" id="cfgModFolder" value="Modulistica Ufficio">
+
+      <label>Backup & Ripristino Dati Locali (Team, Scadenze, Portali, Link):</label>
+      <div style="display:flex; gap:8px; margin-top:4px;">
+        <button type="button" id="btnExportFullBackup" class="accent-cyan" style="flex:1;">⬇️ Esporta Backup JSON</button>
+        <button type="button" id="btnImportFullBackup" style="flex:1;">⬆️ Ripristina da JSON</button>
+        <input type="file" id="importBackupFileInput" accept=".json" style="display:none;">
+      </div>
+
       <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:18px;">
         <button type="button" id="btnCloseSettings">Chiudi</button>
         <button type="button" id="btnSaveSettings" class="primary">Salva</button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODALE RICERCA GLOBALE ISTANTANEA (CTRL+K) -->
+  <div class="modal-backdrop" id="globalSearchModal">
+    <div class="modal global-search-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="margin:0;">🔍 Ricerca Globale PIKDASH <span style="font-size:0.74rem; color:var(--muted); font-weight:500;">(ESC per chiudere)</span></h3>
+        <button type="button" id="btnCloseGlobalSearch" style="padding:4px 9px;">✕</button>
+      </div>
+      <input type="text" id="globalSearchInput" class="global-search-input" placeholder="Digita per cercare ovunque: impegni, progetti, scadenze, dipendenti, deleghe, appunti, documenti...">
+      <div class="global-search-results" id="globalSearchResults">
+        <p style="color:var(--muted); font-size:0.84rem; text-align:center; padding:18px;">Inizia a scrivere per cercare istantaneamente in tutte le 9 sezioni.</p>
       </div>
     </div>
   </div>
@@ -4493,7 +5055,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 0.93B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.0A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -4744,7 +5306,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.93B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.0A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -5989,7 +6551,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  // ==================== ESTENSIONI PIKDASH 0.93B ====================
+  // ==================== ESTENSIONI PIKDASH 1.0A ====================
   var currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   var monthEventsCache = [];
 
