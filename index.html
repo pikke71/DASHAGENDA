@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 1.0A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
+  <title>PIKDASH 1.1A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer>
 
 </script>
@@ -302,10 +302,30 @@
     .week-nav-inline button { padding: 4px 10px; font-size: 0.76rem; }
     .week-label-inline { font-size: 0.84rem; font-weight: 600; color: var(--lilac); min-width: 190px; text-align: center; }
 
-    .now-grid { display: grid; grid-template-columns: 235px 1fr; gap: 16px; flex: 1; overflow: hidden; }
-    .clock-box { display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); padding-right: 16px; }
-    .clock-time { font-size: 3.35rem; font-weight: 300; letter-spacing: -1.5px; line-height: 0.98; color: var(--text); }
-    .clock-date { font-size: 1.02rem; font-weight: 600; color: var(--lilac); margin-top: 8px; text-transform: capitalize; line-height: 1.25; }
+    .now-grid { display: grid; grid-template-columns: 255px 1fr; gap: 16px; flex: 1; overflow: hidden; }
+    .clock-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-right: 1px solid var(--border);
+      padding-right: 16px;
+    }
+    .clock-trigger {
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 12px;
+      transition: background 0.15s ease, transform 0.1s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .clock-trigger:hover { background: rgba(179, 157, 219, 0.1); }
+    .clock-trigger:active { transform: scale(0.98); }
+    .clock-time { font-size: 4.1rem; font-weight: 300; letter-spacing: -2px; line-height: 0.95; color: var(--text); }
+    .clock-date { font-size: 1.18rem; font-weight: 700; color: var(--lilac); margin-top: 8px; text-transform: capitalize; line-height: 1.25; }
     .next-pill {
       margin-top: 12px;
       background: var(--lilac-dim);
@@ -1152,16 +1172,21 @@
     .news-ticker-link:hover { background: var(--card-hover); color: var(--lilac); }
     .news-ticker-date { color: var(--muted); font-size: 0.71rem; }
 
-    /* STAMPA / ESPORTAZIONE PDF PULITA (@media print) */
+    /* STAMPA / ESPORTAZIONE PDF PULITA E ORDINATA PER TUTTE LE SEZIONI (@media print) */
+    .print-only-header { display: none; }
+
     @media print {
+      @page { margin: 14mm; }
       body {
         background: #ffffff !important;
         color: #111111 !important;
         height: auto !important;
         overflow: visible !important;
+        font-size: 11pt !important;
       }
       header, .summary-strip, .news-ticker-bar, .meeting-search-bar, .meeting-action-bar,
-      .rich-toolbar, button, .file-icon-btn, .memo-del, .modal-backdrop {
+      .rich-toolbar, button, .file-icon-btn, .memo-del, .modal-backdrop,
+      .add-row, .folders-bar, .proj-filter-bar, .drive-search, .scad-toolbar, .launcher-toolbar {
         display: none !important;
       }
       .view-section {
@@ -1172,29 +1197,103 @@
       .view-section.active {
         display: block !important;
       }
-      .meeting-layout, .projects-layout {
+      .print-only-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 2px solid #222222;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+      }
+      .print-only-header .p-ent { font-size: 9pt; font-weight: 700; text-transform: uppercase; color: #555555; }
+      .print-only-header .p-title { font-size: 16pt; font-weight: 800; color: #000000; margin-top: 2px; }
+      .print-only-header .p-date { font-size: 9pt; color: #555555; }
+
+      /* PROGETTI: nasconde l'elenco sinistro degli altri progetti e mette in evidenza solo la scheda selezionata */
+      #viewProgetti .projects-layout { display: block !important; }
+      #viewProgetti .projects-layout > .card:first-child { display: none !important; }
+      #viewProgetti .projects-layout > .card:last-child {
+        border: none !important;
+        padding: 0 !important;
+      }
+      #projDetailHeaderTitle {
+        font-size: 15pt !important;
+        font-weight: 800 !important;
+        color: #000000 !important;
+        letter-spacing: 0.2px !important;
+        border-bottom: 2px solid #333333 !important;
+        padding-bottom: 8px !important;
+        width: 100% !important;
+      }
+      .proj-split-body {
+        display: grid !important;
+        grid-template-columns: 1.3fr 0.85fr !important;
+        gap: 14px !important;
+      }
+      .proj-status-input {
+        border: none !important;
+        background: transparent !important;
+        color: #111111 !important;
+        font-weight: 600 !important;
+        padding: 2px 0 !important;
+      }
+
+      /* RIUNIONI: impaginazione ordinata Dossier + Verbale */
+      .meeting-layout {
         display: block !important;
         overflow: visible !important;
       }
-      .card, .briefing-section, .briefing-item, .proj-subpanel, .proj-status-box {
+      #meetingTitleInput {
+        border: none !important;
+        border-bottom: 2px solid #222222 !important;
+        border-radius: 0 !important;
+        font-size: 14pt !important;
+        font-weight: 800 !important;
+        color: #000000 !important;
+        background: transparent !important;
+        padding: 4px 0 !important;
+        margin-bottom: 10px !important;
+      }
+      #meetingFolderSelect { display: none !important; }
+
+      /* TEAM & APPUNTI: nasconde colonna sinistra in stampa per stampare il dettaglio selezionato */
+      #viewTeam .team-layout, #viewAppunti .drive-layout, #viewDocumenti .drive-layout {
+        display: block !important;
+      }
+      #viewTeam .team-layout > .card:first-child,
+      #viewAppunti .drive-layout > .card:first-child,
+      #viewDocumenti .drive-layout > .card:first-child {
+        display: none !important;
+      }
+
+      .card, .briefing-section, .briefing-item, .proj-subpanel, .proj-status-box,
+      .proj-step-item, .proj-doc-chip, .scad-row, .delegation-item {
         background: #ffffff !important;
         color: #111111 !important;
         border: 1px solid #cccccc !important;
         box-shadow: none !important;
-        margin-bottom: 12px !important;
+        margin-bottom: 10px !important;
         overflow: visible !important;
+        page-break-inside: avoid;
       }
-      .briefing-scroll, .tasks-list, .meeting-notes-editor {
+      .briefing-scroll, .tasks-list, .meeting-notes-editor, .drive-preview-body, .scad-list {
         overflow: visible !important;
         max-height: none !important;
         color: #111111 !important;
         background: #ffffff !important;
       }
-      .card-title, .briefing-sec-head, .briefing-item-title, .proj-subpanel-title {
+      .card-title, .briefing-sec-head, .briefing-item-title, .proj-subpanel-title, .scad-title, .del-title {
         color: #000000 !important;
       }
-      .briefing-item-sub, .muted {
+      .briefing-item-sub, .scad-meta, .del-meta, .muted {
         color: #444444 !important;
+      }
+      .task-check {
+        border-color: #333333 !important;
+        color: #000000 !important;
+      }
+      .task-item.done .task-check, .proj-step-item.done .task-check {
+        background: #dddddd !important;
       }
     }
 
@@ -1219,7 +1318,7 @@
           </svg>
         </div>
         <div class="brand-text-wrapper">
-          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.0A</span></span>
+          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.1A</span></span>
           <span class="brand-sub">Comune di San Martino di Venezze</span>
         </div>
       </div>
@@ -1346,8 +1445,10 @@
         </div>
         <div class="now-grid">
           <div class="clock-box">
-            <div class="clock-time" id="liveClock">--:--</div>
-            <div class="clock-date" id="liveDate">...</div>
+            <div class="clock-trigger" id="btnClockJumpToday" title="Clicca per tornare al giorno e alla settimana corrente">
+              <div class="clock-time" id="liveClock">--:--</div>
+              <div class="clock-date" id="liveDate">...</div>
+            </div>
             <div class="next-pill" id="nextEventBox">Connetti Google per il prossimo appuntamento.</div>
           </div>
           <div class="day-timeline" id="dayTimeline">
@@ -1487,6 +1588,7 @@
 
   <!-- ==================== VISTA 3: PROGETTI (FASI + DOCUMENTAZIONE CORRELATA) ==================== -->
   <section id="viewProgetti" class="view-section">
+    <div class="print-only-header"><div><div class="p-ent">Comune di San Martino di Venezze — Scheda Progetto</div><div class="p-title" id="printProjTitleBanner">Dettaglio Progetto</div></div><div class="p-date" id="printProjDateBanner"></div></div>
     <div class="projects-layout">
       <div class="card">
         <div class="card-header">
@@ -1505,7 +1607,7 @@
         <div class="card-header">
           <span class="card-title" id="projDetailHeaderTitle">Dettaglio Progetto</span>
           <div id="projDetailTopActions" style="display:none; gap:8px; align-items:center;">
-            <button type="button" onclick="window.print()" style="padding:5px 10px; font-size:0.77rem;" title="Stampa o salva PDF scheda progetto">🖨️ Stampa / PDF</button>
+            <button type="button" onclick="printSectionClean()" style="padding:5px 10px; font-size:0.77rem;" title="Stampa o salva PDF scheda progetto">🖨️ Stampa / PDF</button>
             <button type="button" id="btnOpenProjDriveFolder" class="accent-cyan" style="padding:5px 10px; font-size:0.77rem; display:none;">📁 Cartella Appunti</button>
             <button type="button" id="btnEditProject" style="padding:5px 10px; font-size:0.77rem;">✏️ Modifica</button>
             <button type="button" id="btnDeleteProject" class="danger-btn" style="padding:5px 9px; font-size:0.77rem;">🗑️</button>
@@ -1544,8 +1646,11 @@
 
             <div class="proj-subpanel">
               <div class="proj-subpanel-head">
-                <span class="proj-subpanel-title">📎 Documentazione Correlata</span>
-                <button type="button" id="btnLinkDocToProject" class="accent-cyan" style="padding:3px 9px; font-size:0.73rem;">+ Collega Atto/Link</button>
+                <span class="proj-subpanel-title">📎 Documenti & Appunti Correlati</span>
+                <div style="display:flex; gap:5px;">
+                  <button type="button" id="btnLinkNoteToProject" style="padding:3px 8px; font-size:0.72rem;" title="Collega un appunto esistente di Google Drive">+ Appunto</button>
+                  <button type="button" id="btnLinkDocToProject" class="accent-cyan" style="padding:3px 8px; font-size:0.72rem;" title="Collega un documento OneDrive/SharePoint">+ Doc/Link</button>
+                </div>
               </div>
               <div class="tasks-list" id="projLinkedDocsList"></div>
             </div>
@@ -1557,10 +1662,12 @@
 
   <!-- ==================== VISTA 4: SCADENZARIO & ADEMPIMENTI ==================== -->
   <section id="viewScadenzario" class="view-section">
+    <div class="print-only-header"><div><div class="p-ent">Comune di San Martino di Venezze</div><div class="p-title">Scadenzario & Adempimenti</div></div><div class="p-date" id="printScadDateBanner"></div></div>
     <div class="scad-toolbar">
       <div class="launcher-filters" id="scadFilterBar"></div>
       <div class="launcher-right-tools">
         <input type="text" id="scadSearchInput" class="launcher-search" placeholder="🔎 Cerca scadenza, bando o ente...">
+        <button type="button" onclick="printSectionClean()" style="padding:6px 10px; font-size:0.8rem;" title="Stampa elenco scadenze">🖨️ Stampa</button>
         <button type="button" id="btnNewScadenza" class="primary">+ Nuova Scadenza</button>
       </div>
     </div>
@@ -1572,6 +1679,7 @@
 
   <!-- ==================== VISTA 5: TEAM & DELEGHE UFFICI ==================== -->
   <section id="viewTeam" class="view-section">
+    <div class="print-only-header"><div><div class="p-ent">Comune di San Martino di Venezze</div><div class="p-title">Deleghe & Attività Uffici</div></div><div class="p-date" id="printTeamDateBanner"></div></div>
     <div class="team-layout">
       <div class="card">
         <div class="card-header">
@@ -1590,6 +1698,7 @@
         <div class="card-header">
           <span class="card-title" id="teamDelegationsHeader">📋 Pratiche & Attività Delegate</span>
           <div style="display:flex; align-items:center; gap:8px;">
+            <button type="button" onclick="printSectionClean()" style="padding:4px 9px; font-size:0.74rem;" title="Stampa deleghe">🖨️ Stampa</button>
             <select id="teamStatusFilter" style="background:var(--bg); border:1px solid var(--border); color:var(--text); padding:4px 8px; border-radius:7px; font-size:0.76rem;">
               <option value="ACTIVE">Attive (Da avviare / In corso)</option>
               <option value="ALL">Tutte (incluse completate)</option>
@@ -1612,6 +1721,7 @@
 
   <!-- ==================== VISTA 6: PREPARAZIONE RIUNIONI (BRIEFING & VERBALE) ==================== -->
   <section id="viewRiunioni" class="view-section">
+    <div class="print-only-header"><div><div class="p-ent">Comune di San Martino di Venezze — Briefing & Verbale</div><div class="p-title">Dossier Riunione</div></div><div class="p-date" id="printMeetDateBanner"></div></div>
     <div class="meeting-search-bar">
       <input type="text" id="meetingSearchInput" placeholder="🔎 Cerca argomento, parola chiave, pratica o ente (es. Asilo Nido, Cariparo, ULSS, Beverare)...">
       <select id="meetingMemberFilter" title="Filtra per collaboratore"></select>
@@ -1625,7 +1735,7 @@
           <span class="card-title" id="meetingBriefingTitle">🎙️ Dossier Briefing & Elementi Rilevanti</span>
           <div style="display:flex; align-items:center; gap:8px;">
             <span style="font-size:0.76rem; color:var(--muted);" id="meetingMatchCounter">0 elementi trovati</span>
-            <button type="button" onclick="window.print()" style="padding:4px 9px; font-size:0.74rem;" title="Stampa o esporta PDF del Dossier Riunione">🖨️ Stampa / PDF</button>
+            <button type="button" onclick="printSectionClean()" style="padding:4px 9px; font-size:0.74rem;" title="Stampa o esporta PDF del Dossier Riunione">🖨️ Stampa / PDF</button>
           </div>
         </div>
 
@@ -1673,6 +1783,7 @@
 
   <!-- ==================== VISTA 7: APPUNTI DRIVE & NOTE FORMATTATE + INVIO EMAIL ==================== -->
   <section id="viewAppunti" class="view-section">
+    <div class="print-only-header"><div><div class="p-ent">Comune di San Martino di Venezze — Appunto</div><div class="p-title" id="printNoteTitleBanner">Appunto</div></div><div class="p-date" id="printNoteDateBanner"></div></div>
     <div class="drive-layout">
       <div class="card">
         <div class="card-header">
@@ -1696,6 +1807,8 @@
         <div class="card-header">
           <span class="card-title" id="drivePreviewTitle" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Anteprima Documento</span>
           <div class="drive-preview-header-actions" id="previewActionsBar" style="display:none;">
+            <button type="button" id="btnAssignNoteToProject" style="padding:5px 10px; font-size:0.78rem;" title="Collega questo appunto a un progetto">📂 Progetto</button>
+            <button type="button" onclick="printSectionClean()" style="padding:5px 10px; font-size:0.78rem;" title="Stampa appunto">🖨️ Stampa</button>
             <button type="button" id="btnEmailSelectedDoc" class="accent-cyan" style="padding:5px 10px; font-size:0.78rem;">✉️ Invia Email</button>
             <button type="button" id="btnRenameSelectedDoc" style="padding:5px 10px; font-size:0.78rem;">✏️ Rinomina</button>
             <button type="button" id="btnMoveSelectedDoc" style="padding:5px 10px; font-size:0.78rem;">📁 Sposta</button>
@@ -2145,7 +2258,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 1.0A</h3>
+      <h3>⚙️ Configurazione PIKDASH 1.1A</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -2186,6 +2299,21 @@
       <input type="text" id="globalSearchInput" class="global-search-input" placeholder="Digita per cercare ovunque: impegni, progetti, scadenze, dipendenti, deleghe, appunti, documenti...">
       <div class="global-search-results" id="globalSearchResults">
         <p style="color:var(--muted); font-size:0.84rem; text-align:center; padding:18px;">Inizia a scrivere per cercare istantaneamente in tutte le 9 sezioni.</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- MODALE COLLEGA APPUNTO DRIVE A PROGETTO -->
+  <div class="modal-backdrop" id="linkNoteToProjModal">
+    <div class="modal">
+      <h3>📝 Collega Appunto al Progetto</h3>
+      <p id="linkNoteToProjLabel" style="font-size:0.85rem; color:var(--muted); margin-bottom:10px;"></p>
+      <label>Seleziona un Appunto da Google Drive:</label>
+      <select id="linkNoteToProjSelect"></select>
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:20px;">
+        <button type="button" id="btnCancelLinkNoteToProj">Annulla</button>
+        <button type="button" id="btnConfirmLinkNoteToProj" class="primary">Collega Appunto</button>
       </div>
     </div>
   </div>
@@ -4671,7 +4799,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.0A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 1.1A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -4922,7 +5050,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.0A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 1.1A il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -6167,7 +6295,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  // ==================== ESTENSIONI PIKDASH 1.0A ====================
+  // ==================== ESTENSIONI PIKDASH 1.1A ====================
   var currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
   var monthEventsCache = [];
 
@@ -6523,7 +6651,7 @@
     renderTasks();
   });
 
-  // ==================== ESTENSIONI PIKDASH 1.0A ====================
+  // ==================== ESTENSIONI PIKDASH 1.1A ====================
 
   // A. Automazione Ricorrenze nello Scadenzario
   function computeNextRecurringDate(isoDateStr, freq) {
@@ -6814,7 +6942,7 @@
   function exportFullBackupJson() {
     var payload = {
       app: "PIKDASH",
-      version: "1.0A",
+      version: "1.1A",
       exportedAt: new Date().toISOString(),
       scadenzeItems: scadenzeItems,
       teamMembers: teamMembers,
@@ -6931,6 +7059,394 @@
     }
 
     loadComuneNewsFeed();
+  });
+
+
+
+  // ==================== ESTENSIONI PIKDASH 1.1A ====================
+  var noteProjectMap = {};
+
+  try {
+    var savedNoteProj = JSON.parse(localStorage.getItem("dash_cache_note_proj_map") || "{}");
+    if (savedNoteProj && typeof savedNoteProj === "object") noteProjectMap = savedNoteProj;
+  } catch (e) {}
+
+  // Override saveCachedSnapshot to also persist noteProjectMap
+  var _prevSaveCachedSnapshot = saveCachedSnapshot;
+  saveCachedSnapshot = function() {
+    try {
+      localStorage.setItem("dash_cache_note_proj_map", JSON.stringify(noteProjectMap));
+    } catch (e) {}
+    _prevSaveCachedSnapshot();
+  };
+
+  // Override loadModulisticaFromDrive & syncModExternalLinksToDrive to persist noteProjectMap on Drive too
+  var _prevLoadMod = loadModulisticaFromDrive;
+  loadModulisticaFromDrive = async function() {
+    await _prevLoadMod();
+    if (modLinksConfigFileId && accessToken) {
+      try {
+        var dlRes = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(modLinksConfigFileId) + "?alt=media", {
+          headers: { "Authorization": "Bearer " + accessToken }
+        });
+        if (dlRes.ok) {
+          var parsed = await dlRes.json();
+          if (parsed && typeof parsed === "object" && parsed.noteProjectMap) {
+            noteProjectMap = parsed.noteProjectMap;
+            localStorage.setItem("dash_cache_note_proj_map", JSON.stringify(noteProjectMap));
+          }
+        }
+      } catch (e) {}
+    }
+  };
+
+  syncModExternalLinksToDrive = async function() {
+    saveCachedSnapshot();
+    if (!accessToken || !modRootFolderId) return;
+
+    try {
+      var payloadObj = {
+        links: modExternalLinks,
+        projectMap: docProjectMap,
+        noteProjectMap: noteProjectMap
+      };
+      var jsonContent = JSON.stringify(payloadObj, null, 2);
+      if (modLinksConfigFileId) {
+        await fetch("https://www.googleapis.com/upload/drive/v3/files/" + encodeURIComponent(modLinksConfigFileId) + "?uploadType=media", {
+          method: "PATCH",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "application/json"
+          },
+          body: jsonContent
+        });
+      } else {
+        var metadata = {
+          name: "pikdash_modulistica_links.json",
+          mimeType: "application/json",
+          parents: [modRootFolderId]
+        };
+        var boundary = "-------pikdashmodlinks554433221";
+        var body =
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          JSON.stringify(metadata) +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          jsonContent +
+          "\r\n--" + boundary + "--";
+
+        var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer " + accessToken,
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          },
+          body: body
+        });
+        if (createRes.ok) {
+          var created = await createRes.json();
+          modLinksConfigFileId = created.id;
+        }
+      }
+    } catch (e) {}
+  };
+
+  // Stampa pulita e contestuale
+  function printSectionClean() {
+    var nowStr = "Stampato il " + new Date().toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit", year: "numeric" }) +
+      " alle " + new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    var pTitleEl = document.getElementById("printProjTitleBanner");
+    if (pTitleEl && proj) pTitleEl.innerText = "[" + proj.dept + "] " + proj.title;
+
+    var noteFile = driveFiles.find(function(f) { return f.id === selectedDriveFileId; });
+    var nTitleEl = document.getElementById("printNoteTitleBanner");
+    if (nTitleEl && noteFile) nTitleEl.innerText = noteFile.name;
+
+    ["printProjDateBanner", "printMeetDateBanner", "printScadDateBanner", "printTeamDateBanner", "printNoteDateBanner"].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.innerText = nowStr;
+    });
+
+    window.print();
+  }
+
+  // Collegamento Appunti <-> Progetti
+  function openAssignNoteToProjectModal(noteId) {
+    var file = driveFiles.find(function(f) { return f.id === noteId; });
+    if (!file) return;
+    assigningDocId = "note:" + noteId;
+    document.getElementById("assignProjDocLabel").innerText = "Appunto: " + file.name;
+    populateProjectsSelect(document.getElementById("assignProjDocSelect"), noteProjectMap[noteId] || "");
+    document.getElementById("assignProjDocModal").style.display = "flex";
+  }
+
+  var _prevConfirmAssign = confirmAssignDocToProject;
+  confirmAssignDocToProject = async function() {
+    if (assigningDocId && assigningDocId.indexOf("note:") === 0) {
+      var noteId = assigningDocId.slice(5);
+      var targetProjId = document.getElementById("assignProjDocSelect").value;
+      document.getElementById("assignProjDocModal").style.display = "none";
+      if (targetProjId) {
+        noteProjectMap[noteId] = targetProjId;
+      } else {
+        delete noteProjectMap[noteId];
+      }
+      renderDriveList();
+      renderProjectsList();
+      renderProjectDetail();
+      await syncModExternalLinksToDrive();
+      return;
+    }
+    await _prevConfirmAssign();
+  };
+
+  function openLinkNoteToProjModal() {
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj) return;
+    if (driveFiles.length === 0) {
+      alert("Nessun appunto disponibile su Google Drive. Premi Sync o crea prima un appunto.");
+      return;
+    }
+    document.getElementById("linkNoteToProjLabel").innerText = "Progetto: [" + proj.dept + "] " + proj.title;
+    var sel = document.getElementById("linkNoteToProjSelect");
+    sel.innerHTML = driveFiles.map(function(f) {
+      var already = (noteProjectMap[f.id] === proj.id) ? " (già collegato)" : "";
+      return '<option value="' + f.id + '">📝 ' + escapeHtml(f.name) + already + '</option>';
+    }).join("");
+    document.getElementById("linkNoteToProjModal").style.display = "flex";
+  }
+
+  async function confirmLinkNoteToProject() {
+    var noteId = document.getElementById("linkNoteToProjSelect").value;
+    document.getElementById("linkNoteToProjModal").style.display = "none";
+    if (!noteId || !selectedProjectId) return;
+
+    noteProjectMap[noteId] = selectedProjectId;
+    renderDriveList();
+    renderProjectsList();
+    renderProjectDetail();
+    await syncModExternalLinksToDrive();
+  }
+
+  async function unlinkNoteFromProject(noteId) {
+    delete noteProjectMap[noteId];
+    renderDriveList();
+    renderProjectsList();
+    renderProjectDetail();
+    await syncModExternalLinksToDrive();
+  }
+
+  function jumpToDriveNote(noteId) {
+    switchMainView("viewAppunti");
+    activeFolderFilter = "ALL";
+    renderDriveFoldersBar();
+    openDrivePreview(noteId);
+  }
+
+  // Override renderDriveList per mostrare tag progetto collegato e tasto rapido collega
+  renderDriveList = function() {
+    var listEl = document.getElementById("driveFilesList");
+    var term = (document.getElementById("driveSearchInput").value || "").toLowerCase().trim();
+
+    var filtered = driveFiles.filter(function(f) {
+      var projObj = noteProjectMap[f.id] ? projectsData.find(function(p) { return p.id === noteProjectMap[f.id]; }) : null;
+      var projName = projObj ? projObj.title : "";
+      var matchSearch = !term ||
+        (f.name || "").toLowerCase().indexOf(term) !== -1 ||
+        projName.toLowerCase().indexOf(term) !== -1;
+      if (!matchSearch) return false;
+      if (activeFolderFilter === "ALL") return true;
+      if (activeFolderFilter === "ROOT") return f.parentId === rootDriveFolderId;
+      return f.parentId === activeFolderFilter;
+    });
+
+    if (filtered.length === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun appunto in questa cartella.</p>';
+      return;
+    }
+
+    listEl.innerHTML = filtered.map(function(f) {
+      var folderObj = driveSubfolders.find(function(sf) { return sf.id === f.parentId; });
+      var folderColor = folderObj ? folderObj.color : "#3c414f";
+      var folderBadge = folderObj
+        ? '<span class="file-folder-tag" style="--file-color:' + folderObj.color + ';">' + escapeHtml(folderObj.name) + '</span>'
+        : '';
+
+      var projObj = noteProjectMap[f.id] ? projectsData.find(function(p) { return p.id === noteProjectMap[f.id]; }) : null;
+      var projBadge = projObj
+        ? '<span class="proj-link-tag" title="Collegato al progetto">📂 ' + escapeHtml(projObj.title) + '</span>'
+        : '';
+
+      var dateStr = f.modifiedTime ? new Date(f.modifiedTime).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" }) : "";
+      var isAct = (f.id === selectedDriveFileId) ? " active" : "";
+
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + folderColor + ';" onclick="openDrivePreview(\'' + f.id + '\')">' +
+        '<div class="drive-file-info">' +
+          '<div class="drive-file-title">📄 ' + escapeHtml(f.name) + '</div>' +
+          '<div class="drive-file-meta">' +
+            folderBadge +
+            projBadge +
+            '<span>' + dateStr + '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="file-actions" onclick="event.stopPropagation()">' +
+          '<button type="button" class="file-icon-btn" title="Collega a Progetto" onclick="openAssignNoteToProjectModal(\'' + f.id + '\')">📂</button>' +
+          '<button type="button" class="file-icon-btn" title="Invia per Email" onclick="emailDriveNote(\'' + f.id + '\')">✉️</button>' +
+          '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile(\'' + f.id + '\')">✏️</button>' +
+          '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal(\'' + f.id + '\')">📁</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina appunto (Cestino Drive)" onclick="deleteDriveFile(\'' + f.id + '\')">🗑️</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  };
+
+  // Override renderProjectsList & renderProjectDetail per includere anche gli Appunti collegati nel conteggio e nell'elenco
+  var _prevRenderProjectsList = renderProjectsList;
+  renderProjectsList = function() {
+    var container = document.getElementById("projectsListContainer");
+    var filtered = projectsData.filter(function(p) {
+      return activeDeptFilter === "ALL" || p.dept === activeDeptFilter;
+    });
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessun progetto presente. Clicca su <strong>+ Nuovo Progetto</strong> in alto.</p>';
+      return;
+    }
+
+    var allDocs = getAllUnifiedModules();
+
+    container.innerHTML = filtered.map(function(p) {
+      var col = DEPT_COLORS[p.dept] || "#b39ddb";
+      var totalSteps = p.steps.length;
+      var doneSteps = p.steps.filter(function(s) { return s.done; }).length;
+      var pct = totalSteps === 0 ? (p.done ? 100 : 0) : Math.round((doneSteps / totalSteps) * 100);
+      var dueLabel = p.due ? ("Scad. " + p.due.split("-").reverse().join("/")) : "Nessuna scadenza";
+      var docsCount = allDocs.filter(function(d) { return d.projectId === p.id; }).length;
+      var notesCount = driveFiles.filter(function(f) { return noteProjectMap[f.id] === p.id; }).length;
+      var isAct = (p.id === selectedProjectId) ? " active" : "";
+
+      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject(\'' + p.id + '\')">' +
+        '<div class="proj-card-top">' +
+          '<span class="proj-card-title">' + escapeHtml(p.title) + '</span>' +
+          '<span class="proj-dept-pill" style="--proj-color:' + col + ';">' + escapeHtml(p.dept) + '</span>' +
+        '</div>' +
+        '<div class="proj-card-meta">' +
+          '<span>' + doneSteps + '/' + totalSteps + ' fasi (' + pct + '%) • 📎 ' + docsCount + ' doc • 📝 ' + notesCount + ' appunti</span>' +
+          '<span>' + dueLabel + '</span>' +
+        '</div>' +
+        '<div class="proj-mini-bar"><div class="proj-mini-fill" style="width:' + pct + '%; background:' + col + ';"></div></div>' +
+      '</div>';
+    }).join("");
+  };
+
+  var _prevRenderProjectDetail = renderProjectDetail;
+  renderProjectDetail = function() {
+    _prevRenderProjectDetail();
+    var proj = projectsData.find(function(p) { return p.id === selectedProjectId; });
+    if (!proj) return;
+
+    var docsListEl = document.getElementById("projLinkedDocsList");
+    var linkedDocs = getAllUnifiedModules().filter(function(d) { return d.projectId === proj.id; });
+    var linkedNotes = driveFiles.filter(function(f) { return noteProjectMap[f.id] === proj.id; });
+
+    if (linkedDocs.length === 0 && linkedNotes.length === 0) {
+      docsListEl.innerHTML = '<p style="color:var(--muted); font-size:0.82rem; line-height:1.4;">Nessun documento o appunto collegato.<br>Usa <strong>+ Appunto</strong> o <strong>+ Doc/Link</strong> qui sopra per associare atti e note alla pratica.</p>';
+      return;
+    }
+
+    var platIcons = { gdrive: "📄", onedrive: "☁️", sharepoint: "🔷", external: "🌐" };
+    var docsHtml = linkedDocs.map(function(doc) {
+      var ico = platIcons[doc.platform] || "📄";
+      return '<div class="proj-doc-chip" onclick="jumpToDocument(\'' + doc.id + '\')" title="Apri anteprima nella sezione Documenti">' +
+        '<div style="min-width:0; flex:1;">' +
+          '<div class="proj-doc-chip-title">' + ico + ' ' + escapeHtml(doc.title) + '</div>' +
+          '<div style="font-size:0.69rem; color:var(--muted); margin-top:2px;">' + escapeHtml(doc.format || doc.platform.toUpperCase()) + '</div>' +
+        '</div>' +
+        '<a href="' + escapeHtml(doc.url || "#") + '" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()" class="file-icon-btn" title="Apri file direttamente">↗</a>' +
+      '</div>';
+    }).join("");
+
+    var notesHtml = linkedNotes.map(function(n) {
+      return '<div class="proj-doc-chip" style="border-left-color:var(--lilac);" onclick="jumpToDriveNote(\'' + n.id + '\')" title="Leggi appunto nella sezione Appunti">' +
+        '<div style="min-width:0; flex:1;">' +
+          '<div class="proj-doc-chip-title">📝 ' + escapeHtml(n.name) + '</div>' +
+          '<div style="font-size:0.69rem; color:var(--lilac); margin-top:2px;">Appunto Google Drive</div>' +
+        '</div>' +
+        '<div style="display:flex; gap:4px;" onclick="event.stopPropagation()">' +
+          (n.webViewLink ? '<a href="' + escapeHtml(n.webViewLink) + '" target="_blank" rel="noopener noreferrer" class="file-icon-btn" title="Apri in Google Docs">↗</a>' : '') +
+          '<button type="button" class="file-icon-btn del" title="Scollega appunto dal progetto" onclick="unlinkNoteFromProject(\'' + n.id + '\')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+
+    docsListEl.innerHTML = docsHtml + notesHtml;
+  };
+
+  // Includi anche gli appunti collegati ai progetti nel Dossier Briefing Riunioni
+  var _prevRenderMeetingBriefing = renderMeetingBriefing;
+  renderMeetingBriefing = function() {
+    _prevRenderMeetingBriefing();
+    var filterProjectId = document.getElementById("meetingProjectFilter").value || "ALL";
+    if (filterProjectId !== "ALL") {
+      var linkedNotes = driveFiles.filter(function(f) { return noteProjectMap[f.id] === filterProjectId; });
+      if (linkedNotes.length > 0) {
+        var resultsEl = document.getElementById("meetingBriefingResults");
+        var extraHtml = '<div class="briefing-section"><div class="briefing-sec-head green"><span>📝 Appunti Collegati al Progetto (' + linkedNotes.length + ')</span></div>';
+        linkedNotes.forEach(function(f) {
+          extraHtml += '<div class="briefing-item">' +
+            '<div class="briefing-item-title">📝 ' + escapeHtml(f.name) + '</div>' +
+            '<button type="button" class="file-icon-btn" onclick="jumpToDriveNote(\'' + f.id + '\')">Leggi</button>' +
+          '</div>';
+        });
+        extraHtml += '</div>';
+        resultsEl.innerHTML = resultsEl.innerHTML + extraHtml;
+      }
+    }
+  };
+
+  window.addEventListener("load", function() {
+    // Clic su orario o data -> torna al giorno e alla settimana corrente
+    var btnClockToday = document.getElementById("btnClockJumpToday");
+    if (btnClockToday) {
+      btnClockToday.onclick = function() {
+        var today = new Date();
+        currentMonday = getMonday(today);
+        selectedDateStr = toIsoDate(today);
+        if (accessToken) {
+          loadAllData();
+        } else {
+          renderWeekGrid();
+          renderDayDetail();
+          updateSummaryKpis();
+        }
+      };
+    }
+
+    // Collega Appunto a Progetto (da Progetti e da Appunti)
+    var btnLinkNote = document.getElementById("btnLinkNoteToProject");
+    if (btnLinkNote) btnLinkNote.onclick = openLinkNoteToProjModal;
+
+    var btnCancelLinkNote = document.getElementById("btnCancelLinkNoteToProj");
+    if (btnCancelLinkNote) {
+      btnCancelLinkNote.onclick = function() {
+        document.getElementById("linkNoteToProjModal").style.display = "none";
+      };
+    }
+
+    var btnConfirmLinkNote = document.getElementById("btnConfirmLinkNoteToProj");
+    if (btnConfirmLinkNote) btnConfirmLinkNote.onclick = confirmLinkNoteToProject;
+
+    var btnAssignNote = document.getElementById("btnAssignNoteToProject");
+    if (btnAssignNote) {
+      btnAssignNote.onclick = function() {
+        if (selectedDriveFileId) openAssignNoteToProjectModal(selectedDriveFileId);
+      };
+    }
+
+    renderDriveList();
+    renderProjectsList();
+    renderProjectDetail();
   });
 
 </script>
