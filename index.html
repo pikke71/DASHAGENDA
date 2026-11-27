@@ -8043,12 +8043,42 @@
     return found;
   }
 
-      function extractPostaDelSindacoItems(rawText, fallbackYear, fallbackMonth) {
+        function isPromoOrNoiseLine(line) {
+    if (!line) return true;
+    var low = line.toLowerCase().trim();
+    if (low.length < 4) return true;
+    var noisePatterns = [
+      /^hai la procedura\b/i,
+      /^usa la funzione:/i,
+      /^-->\s*possiamo supportarti/i,
+      /^possiamo supportarti anche con un servizio/i,
+      /^scrivici per ulteriori dettagli/i,
+      /^clicca qui\b/i,
+      /^(menu|cerca|accedi|abbonati|cookie|privacy|accetto|scadenzario pubblica amministrazione)/i,
+      /^(precedente|successivo|torna su|stampa|condividi)/i
+    ];
+    for (var i = 0; i < noisePatterns.length; i++) {
+      if (noisePatterns[i].test(low)) return true;
+    }
+    return false;
+  }
+
+  function isStandaloneDateHeader(line, fallbackYear, fallbackMonth) {
+    if (!line || line.length > 42) return "";
+    // Ignora date che fanno parte di riferimenti normativi o decreti (es. "D.M. 9 agosto 2000", "Legge 24 agosto 1990")
+    if (/\b(d\.?\s*m\.?|d\.?\s*lgs\.?|d\.?\s*p\.?r\.?|legge|l\.|circolare|decreto|delibera|ordinanza)\b/i.test(line)) {
+      return "";
+    }
+    return parseItalianDateToIso(line, fallbackYear, fallbackMonth);
+  }
+
+  function extractPostaDelSindacoItems(rawText, fallbackYear, fallbackMonth) {
     var lines = (rawText || "").split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
     var found = [];
     var seenKeys = {};
     var currentDate = "";
     var currentTopic = "Affari Generali";
+    var lastAddedItem = null;
 
     var topicPatterns = [
       { re: /^(affari\s*generali|segreteria|organi\s*istituzionali)$/i, topic: "Affari Generali" },
@@ -8068,31 +8098,37 @@
       return "";
     }
 
+    function looksLikeSubDetailOrNorma(str) {
+      // Frasi descrittive o riferimenti normativi che completano la scadenza precedente
+      if (/^\(?\s*(art\.|articolo|d\.m\.|d\.lgs\.|d\.p\.r\.|decreto del ministero|legge \d|circolare)/i.test(str)) return true;
+      if (/^(i segretari|gli enti|i comuni|il responsabile|entro il termine|la trasmissione|l'invio|si ricorda che|nel mese precedente)\b/i.test(str) && str.length > 65) {
+        return true;
+      }
+      return false;
+    }
+
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i].replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, "$1").trim();
-      if (!line || line.length < 3) continue;
-
-      if (/^(menu|cerca|accedi|abbonati|cookie|privacy|accetto|scadenzario pubblica amministrazione)/i.test(line)) {
-        continue;
-      }
+      if (isPromoOrNoiseLine(line)) continue;
 
       var exactTopic = matchExactTopic(line);
       if (exactTopic) {
         currentTopic = exactTopic;
+        lastAddedItem = null;
         continue;
       }
 
-      var parsedDate = parseItalianDateToIso(line, fallbackYear, fallbackMonth);
-      if (parsedDate && line.length <= 36) {
-        currentDate = parsedDate;
+      var dateHeader = isStandaloneDateHeader(line, fallbackYear, fallbackMonth);
+      if (dateHeader) {
+        currentDate = dateHeader;
+        lastAddedItem = null;
         continue;
       }
 
-      var itemDate = parsedDate || currentDate || (String(fallbackYear) + "-" + String(fallbackMonth).padStart(2, "0") + "-28");
-
-      // Se la riga contiene un prefisso tipo "Argomento: titolo" o "[Argomento] titolo"
+      var itemDate = currentDate || (String(fallbackYear) + "-" + String(fallbackMonth).padStart(2, "0") + "-28");
       var detectedTopic = currentTopic;
       var workingTitle = line;
+
       var bracketMatch = workingTitle.match(/^\[([^\]]+)\]\s*(.+)$/);
       if (bracketMatch) {
         detectedTopic = normalizePdsTopic(bracketMatch[1]);
@@ -8102,45 +8138,52 @@
         if (colonMatch) {
           detectedTopic = normalizePdsTopic(colonMatch[1]);
           workingTitle = colonMatch[2].trim();
-        } else {
-          if (/ragioneri|bilanci|contabil|tesorer|rendiconto/i.test(workingTitle)) detectedTopic = "Ragioneria";
-          else if (/tribut|imu|tari/i.test(workingTitle)) detectedTopic = "Tributi";
-          else if (/anagraf|demograf|stato civile|aire|elettoral/i.test(workingTitle)) detectedTopic = "Demografici";
-          else if (/social|scuol|nido|isee|disabil/i.test(workingTitle)) detectedTopic = "Servizi Sociali";
-          else if (/personal|stipend|uniemens|assunzion/i.test(workingTitle)) detectedTopic = "Personale";
-          else if (/tecnic|lavori pubblici|appalt|cig|anac/i.test(workingTitle)) detectedTopic = "Ufficio Tecnico";
         }
       }
 
-      workingTitle = workingTitle
-        .replace(/^\d{1,2}[\/\.-]\d{1,2}[\/\.-]\d{2,4}\s*[-–:]?\s*/, "")
-        .trim();
+      // Se questa riga è una continuazione/norma/dettaglio dell'ultima scadenza appena estratta, accodala alle note invece di creare una riga sconclusionata
+      if (lastAddedItem && lastAddedItem.dueDate === itemDate && lastAddedItem.sector === detectedTopic && looksLikeSubDetailOrNorma(workingTitle)) {
+        if (!lastAddedItem.detailParts) lastAddedItem.detailParts = [];
+        lastAddedItem.detailParts.push(workingTitle);
+        lastAddedItem.note = lastAddedItem.detailParts.join(" — ").slice(0, 260);
+        continue;
+      }
 
-      if (workingTitle.length < 8) continue;
+      // Se esiste già una scadenza molto simile nella stessa data e argomento e questa riga è breve, uniscila come sottotitolo/nota
+      if (lastAddedItem && lastAddedItem.dueDate === itemDate && lastAddedItem.sector === detectedTopic && workingTitle.length <= 55 && lastAddedItem.title.length <= 65) {
+        lastAddedItem.title = lastAddedItem.title + " — " + workingTitle;
+        continue;
+      }
 
+      if (workingTitle.length < 6) continue;
+
+      var cleanTitle = workingTitle;
       var note = "Fonte: La Posta del Sindaco";
-      if (workingTitle.length > 150) {
-        var dotIdx = workingTitle.indexOf(". ");
-        if (dotIdx > 25 && dotIdx < 145) {
-          note = workingTitle.slice(dotIdx + 2).slice(0, 220);
-          workingTitle = workingTitle.slice(0, dotIdx + 1);
+      if (cleanTitle.length > 140) {
+        var dotIdx = cleanTitle.indexOf(". ");
+        if (dotIdx > 25 && dotIdx < 135) {
+          note = cleanTitle.slice(dotIdx + 2).slice(0, 220);
+          cleanTitle = cleanTitle.slice(0, dotIdx + 1);
         } else {
-          workingTitle = workingTitle.slice(0, 125) + "...";
+          cleanTitle = cleanTitle.slice(0, 120) + "...";
         }
       }
 
-      var sig = itemDate + "|" + workingTitle.toLowerCase().slice(0, 55);
+      var sig = itemDate + "|" + cleanTitle.toLowerCase().slice(0, 55);
       if (seenKeys[sig]) continue;
       seenKeys[sig] = true;
 
-      found.push({
-        title: workingTitle,
+      var newItem = {
+        title: cleanTitle,
         dueDate: itemDate,
         sector: detectedTopic,
         note: note,
+        detailParts: [],
         url: "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione?date=" + itemDate,
         selected: true
-      });
+      };
+      found.push(newItem);
+      lastAddedItem = newItem;
     }
 
     return found;
