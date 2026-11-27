@@ -5,390 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIKDASH 1.0A — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer>
-  // ==================== ESTENSIONI PIKDASH 1.0A ====================
-
-  // A. Automazione Ricorrenze nello Scadenzario
-  function computeNextRecurringDate(isoDateStr, freq) {
-    if (!isoDateStr) return toIsoDate(new Date());
-    var parts = isoDateStr.split("-");
-    var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
-    if (freq === "Mensile") d.setMonth(d.getMonth() + 1);
-    else if (freq === "Trimestrale") d.setMonth(d.getMonth() + 3);
-    else if (freq === "Semestrale") d.setMonth(d.getMonth() + 6);
-    else if (freq === "Annuale") d.setFullYear(d.getFullYear() + 1);
-    return toIsoDate(d);
-  }
-
-  toggleScadenzaDone = async function(scadId) {
-    var item = scadenzeItems.find(function(x) { return x.id === scadId; });
-    if (!item) return;
-    var wasDone = !!item.done;
-    item.done = !wasDone;
-
-    if (!wasDone && item.freq && item.freq !== "Una tantum") {
-      var nextDate = computeNextRecurringDate(item.dueDate, item.freq);
-      var formattedNext = nextDate.split("-").reverse().join("/");
-      if (confirm("Questa scadenza ha ricorrenza '" + item.freq + "'.\nVuoi generare automaticamente la prossima scadenza al " + formattedNext + "?")) {
-        scadenzeItems.push({
-          id: "scad_" + Date.now(),
-          title: item.title,
-          dueDate: nextDate,
-          sector: item.sector,
-          freq: item.freq,
-          note: item.note,
-          done: false
-        });
-      }
-    }
-
-    renderScadFilterBar();
-    renderScadenzeList();
-    await syncScadenzeToDrive();
-  };
-
-  // B. Feed News Comunali (Comune di San Martino di Venezze)
-  async function loadComuneNewsFeed() {
-    var container = document.getElementById("comuneNewsTickerList");
-    if (!container) return;
-
-    var cachedNews = [];
-    try {
-      cachedNews = JSON.parse(localStorage.getItem("dash_cache_comune_news") || "[]");
-    } catch (e) {}
-
-    if (cachedNews.length > 0) {
-      renderComuneNewsList(cachedNews);
-    }
-
-    var rssUrl = "https://www.comune.sanmartinodivenezze.ro.it/it/news/feed";
-    var proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssUrl);
-
-    try {
-      var res = await fetch(proxyUrl);
-      if (!res.ok) throw new Error("Feed non raggiungibile");
-      var json = await res.json();
-      if (!json || !json.contents) throw new Error("Feed vuoto");
-
-      var parser = new DOMParser();
-      var xml = parser.parseFromString(json.contents, "text/xml");
-      var items = Array.prototype.slice.call(xml.querySelectorAll("item")).slice(0, 6);
-
-      if (items.length > 0) {
-        var parsedItems = items.map(function(it) {
-          var titleEl = it.querySelector("title");
-          var linkEl = it.querySelector("link");
-          var pubEl = it.querySelector("pubDate");
-          var dateFormatted = "";
-          if (pubEl && pubEl.textContent) {
-            var dt = new Date(pubEl.textContent);
-            if (!isNaN(dt.getTime())) {
-              dateFormatted = dt.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
-            }
-          }
-          return {
-            title: titleEl ? titleEl.textContent.trim() : "Avviso comunale",
-            link: linkEl ? linkEl.textContent.trim() : "https://www.comune.sanmartinodivenezze.ro.it",
-            date: dateFormatted
-          };
-        });
-
-        localStorage.setItem("dash_cache_comune_news", JSON.stringify(parsedItems));
-        renderComuneNewsList(parsedItems);
-      }
-    } catch (err) {
-      if (cachedNews.length === 0) {
-        container.innerHTML = '<a class="news-ticker-link" href="https://www.comune.sanmartinodivenezze.ro.it/it/news" target="_blank" rel="noopener noreferrer">🌐 Apri Albo Pretorio e News del Comune di San Martino di Venezze ↗</a>';
-      }
-    }
-  }
-
-  function renderComuneNewsList(items) {
-    var container = document.getElementById("comuneNewsTickerList");
-    if (!container || !items || items.length === 0) return;
-
-    container.innerHTML = items.map(function(n) {
-      var dSpan = n.date ? '<span class="news-ticker-date">[' + escapeHtml(n.date) + ']</span>' : '';
-      return '<a class="news-ticker-link" href="' + escapeHtml(n.link) + '" target="_blank" rel="noopener noreferrer" title="' + escapeHtml(n.title) + '">' +
-        dSpan + '<span>' + escapeHtml(n.title) + '</span>' +
-      '</a>';
-    }).join('<span style="color:var(--border);">•</span>');
-  }
-
-  // C. Ricerca Globale Istantanea (Ctrl+K)
-  function openGlobalSearchModal() {
-    var modal = document.getElementById("globalSearchModal");
-    var input = document.getElementById("globalSearchInput");
-    modal.style.display = "flex";
-    input.value = "";
-    renderGlobalSearchResults("");
-    input.focus();
-  }
-
-  function renderGlobalSearchResults(rawTerm) {
-    var box = document.getElementById("globalSearchResults");
-    var term = (rawTerm || "").toLowerCase().trim();
-
-    if (!term) {
-      box.innerHTML = '<p style="color:var(--muted); font-size:0.84rem; text-align:center; padding:18px;">Digita almeno 2 caratteri per cercare contemporaneamente in Agenda, Progetti, Scadenze, Team, Appunti, Documenti e Portali.</p>';
-      return;
-    }
-
-    var hits = [];
-
-    weekEvents.forEach(function(ev) {
-      if ((ev.title + " " + (ev.description || "")).toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Agenda",
-          title: ev.title,
-          sub: ev.date.split("-").reverse().join("/") + " • " + ev.startTime,
-          action: function() {
-            selectedDateStr = ev.date;
-            switchMainView("viewPanoramica");
-            renderWeekGrid();
-            renderDayDetail();
-          }
-        });
-      }
-    });
-
-    projectsData.forEach(function(p) {
-      var stepsTxt = p.steps.map(function(s) { return s.title; }).join(" ");
-      if ((p.title + " " + p.dept + " " + (p.statusNote || "") + " " + stepsTxt).toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Progetto",
-          title: "[" + p.dept + "] " + p.title,
-          sub: p.statusNote || (p.steps.length + " fasi operative"),
-          action: function() {
-            switchMainView("viewProgetti");
-            selectProject(p.id);
-          }
-        });
-      }
-    });
-
-    scadenzeItems.forEach(function(s) {
-      if ((s.title + " " + (s.sector || "") + " " + (s.note || "")).toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Scadenza",
-          title: s.title,
-          sub: (s.dueDate ? s.dueDate.split("-").reverse().join("/") : "") + " • " + (s.sector || "Generale"),
-          action: function() {
-            switchMainView("viewScadenzario");
-            document.getElementById("scadSearchInput").value = s.title;
-            renderScadenzeList();
-          }
-        });
-      }
-    });
-
-    teamDelegations.forEach(function(d) {
-      var m = teamMembers.find(function(x) { return x.id === d.memberId; });
-      var mName = m ? m.name : "Team";
-      if ((d.title + " " + mName).toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Delega Team",
-          title: d.title,
-          sub: "In carico a: " + mName,
-          action: function() {
-            switchMainView("viewTeam");
-            if (m) selectTeamMember(m.id);
-          }
-        });
-      }
-    });
-
-    memoItems.forEach(function(m) {
-      if (m.title.toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Promemoria",
-          title: m.title,
-          sub: m.category,
-          action: function() { switchMainView("viewPromemoria"); }
-        });
-      }
-    });
-
-    driveFiles.forEach(function(f) {
-      if (f.name.toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Appunto",
-          title: f.name,
-          sub: "Google Drive",
-          action: function() {
-            switchMainView("viewAppunti");
-            openDrivePreview(f.id);
-          }
-        });
-      }
-    });
-
-    getAllUnifiedModules().forEach(function(doc) {
-      if ((doc.title + " " + (doc.sector || "") + " " + (doc.note || "")).toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Documento",
-          title: doc.title,
-          sub: doc.platform.toUpperCase() + " • " + (doc.sector || "Generale"),
-          action: function() { jumpToDocument(doc.id); }
-        });
-      }
-    });
-
-    launcherItems.forEach(function(l) {
-      if ((l.title + " " + (l.desc || "") + " " + (l.theme || "")).toLowerCase().indexOf(term) !== -1) {
-        hits.push({
-          type: "Portale / App",
-          title: l.title,
-          sub: l.theme,
-          action: function() { switchMainView("viewPortali"); }
-        });
-      }
-    });
-
-    if (hits.length === 0) {
-      box.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-align:center; padding:18px;">Nessun risultato trovato per "' + escapeHtml(rawTerm) + '".</p>';
-      return;
-    }
-
-    box.innerHTML = "";
-    hits.slice(0, 30).forEach(function(hit) {
-      var row = document.createElement("div");
-      row.className = "gs-item";
-      row.innerHTML =
-        '<div style="min-width:0; flex:1;">' +
-          '<div style="font-size:0.88rem; font-weight:600; color:var(--text);">' + escapeHtml(hit.title) + '</div>' +
-          '<div style="font-size:0.73rem; color:var(--muted); margin-top:2px;">' + escapeHtml(hit.sub) + '</div>' +
-        '</div>' +
-        '<span class="gs-badge">' + escapeHtml(hit.type) + '</span>';
-      row.onclick = function() {
-        document.getElementById("globalSearchModal").style.display = "none";
-        hit.action();
-      };
-      box.appendChild(row);
-    });
-  }
-
-  // D. Esportazione / Importazione Backup Completo JSON
-  function exportFullBackupJson() {
-    var payload = {
-      app: "PIKDASH",
-      version: "1.0A",
-      exportedAt: new Date().toISOString(),
-      scadenzeItems: scadenzeItems,
-      teamMembers: teamMembers,
-      teamDelegations: teamDelegations,
-      modExternalLinks: modExternalLinks,
-      modFavorites: modFavorites,
-      docProjectMap: docProjectMap,
-      launcherItems: launcherItems,
-      folderColors: getFolderColorsMap()
-    };
-    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement("a");
-    a.href = url;
-    a.download = "PIKDASH_Backup_" + toIsoDate(new Date()) + ".json";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
-
-  function importFullBackupJson(file) {
-    if (!file) return;
-    var reader = new FileReader();
-    reader.onload = async function(e) {
-      try {
-        var data = JSON.parse(e.target.result);
-        if (!data || data.app !== "PIKDASH") {
-          alert("File di backup non valido.");
-          return;
-        }
-        if (!confirm("Vuoi ripristinare il backup del " + (data.exportedAt || "").slice(0, 10) + "? I dati locali di Team, Scadenze, Portali e Link verranno aggiornati.")) return;
-
-        if (Array.isArray(data.scadenzeItems)) scadenzeItems = data.scadenzeItems;
-        if (Array.isArray(data.teamMembers)) teamMembers = data.teamMembers;
-        if (Array.isArray(data.teamDelegations)) teamDelegations = data.teamDelegations;
-        if (Array.isArray(data.modExternalLinks)) modExternalLinks = data.modExternalLinks;
-        if (Array.isArray(data.modFavorites)) modFavorites = data.modFavorites;
-        if (data.docProjectMap && typeof data.docProjectMap === "object") docProjectMap = data.docProjectMap;
-        if (Array.isArray(data.launcherItems)) launcherItems = data.launcherItems;
-        if (data.folderColors && typeof data.folderColors === "object") {
-          localStorage.setItem("dash_folder_colors", JSON.stringify(data.folderColors));
-        }
-
-        saveCachedSnapshot();
-        renderScadFilterBar();
-        renderScadenzeList();
-        renderTeamDeptBar();
-        renderTeamMembersList();
-        populateTeamAssignSelect();
-        renderTeamDelegationsList();
-        renderModFilterBar();
-        renderModItemsList();
-        renderLauncherThemeBar();
-        renderLauncherGrid();
-
-        if (accessToken) {
-          await Promise.all([
-            syncScadenzeToDrive(),
-            syncTeamToDrive(),
-            syncModExternalLinksToDrive(),
-            syncLauncherConfigToDrive()
-          ]);
-        }
-        document.getElementById("settingsModal").style.display = "none";
-        alert("Backup ripristinato con successo!");
-      } catch (err) {
-        alert("Errore lettura file JSON: " + err.message);
-      }
-    };
-    reader.readAsText(file);
-  }
-
-  window.addEventListener("keydown", function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
-      e.preventDefault();
-      openGlobalSearchModal();
-    } else if (e.key === "Escape") {
-      document.getElementById("globalSearchModal").style.display = "none";
-    }
-  });
-
-  window.addEventListener("load", function() {
-    var btnGlobal = document.getElementById("btnGlobalSearch");
-    if (btnGlobal) btnGlobal.onclick = openGlobalSearchModal;
-
-    var btnCloseGlobal = document.getElementById("btnCloseGlobalSearch");
-    if (btnCloseGlobal) {
-      btnCloseGlobal.onclick = function() {
-        document.getElementById("globalSearchModal").style.display = "none";
-      };
-    }
-
-    var globalInput = document.getElementById("globalSearchInput");
-    if (globalInput) {
-      globalInput.addEventListener("input", function() {
-        renderGlobalSearchResults(this.value);
-      });
-    }
-
-    var btnRefreshNews = document.getElementById("btnRefreshComuneNews");
-    if (btnRefreshNews) btnRefreshNews.onclick = loadComuneNewsFeed;
-
-    var btnExport = document.getElementById("btnExportFullBackup");
-    if (btnExport) btnExport.onclick = exportFullBackupJson;
-
-    var btnImport = document.getElementById("btnImportFullBackup");
-    var fileInput = document.getElementById("importBackupFileInput");
-    if (btnImport && fileInput) {
-      btnImport.onclick = function() { fileInput.click(); };
-      fileInput.onchange = function() {
-        if (this.files && this.files[0]) importFullBackupJson(this.files[0]);
-      };
-    }
-
-    loadComuneNewsFeed();
-  });
 
 </script>
   <style>
@@ -1603,7 +1219,7 @@
           </svg>
         </div>
         <div class="brand-text-wrapper">
-          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.93B</span></span>
+          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">1.0A</span></span>
           <span class="brand-sub">Comune di San Martino di Venezze</span>
         </div>
       </div>
@@ -6906,6 +6522,417 @@
     renderWeekGrid();
     renderTasks();
   });
+
+  // ==================== ESTENSIONI PIKDASH 1.0A ====================
+
+  // A. Automazione Ricorrenze nello Scadenzario
+  function computeNextRecurringDate(isoDateStr, freq) {
+    if (!isoDateStr) return toIsoDate(new Date());
+    var parts = isoDateStr.split("-");
+    var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    if (freq === "Mensile") d.setMonth(d.getMonth() + 1);
+    else if (freq === "Trimestrale") d.setMonth(d.getMonth() + 3);
+    else if (freq === "Semestrale") d.setMonth(d.getMonth() + 6);
+    else if (freq === "Annuale") d.setFullYear(d.getFullYear() + 1);
+    return toIsoDate(d);
+  }
+
+  toggleScadenzaDone = async function(scadId) {
+    var item = scadenzeItems.find(function(x) { return x.id === scadId; });
+    if (!item) return;
+    var wasDone = !!item.done;
+    item.done = !wasDone;
+
+    if (!wasDone && item.freq && item.freq !== "Una tantum") {
+      var nextDate = computeNextRecurringDate(item.dueDate, item.freq);
+      var formattedNext = nextDate.split("-").reverse().join("/");
+      if (confirm("Questa scadenza ha ricorrenza '" + item.freq + "'.\nVuoi generare automaticamente la prossima scadenza al " + formattedNext + "?")) {
+        scadenzeItems.push({
+          id: "scad_" + Date.now(),
+          title: item.title,
+          dueDate: nextDate,
+          sector: item.sector,
+          freq: item.freq,
+          note: item.note,
+          done: false
+        });
+      }
+    }
+
+    renderScadFilterBar();
+    renderScadenzeList();
+    await syncScadenzeToDrive();
+  };
+
+  // B. Feed News Comunali (Comune di San Martino di Venezze)
+  async function loadComuneNewsFeed() {
+    var container = document.getElementById("comuneNewsTickerList");
+    if (!container) return;
+
+    var cachedNews = [];
+    try {
+      cachedNews = JSON.parse(localStorage.getItem("dash_cache_comune_news") || "[]");
+    } catch (e) {}
+
+    if (cachedNews.length > 0) {
+      renderComuneNewsList(cachedNews);
+    }
+
+    var rssUrl = "https://www.comune.sanmartinodivenezze.ro.it/it/news/feed";
+    var parsedItems = [];
+
+    try {
+      var r2jUrl = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(rssUrl);
+      var r1 = await fetch(r2jUrl);
+      if (r1.ok) {
+        var d1 = await r1.json();
+        if (d1 && d1.status === "ok" && Array.isArray(d1.items) && d1.items.length > 0) {
+          parsedItems = d1.items.slice(0, 6).map(function(it) {
+            var dateFormatted = "";
+            if (it.pubDate) {
+              var dt = new Date(it.pubDate.replace(" ", "T"));
+              if (!isNaN(dt.getTime())) {
+                dateFormatted = dt.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
+              }
+            }
+            return {
+              title: (it.title || "Avviso comunale").trim(),
+              link: (it.link || "https://www.comune.sanmartinodivenezze.ro.it/it/news").trim(),
+              date: dateFormatted
+            };
+          });
+        }
+      }
+    } catch (e1) {}
+
+    if (parsedItems.length === 0) {
+      try {
+        var proxyUrl = "https://api.allorigins.win/get?url=" + encodeURIComponent(rssUrl);
+        var res = await fetch(proxyUrl);
+        if (res.ok) {
+          var json = await res.json();
+          if (json && json.contents) {
+            var parser = new DOMParser();
+            var xml = parser.parseFromString(json.contents, "text/xml");
+            var items = Array.prototype.slice.call(xml.querySelectorAll("item")).slice(0, 6);
+            parsedItems = items.map(function(it) {
+              var titleEl = it.querySelector("title");
+              var linkEl = it.querySelector("link");
+              var pubEl = it.querySelector("pubDate");
+              var dateFormatted = "";
+              if (pubEl && pubEl.textContent) {
+                var dt = new Date(pubEl.textContent);
+                if (!isNaN(dt.getTime())) {
+                  dateFormatted = dt.toLocaleDateString("it-IT", { day: "2-digit", month: "2-digit" });
+                }
+              }
+              return {
+                title: titleEl ? titleEl.textContent.trim() : "Avviso comunale",
+                link: linkEl ? linkEl.textContent.trim() : "https://www.comune.sanmartinodivenezze.ro.it/it/news",
+                date: dateFormatted
+              };
+            });
+          }
+        }
+      } catch (e2) {}
+    }
+
+    if (parsedItems.length > 0) {
+      localStorage.setItem("dash_cache_comune_news", JSON.stringify(parsedItems));
+      renderComuneNewsList(parsedItems);
+    } else if (cachedNews.length === 0) {
+      container.innerHTML = '<a class="news-ticker-link" href="https://www.comune.sanmartinodivenezze.ro.it/it/news" target="_blank" rel="noopener noreferrer">🌐 Apri Albo Pretorio e News del Comune di San Martino di Venezze ↗</a>';
+    }
+  }
+
+  function renderComuneNewsList(items) {
+    var container = document.getElementById("comuneNewsTickerList");
+    if (!container || !items || items.length === 0) return;
+
+    container.innerHTML = items.map(function(n) {
+      var dSpan = n.date ? '<span class="news-ticker-date">[' + escapeHtml(n.date) + ']</span>' : '';
+      return '<a class="news-ticker-link" href="' + escapeHtml(n.link) + '" target="_blank" rel="noopener noreferrer" title="' + escapeHtml(n.title) + '">' +
+        dSpan + '<span>' + escapeHtml(n.title) + '</span>' +
+      '</a>';
+    }).join('<span style="color:var(--border);">•</span>');
+  }
+
+  // C. Ricerca Globale Istantanea (Ctrl+K)
+  function openGlobalSearchModal() {
+    var modal = document.getElementById("globalSearchModal");
+    var input = document.getElementById("globalSearchInput");
+    modal.style.display = "flex";
+    input.value = "";
+    renderGlobalSearchResults("");
+    input.focus();
+  }
+
+  function renderGlobalSearchResults(rawTerm) {
+    var box = document.getElementById("globalSearchResults");
+    var term = (rawTerm || "").toLowerCase().trim();
+
+    if (!term) {
+      box.innerHTML = '<p style="color:var(--muted); font-size:0.84rem; text-align:center; padding:18px;">Digita almeno 2 caratteri per cercare contemporaneamente in Agenda, Progetti, Scadenze, Team, Appunti, Documenti e Portali.</p>';
+      return;
+    }
+
+    var hits = [];
+
+    weekEvents.forEach(function(ev) {
+      if ((ev.title + " " + (ev.description || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Agenda",
+          title: ev.title,
+          sub: ev.date.split("-").reverse().join("/") + " • " + ev.startTime,
+          action: function() {
+            selectedDateStr = ev.date;
+            switchMainView("viewPanoramica");
+            renderWeekGrid();
+            renderDayDetail();
+          }
+        });
+      }
+    });
+
+    projectsData.forEach(function(p) {
+      var stepsTxt = p.steps.map(function(s) { return s.title; }).join(" ");
+      if ((p.title + " " + p.dept + " " + (p.statusNote || "") + " " + stepsTxt).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Progetto",
+          title: "[" + p.dept + "] " + p.title,
+          sub: p.statusNote || (p.steps.length + " fasi operative"),
+          action: function() {
+            switchMainView("viewProgetti");
+            selectProject(p.id);
+          }
+        });
+      }
+    });
+
+    scadenzeItems.forEach(function(s) {
+      if ((s.title + " " + (s.sector || "") + " " + (s.note || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Scadenza",
+          title: s.title,
+          sub: (s.dueDate ? s.dueDate.split("-").reverse().join("/") : "") + " • " + (s.sector || "Generale"),
+          action: function() {
+            switchMainView("viewScadenzario");
+            document.getElementById("scadSearchInput").value = s.title;
+            renderScadenzeList();
+          }
+        });
+      }
+    });
+
+    teamDelegations.forEach(function(d) {
+      var m = teamMembers.find(function(x) { return x.id === d.memberId; });
+      var mName = m ? m.name : "Team";
+      if ((d.title + " " + mName).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Delega Team",
+          title: d.title,
+          sub: "In carico a: " + mName,
+          action: function() {
+            switchMainView("viewTeam");
+            if (m) selectTeamMember(m.id);
+          }
+        });
+      }
+    });
+
+    memoItems.forEach(function(m) {
+      if (m.title.toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Promemoria",
+          title: m.title,
+          sub: m.category,
+          action: function() { switchMainView("viewPromemoria"); }
+        });
+      }
+    });
+
+    driveFiles.forEach(function(f) {
+      if (f.name.toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Appunto",
+          title: f.name,
+          sub: "Google Drive",
+          action: function() {
+            switchMainView("viewAppunti");
+            openDrivePreview(f.id);
+          }
+        });
+      }
+    });
+
+    getAllUnifiedModules().forEach(function(doc) {
+      if ((doc.title + " " + (doc.sector || "") + " " + (doc.note || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Documento",
+          title: doc.title,
+          sub: doc.platform.toUpperCase() + " • " + (doc.sector || "Generale"),
+          action: function() { jumpToDocument(doc.id); }
+        });
+      }
+    });
+
+    launcherItems.forEach(function(l) {
+      if ((l.title + " " + (l.desc || "") + " " + (l.theme || "")).toLowerCase().indexOf(term) !== -1) {
+        hits.push({
+          type: "Portale / App",
+          title: l.title,
+          sub: l.theme,
+          action: function() { switchMainView("viewPortali"); }
+        });
+      }
+    });
+
+    if (hits.length === 0) {
+      box.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-align:center; padding:18px;">Nessun risultato trovato per "' + escapeHtml(rawTerm) + '".</p>';
+      return;
+    }
+
+    box.innerHTML = "";
+    hits.slice(0, 30).forEach(function(hit) {
+      var row = document.createElement("div");
+      row.className = "gs-item";
+      row.innerHTML =
+        '<div style="min-width:0; flex:1;">' +
+          '<div style="font-size:0.88rem; font-weight:600; color:var(--text);">' + escapeHtml(hit.title) + '</div>' +
+          '<div style="font-size:0.73rem; color:var(--muted); margin-top:2px;">' + escapeHtml(hit.sub) + '</div>' +
+        '</div>' +
+        '<span class="gs-badge">' + escapeHtml(hit.type) + '</span>';
+      row.onclick = function() {
+        document.getElementById("globalSearchModal").style.display = "none";
+        hit.action();
+      };
+      box.appendChild(row);
+    });
+  }
+
+  // D. Esportazione / Importazione Backup Completo JSON
+  function exportFullBackupJson() {
+    var payload = {
+      app: "PIKDASH",
+      version: "1.0A",
+      exportedAt: new Date().toISOString(),
+      scadenzeItems: scadenzeItems,
+      teamMembers: teamMembers,
+      teamDelegations: teamDelegations,
+      modExternalLinks: modExternalLinks,
+      modFavorites: modFavorites,
+      docProjectMap: docProjectMap,
+      launcherItems: launcherItems,
+      folderColors: getFolderColorsMap()
+    };
+    var blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url;
+    a.download = "PIKDASH_Backup_" + toIsoDate(new Date()) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function importFullBackupJson(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = async function(e) {
+      try {
+        var data = JSON.parse(e.target.result);
+        if (!data || data.app !== "PIKDASH") {
+          alert("File di backup non valido.");
+          return;
+        }
+        if (!confirm("Vuoi ripristinare il backup del " + (data.exportedAt || "").slice(0, 10) + "? I dati locali di Team, Scadenze, Portali e Link verranno aggiornati.")) return;
+
+        if (Array.isArray(data.scadenzeItems)) scadenzeItems = data.scadenzeItems;
+        if (Array.isArray(data.teamMembers)) teamMembers = data.teamMembers;
+        if (Array.isArray(data.teamDelegations)) teamDelegations = data.teamDelegations;
+        if (Array.isArray(data.modExternalLinks)) modExternalLinks = data.modExternalLinks;
+        if (Array.isArray(data.modFavorites)) modFavorites = data.modFavorites;
+        if (data.docProjectMap && typeof data.docProjectMap === "object") docProjectMap = data.docProjectMap;
+        if (Array.isArray(data.launcherItems)) launcherItems = data.launcherItems;
+        if (data.folderColors && typeof data.folderColors === "object") {
+          localStorage.setItem("dash_folder_colors", JSON.stringify(data.folderColors));
+        }
+
+        saveCachedSnapshot();
+        renderScadFilterBar();
+        renderScadenzeList();
+        renderTeamDeptBar();
+        renderTeamMembersList();
+        populateTeamAssignSelect();
+        renderTeamDelegationsList();
+        renderModFilterBar();
+        renderModItemsList();
+        renderLauncherThemeBar();
+        renderLauncherGrid();
+
+        if (accessToken) {
+          await Promise.all([
+            syncScadenzeToDrive(),
+            syncTeamToDrive(),
+            syncModExternalLinksToDrive(),
+            syncLauncherConfigToDrive()
+          ]);
+        }
+        document.getElementById("settingsModal").style.display = "none";
+        alert("Backup ripristinato con successo!");
+      } catch (err) {
+        alert("Errore lettura file JSON: " + err.message);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  window.addEventListener("keydown", function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      openGlobalSearchModal();
+    } else if (e.key === "Escape") {
+      document.getElementById("globalSearchModal").style.display = "none";
+    }
+  });
+
+  window.addEventListener("load", function() {
+    var btnGlobal = document.getElementById("btnGlobalSearch");
+    if (btnGlobal) btnGlobal.onclick = openGlobalSearchModal;
+
+    var btnCloseGlobal = document.getElementById("btnCloseGlobalSearch");
+    if (btnCloseGlobal) {
+      btnCloseGlobal.onclick = function() {
+        document.getElementById("globalSearchModal").style.display = "none";
+      };
+    }
+
+    var globalInput = document.getElementById("globalSearchInput");
+    if (globalInput) {
+      globalInput.addEventListener("input", function() {
+        renderGlobalSearchResults(this.value);
+      });
+    }
+
+    var btnRefreshNews = document.getElementById("btnRefreshComuneNews");
+    if (btnRefreshNews) btnRefreshNews.onclick = loadComuneNewsFeed;
+
+    var btnExport = document.getElementById("btnExportFullBackup");
+    if (btnExport) btnExport.onclick = exportFullBackupJson;
+
+    var btnImport = document.getElementById("btnImportFullBackup");
+    var fileInput = document.getElementById("importBackupFileInput");
+    if (btnImport && fileInput) {
+      btnImport.onclick = function() { fileInput.click(); };
+      fileInput.onchange = function() {
+        if (this.files && this.files[0]) importFullBackupJson(this.files[0]);
+      };
+    }
+
+    loadComuneNewsFeed();
+  });
+
 </script>
 </body>
 </html>
