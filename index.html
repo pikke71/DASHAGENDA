@@ -2860,7 +2860,7 @@
             '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
             '<div class="day-header-right">' +
               badge +
-              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, '' + dStr + '', '')">+</button>' +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\', \'\')">+</button>' +
             '</div>' +
           '</div>' +
           '<div class="day-events">' + evHtml + '</div>';
@@ -2901,7 +2901,7 @@
             noteHtml +
           '</div>' +
         '</div>' +
-        '<button type="button" class="resched-btn" title="Riprogramma o modifica" onclick="openEventModal('' + ev.id + '')">📅 Riprogramma</button>' +
+        '<button type="button" class="resched-btn" title="Riprogramma o modifica" onclick="openEventModal(\'' + ev.id + '\')">📅 Riprogramma</button>' +
       '</div>';
     }).join("");
 
@@ -2982,7 +2982,7 @@
 
     listEl.innerHTML = sorted.map(function(t) {
       var isDone = (t.status === "completed");
-      return '<div class="task-item' + (isDone ? " done" : "") + '" onclick="toggleTask('' + t.id + '')">' +
+      return '<div class="task-item' + (isDone ? " done" : "") + '" onclick="toggleTask(\'' + t.id + '\')">' +
         '<div class="task-check">' + (isDone ? "✓" : "") + '</div>' +
         '<div class="task-text">' + escapeHtml(t.title) + '</div>' +
       '</div>';
@@ -3090,10 +3090,10 @@
 
       listEl.innerHTML = items.map(function(m) {
         return '<div class="memo-item prio-' + m.priority + (m.done ? " done" : "") + '">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleMemo('' + m.id + '')">' + (m.done ? "✓" : "") + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleMemo(\'' + m.id + '\')">' + (m.done ? "✓" : "") + '</div>' +
           '<span class="prio-pill ' + m.priority + '">' + prioLabels[m.priority] + '</span>' +
-          '<span class="memo-title" style="cursor:pointer;" onclick="toggleMemo('' + m.id + '')">' + escapeHtml(m.title) + '</span>' +
-          '<button type="button" class="memo-del" title="Elimina" onclick="deleteMemo('' + m.id + '')">✕</button>' +
+          '<span class="memo-title" style="cursor:pointer;" onclick="toggleMemo(\'' + m.id + '\')">' + escapeHtml(m.title) + '</span>' +
+          '<button type="button" class="memo-del" title="Elimina" onclick="deleteMemo(\'' + m.id + '\')">✕</button>' +
         '</div>';
       }).join("");
     });
@@ -3221,7 +3221,7 @@
   function renderProjFilterBar() {
     var bar = document.getElementById("projDeptFilterBar");
     var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Generale"];
-    var html = '<div class="folder-chip' + (activeDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setProjDeptFilter('ALL')">' +
+    var html = '<div class="folder-chip' + (activeDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setProjDeptFilter(\'ALL\')">' +
       '<span>Tutti (' + projectsData.length + ')</span>' +
     '</div>';
 
@@ -3230,7 +3230,7 @@
       if (cnt === 0 && activeDeptFilter !== dept) return;
       var col = DEPT_COLORS[dept] || "#b39ddb";
       var isAct = (activeDeptFilter === dept) ? " active" : "";
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setProjDeptFilter('' + dept + '')">' +
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setProjDeptFilter(\'' + dept + '\')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -3266,7 +3266,7 @@
       var docsCount = allDocs.filter(function(d) { return d.projectId === p.id; }).length;
       var isAct = (p.id === selectedProjectId) ? " active" : "";
 
-      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject('' + p.id + '')">' +
+      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject(\'' + p.id + '\')">' +
         '<div class="proj-card-top">' +
           '<span class="proj-card-title">' + escapeHtml(p.title) + '</span>' +
           '<span class="proj-dept-pill" style="--proj-color:' + col + ';">' + escapeHtml(p.dept) + '</span>' +
@@ -3331,14 +3331,14 @@
       });
 
       stepsListEl.innerHTML = sortedSteps.map(function(step) {
-        var safeStepTitle = step.title.replace(/'/g, "\'").replace(/"/g, "&quot;");
-        var safeProjTitle = proj.title.replace(/'/g, "\'").replace(/"/g, "&quot;");
+        var safeStepTitle = step.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        var safeProjTitle = proj.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
         return '<div class="proj-step-item' + (step.done ? " done" : "") + '">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep('' + step.id + '')">' + (step.done ? "✓" : "") + '</div>' +
-          '<div class="proj-step-text" onclick="toggleProjectStep('' + step.id + '')">' + escapeHtml(step.title) + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep(\'' + step.id + '\')">' + (step.done ? "✓" : "") + '</div>' +
+          '<div class="proj-step-text" onclick="toggleProjectStep(\'' + step.id + '\')">' + escapeHtml(step.title) + '</div>' +
           '<div class="proj-step-actions">' +
-            '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, '[' + safeProjTitle + '] ' + safeStepTitle + '')">📅</button>' +
-            '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep('' + step.id + '')">✕</button>' +
+            '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, \'[' + safeProjTitle + '] ' + safeStepTitle + '\')">📅</button>' +
+            '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep(\'' + step.id + '\')">✕</button>' +
           '</div>' +
         '</div>';
       }).join("");
@@ -3353,7 +3353,7 @@
       var platIcons = { gdrive: "📄", onedrive: "☁️", sharepoint: "🔷", external: "🌐" };
       docsListEl.innerHTML = linkedDocs.map(function(doc) {
         var ico = platIcons[doc.platform] || "📄";
-        return '<div class="proj-doc-chip" onclick="jumpToDocument('' + doc.id + '')" title="Apri anteprima nella sezione Documenti">' +
+        return '<div class="proj-doc-chip" onclick="jumpToDocument(\'' + doc.id + '\')" title="Apri anteprima nella sezione Documenti">' +
           '<div style="min-width:0; flex:1;">' +
             '<div class="proj-doc-chip-title">' + ico + ' ' + escapeHtml(doc.title) + '</div>' +
             '<div style="font-size:0.69rem; color:var(--muted); margin-top:2px;">' + escapeHtml(doc.format || doc.platform.toUpperCase()) + '</div>' +
@@ -3614,26 +3614,17 @@
         };
         var boundary = "-------pikdashscadenze11223344";
         var body =
-          "
---" + boundary + "
-Content-Type: application/json; charset=UTF-8
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
           JSON.stringify(metadata) +
-          "
---" + boundary + "
-Content-Type: application/json
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
           jsonContent +
-          "
---" + boundary + "--";
+          "\r\n--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary="" + boundary + """
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
           },
           body: body
         });
@@ -3652,17 +3643,17 @@ Content-Type: application/json
     var doneCount = scadenzeItems.filter(function(s) { return s.done; }).length;
 
     var html =
-      '<div class="folder-chip' + (activeScadFilter === "ACTIVE" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setScadFilter('ACTIVE')">' +
+      '<div class="folder-chip' + (activeScadFilter === "ACTIVE" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setScadFilter(\'ACTIVE\')">' +
         '<span>⏳ Attive (' + activeCount + ')</span>' +
       '</div>' +
-      '<div class="folder-chip' + (activeScadFilter === "URGENT" ? " active" : "") + '" style="--chip-color:#ef5350;" onclick="setScadFilter('URGENT')">' +
+      '<div class="folder-chip' + (activeScadFilter === "URGENT" ? " active" : "") + '" style="--chip-color:#ef5350;" onclick="setScadFilter(\'URGENT\')">' +
         '<span class="folder-dot" style="background:#ef5350;"></span>' +
         '<span>Entro 7 gg / Scadute (' + urgentCount + ')</span>' +
       '</div>' +
-      '<div class="folder-chip' + (activeScadFilter === "DONE" ? " active" : "") + '" style="--chip-color:#81c784;" onclick="setScadFilter('DONE')">' +
+      '<div class="folder-chip' + (activeScadFilter === "DONE" ? " active" : "") + '" style="--chip-color:#81c784;" onclick="setScadFilter(\'DONE\')">' +
         '<span>✅ Completate (' + doneCount + ')</span>' +
       '</div>' +
-      '<div class="folder-chip' + (activeScadFilter === "ALL" ? " active" : "") + '" style="--chip-color:#64b5f6;" onclick="setScadFilter('ALL')">' +
+      '<div class="folder-chip' + (activeScadFilter === "ALL" ? " active" : "") + '" style="--chip-color:#64b5f6;" onclick="setScadFilter(\'ALL\')">' +
         '<span>Tutte (' + scadenzeItems.length + ')</span>' +
       '</div>';
 
@@ -3732,11 +3723,11 @@ Content-Type: application/json
 
       var formattedDate = s.dueDate ? s.dueDate.split("-").reverse().join("/") : "—";
       var secCol = DEPT_COLORS[s.sector] || "#b39ddb";
-      var safeTitle = (s.title || "").replace(/'/g, "\'").replace(/"/g, "&quot;");
+      var safeTitle = (s.title || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
 
       return '<div class="scad-row' + (s.done ? " done" : "") + '" style="--scad-color:' + borderCol + ';">' +
         '<div class="scad-left">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleScadenzaDone('' + s.id + '')">' + (s.done ? "✓" : "") + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleScadenzaDone(\'' + s.id + '\')">' + (s.done ? "✓" : "") + '</div>' +
           '<div class="scad-date-box">' +
             '<div class="scad-date-main">' + formattedDate + '</div>' +
             '<span class="scad-days-pill ' + pillClass + '">' + pillText + '</span>' +
@@ -3751,9 +3742,9 @@ Content-Type: application/json
           '</div>' +
         '</div>' +
         '<div class="scad-actions">' +
-          '<button type="button" class="file-icon-btn" title="Fissa su Google Calendar" onclick="openEventModal(null, '' + (s.dueDate || selectedDateStr) + '', 'SCADENZA: ' + safeTitle + '')">📅 Calendar</button>' +
-          '<button type="button" class="file-icon-btn" title="Modifica scadenza" onclick="openScadenzaModal('' + s.id + '')">✏️</button>' +
-          '<button type="button" class="file-icon-btn del" title="Elimina" onclick="deleteScadenzaItem('' + s.id + '')">✕</button>' +
+          '<button type="button" class="file-icon-btn" title="Fissa su Google Calendar" onclick="openEventModal(null, \'' + (s.dueDate || selectedDateStr) + '\', \'SCADENZA: ' + safeTitle + '\')">📅 Calendar</button>' +
+          '<button type="button" class="file-icon-btn" title="Modifica scadenza" onclick="openScadenzaModal(\'' + s.id + '\')">✏️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina" onclick="deleteScadenzaItem(\'' + s.id + '\')">✕</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -3899,26 +3890,17 @@ Content-Type: application/json
         };
         var boundary = "-------pikdashteam99887766";
         var body =
-          "
---" + boundary + "
-Content-Type: application/json; charset=UTF-8
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
           JSON.stringify(metadata) +
-          "
---" + boundary + "
-Content-Type: application/json
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
           jsonContent +
-          "
---" + boundary + "--";
+          "\r\n--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary="" + boundary + """
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
           },
           body: body
         });
@@ -3940,7 +3922,7 @@ Content-Type: application/json
     var bar = document.getElementById("teamDeptFilterBar");
     var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Altro"];
 
-    var html = '<div class="folder-chip' + (activeTeamDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setTeamDeptFilter('ALL')">' +
+    var html = '<div class="folder-chip' + (activeTeamDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setTeamDeptFilter(\'ALL\')">' +
       '<span>Tutti (' + teamMembers.length + ')</span>' +
     '</div>';
 
@@ -3949,7 +3931,7 @@ Content-Type: application/json
       if (cnt === 0 && activeTeamDeptFilter !== dept) return;
       var col = DEPT_COLORS[dept] || "#b39ddb";
       var isAct = (activeTeamDeptFilter === dept) ? " active" : "";
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setTeamDeptFilter('' + dept + '')">' +
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setTeamDeptFilter(\'' + dept + '\')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -3971,7 +3953,7 @@ Content-Type: application/json
     });
 
     var allActiveCount = teamDelegations.filter(function(d) { return d.status !== "done"; }).length;
-    var html = '<div class="member-card' + (selectedMemberId === "ALL" ? " active" : "") + '" style="--member-color:#b39ddb;" onclick="selectTeamMember('ALL')">' +
+    var html = '<div class="member-card' + (selectedMemberId === "ALL" ? " active" : "") + '" style="--member-color:#b39ddb;" onclick="selectTeamMember(\'ALL\')">' +
       '<div class="member-avatar" style="background:#b39ddb;">👥</div>' +
       '<div class="member-info">' +
         '<div class="member-name">Tutto il Team</div>' +
@@ -3991,14 +3973,14 @@ Content-Type: application/json
       var isAct = (selectedMemberId === m.id) ? " active" : "";
       var activeTasks = teamDelegations.filter(function(d) { return d.memberId === m.id && d.status !== "done"; }).length;
 
-      html += '<div class="member-card' + isAct + '" style="--member-color:' + col + ';" onclick="selectTeamMember('' + m.id + '')">' +
+      html += '<div class="member-card' + isAct + '" style="--member-color:' + col + ';" onclick="selectTeamMember(\'' + m.id + '\')">' +
         '<div class="member-avatar" style="background:' + col + ';">' + escapeHtml(getInitials(m.name)) + '</div>' +
         '<div class="member-info">' +
           '<div class="member-name">' + escapeHtml(m.name) + '</div>' +
           '<div class="member-role">' + escapeHtml(m.dept) + (m.role ? ' • ' + escapeHtml(m.role) : '') + '</div>' +
           '<div class="member-stats"><span class="member-count-badge" style="--member-color:' + col + ';">' + activeTasks + ' in carico</span></div>' +
         '</div>' +
-        '<button type="button" class="file-icon-btn" title="Modifica scheda dipendente" onclick="event.stopPropagation(); openMemberModal('' + m.id + '')">✏️</button>' +
+        '<button type="button" class="file-icon-btn" title="Modifica scheda dipendente" onclick="event.stopPropagation(); openMemberModal(\'' + m.id + '\')">✏️</button>' +
       '</div>';
     });
 
@@ -4057,7 +4039,7 @@ Content-Type: application/json
     });
 
     if (filtered.length === 0) {
-      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessuna pratica assegnata in questa vista. Usa la barra qui sopra per delegare un'attività.</p>';
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessuna pratica assegnata in questa vista. Usa la barra qui sopra per delegare un\'attività.</p>';
       return;
     }
 
@@ -4070,7 +4052,7 @@ Content-Type: application/json
 
       return '<div class="delegation-item' + (isDone ? " done" : "") + '" style="--member-color:' + mColor + ';">' +
         '<div class="del-left">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleDelegationDone('' + d.id + '')">' + (isDone ? "✓" : "") + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleDelegationDone(\'' + d.id + '\')">' + (isDone ? "✓" : "") + '</div>' +
           '<div style="min-width:0; flex:1;">' +
             '<div class="del-title">' + escapeHtml(d.title) + '</div>' +
             '<div class="del-meta">' +
@@ -4080,13 +4062,13 @@ Content-Type: application/json
           '</div>' +
         '</div>' +
         '<div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">' +
-          '<select class="del-status-select" onchange="changeDelegationStatus('' + d.id + '', this.value)">' +
+          '<select class="del-status-select" onchange="changeDelegationStatus(\'' + d.id + '\', this.value)">' +
             '<option value="todo"' + (d.status === "todo" ? " selected" : "") + '>⏳ Da avviare</option>' +
             '<option value="doing"' + (d.status === "doing" ? " selected" : "") + '>🔵 In corso</option>' +
             '<option value="review"' + (d.status === "review" ? " selected" : "") + '>🟠 Da firmare / rivedere</option>' +
             '<option value="done"' + (d.status === "done" ? " selected" : "") + '>✅ Completata</option>' +
           '</select>' +
-          '<button type="button" class="memo-del" title="Rimuovi delega" onclick="deleteDelegationItem('' + d.id + '')">✕</button>' +
+          '<button type="button" class="memo-del" title="Rimuovi delega" onclick="deleteDelegationItem(\'' + d.id + '\')">✕</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -4181,7 +4163,7 @@ Content-Type: application/json
     var box = document.getElementById("memColorSwatches");
     box.innerHTML = FOLDER_PALETTE.map(function(c) {
       var sel = (c.hex.toLowerCase() === selectedMemberColor.toLowerCase()) ? " selected" : "";
-      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectMemberColor('' + c.hex + '')"></div>';
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectMemberColor(\'' + c.hex + '\')"></div>';
     }).join("");
   }
 
@@ -4374,7 +4356,7 @@ Content-Type: application/json
             (p.statusNote ? '<div class="briefing-item-sub" style="color:var(--dash-event);">📍 Punto situazione: ' + escapeHtml(p.statusNote) + '</div>' : '') +
             (openSteps.length > 0 ? '<div class="briefing-item-sub">Da completare: ' + escapeHtml(openSteps.join(" • ")) + '</div>' : '') +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewProgetti'); selectProject('' + p.id + '')">Apri</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewProgetti\'); selectProject(\'' + p.id + '\')">Apri</button>' +
         '</div>';
       });
       html += '</div>';
@@ -4393,7 +4375,7 @@ Content-Type: application/json
             '<div class="briefing-item-title">' + escapeHtml(d.title) + '</div>' +
             '<div class="briefing-item-sub">👤 ' + escapeHtml(mName) + ' • Stato: <strong>' + (statusLabels[d.status] || d.status) + '</strong>' + (d.dueDate ? ' • Scad. ' + d.dueDate.split("-").reverse().join("/") : '') + '</div>' +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewTeam')">Vai a Team</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewTeam\')">Vai a Team</button>' +
         '</div>';
       });
       html += '</div>';
@@ -4410,7 +4392,7 @@ Content-Type: application/json
             '<div class="briefing-item-title">' + escapeHtml(s.title) + '</div>' +
             '<div class="briefing-item-sub">📅 ' + fDate + ' • ' + escapeHtml(s.sector || "Generale") + (s.note ? ' • ' + escapeHtml(s.note) : '') + '</div>' +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewScadenzario')">Apri</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewScadenzario\')">Apri</button>' +
         '</div>';
       });
       html += '</div>';
@@ -4442,7 +4424,7 @@ Content-Type: application/json
         summaryLines.push("- Appunto Drive: " + f.name);
         html += '<div class="briefing-item">' +
           '<div class="briefing-item-title">📝 ' + escapeHtml(f.name) + '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewAppunti'); openDrivePreview('' + f.id + '')">Leggi</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewAppunti\'); openDrivePreview(\'' + f.id + '\')">Leggi</button>' +
         '</div>';
       });
       matchedDocs.forEach(function(doc) {
@@ -4452,7 +4434,7 @@ Content-Type: application/json
             '<div class="briefing-item-title">📄 ' + escapeHtml(doc.title) + '</div>' +
             '<div class="briefing-item-sub">' + escapeHtml(doc.platform.toUpperCase()) + ' • ' + escapeHtml(doc.sector || "Generale") + '</div>' +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="jumpToDocument('' + doc.id + '')">Apri</button>' +
+          '<button type="button" class="file-icon-btn" onclick="jumpToDocument(\'' + doc.id + '\')">Apri</button>' +
         '</div>';
       });
       html += '</div>';
@@ -4476,8 +4458,7 @@ Content-Type: application/json
       html = '<div style="padding:24px; text-align:center; color:var(--muted);">Nessun elemento trovato per i filtri impostati. Prova con un termine più breve o seleziona "Tutti".</div>';
     }
 
-    lastBriefingTextSummary = summaryLines.join("
-");
+    lastBriefingTextSummary = summaryLines.join("\n");
     resultsEl.innerHTML = html;
   }
 
@@ -4487,8 +4468,7 @@ Content-Type: application/json
       alert("Nessun elemento estratto da importare.");
       return;
     }
-    var lines = lastBriefingTextSummary.split("
-");
+    var lines = lastBriefingTextSummary.split("\n");
     var htmlChunk = "<p><strong>--- PUNTI ESTRATTI PER LA RIUNIONE ---</strong></p><ul>";
     lines.forEach(function(l) {
       if (l.indexOf("- ") === 0) {
@@ -4525,22 +4505,15 @@ Content-Type: application/json
       };
 
       var boundary = "-------314159265358979323846";
-      var delimiter = "
---" + boundary + "
-";
-      var closeDelim = "
---" + boundary + "--";
+      var delimiter = "\r\n--" + boundary + "\r\n";
+      var closeDelim = "\r\n--" + boundary + "--";
 
       var multipartRequestBody =
         delimiter +
-        "Content-Type: application/json; charset=UTF-8
-
-" +
+        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
         JSON.stringify(metadata) +
         delimiter +
-        "Content-Type: text/html; charset=UTF-8
-
-" +
+        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
         htmlBody +
         closeDelim;
 
@@ -4548,7 +4521,7 @@ Content-Type: application/json
         method: "POST",
         headers: {
           "Authorization": "Bearer " + accessToken,
-          "Content-Type": "multipart/related; boundary="" + boundary + """
+          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
         },
         body: multipartRequestBody
       });
@@ -4682,7 +4655,7 @@ Content-Type: application/json
     var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
     document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
 
-    var qRoot = encodeURIComponent("name = '" + folderName.replace(/'/g, "\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var qRoot = encodeURIComponent("name = '" + folderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
     var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
       headers: { "Authorization": "Bearer " + accessToken }
     });
@@ -4783,22 +4756,15 @@ Content-Type: application/json
       };
 
       var boundary = "-------314159265358979323846";
-      var delimiter = "
---" + boundary + "
-";
-      var closeDelim = "
---" + boundary + "--";
+      var delimiter = "\r\n--" + boundary + "\r\n";
+      var closeDelim = "\r\n--" + boundary + "--";
 
       var multipartRequestBody =
         delimiter +
-        "Content-Type: application/json; charset=UTF-8
-
-" +
+        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
         JSON.stringify(metadata) +
         delimiter +
-        "Content-Type: text/html; charset=UTF-8
-
-" +
+        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
         htmlBody +
         closeDelim;
 
@@ -4806,7 +4772,7 @@ Content-Type: application/json
         method: "POST",
         headers: {
           "Authorization": "Bearer " + accessToken,
-          "Content-Type": "multipart/related; boundary="" + boundary + """
+          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
         },
         body: multipartRequestBody
       });
@@ -4823,12 +4789,12 @@ Content-Type: application/json
 
   function renderDriveFoldersBar() {
     var bar = document.getElementById("driveFoldersBar");
-    var html = '<div class="folder-chip' + (activeFolderFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setFolderFilter('ALL')">' +
+    var html = '<div class="folder-chip' + (activeFolderFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setFolderFilter(\'ALL\')">' +
       '<span>🗂️ Tutti (' + driveFiles.length + ')</span>' +
     '</div>';
 
     var rootCount = driveFiles.filter(function(f) { return f.parentId === rootDriveFolderId; }).length;
-    html += '<div class="folder-chip' + (activeFolderFilter === "ROOT" ? " active" : "") + '" style="--chip-color:#9aa0a6;" onclick="setFolderFilter('ROOT')">' +
+    html += '<div class="folder-chip' + (activeFolderFilter === "ROOT" ? " active" : "") + '" style="--chip-color:#9aa0a6;" onclick="setFolderFilter(\'ROOT\')">' +
       '<span class="folder-dot" style="background:#9aa0a6;"></span>' +
       '<span>Senza cartella (' + rootCount + ')</span>' +
     '</div>';
@@ -4836,11 +4802,11 @@ Content-Type: application/json
     driveSubfolders.forEach(function(sf) {
       var cnt = driveFiles.filter(function(f) { return f.parentId === sf.id; }).length;
       var isAct = (activeFolderFilter === sf.id) ? " active" : "";
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + sf.color + ';" onclick="setFolderFilter('' + sf.id + '')">' +
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + sf.color + ';" onclick="setFolderFilter(\'' + sf.id + '\')">' +
         '<span class="folder-dot" style="background:' + sf.color + ';"></span>' +
         '<span>' + escapeHtml(sf.name) + ' (' + cnt + ')</span>' +
         '<span style="margin-left:3px; opacity:0.75;" onclick="event.stopPropagation()">' +
-          '<button type="button" class="folder-mini-btn" title="Modifica nome/colore" onclick="openFolderModal('' + sf.id + '')">✏️</button>' +
+          '<button type="button" class="folder-mini-btn" title="Modifica nome/colore" onclick="openFolderModal(\'' + sf.id + '\')">✏️</button>' +
         '</span>' +
       '</div>';
     });
@@ -4880,7 +4846,7 @@ Content-Type: application/json
     var box = document.getElementById("folderColorSwatches");
     box.innerHTML = FOLDER_PALETTE.map(function(c) {
       var sel = (c.hex.toLowerCase() === selectedSwatchColor.toLowerCase()) ? " selected" : "";
-      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectSwatch('' + c.hex + '')"></div>';
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectSwatch(\'' + c.hex + '\')"></div>';
     }).join("");
   }
 
@@ -4955,7 +4921,7 @@ Content-Type: application/json
       var dateStr = f.modifiedTime ? new Date(f.modifiedTime).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" }) : "";
       var isAct = (f.id === selectedDriveFileId) ? " active" : "";
 
-      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + folderColor + ';" onclick="openDrivePreview('' + f.id + '')">' +
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + folderColor + ';" onclick="openDrivePreview(\'' + f.id + '\')">' +
         '<div class="drive-file-info">' +
           '<div class="drive-file-title">📄 ' + escapeHtml(f.name) + '</div>' +
           '<div class="drive-file-meta">' +
@@ -4964,10 +4930,10 @@ Content-Type: application/json
           '</div>' +
         '</div>' +
         '<div class="file-actions" onclick="event.stopPropagation()">' +
-          '<button type="button" class="file-icon-btn" title="Invia per Email" onclick="emailDriveNote('' + f.id + '')">✉️</button>' +
-          '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile('' + f.id + '')">✏️</button>' +
-          '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal('' + f.id + '')">📁</button>' +
-          '<button type="button" class="file-icon-btn del" title="Elimina appunto (Cestino Drive)" onclick="deleteDriveFile('' + f.id + '')">🗑️</button>' +
+          '<button type="button" class="file-icon-btn" title="Invia per Email" onclick="emailDriveNote(\'' + f.id + '\')">✉️</button>' +
+          '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile(\'' + f.id + '\')">✏️</button>' +
+          '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal(\'' + f.id + '\')">📁</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina appunto (Cestino Drive)" onclick="deleteDriveFile(\'' + f.id + '\')">🗑️</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -5127,7 +5093,7 @@ Content-Type: application/json
     var modFolderName = document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio";
     document.getElementById("modFolderTitle").innerText = "📄 Documenti & Modulistica";
 
-    var qRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var qRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
     var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
       headers: { "Authorization": "Bearer " + accessToken }
     });
@@ -5231,26 +5197,17 @@ Content-Type: application/json
         };
         var boundary = "-------pikdashmodlinks554433221";
         var body =
-          "
---" + boundary + "
-Content-Type: application/json; charset=UTF-8
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
           JSON.stringify(metadata) +
-          "
---" + boundary + "
-Content-Type: application/json
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
           jsonContent +
-          "
---" + boundary + "--";
+          "\r\n--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary="" + boundary + """
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
           },
           body: body
         });
@@ -5291,31 +5248,31 @@ Content-Type: application/json
     var odCount = allItems.filter(function(i) { return i.platform === "onedrive"; }).length;
     var spCount = allItems.filter(function(i) { return i.platform === "sharepoint"; }).length;
 
-    var html = '<div class="folder-chip' + (activeModFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter('ALL')">' +
+    var html = '<div class="folder-chip' + (activeModFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter(\'ALL\')">' +
       '<span>🗂️ Tutti (' + allItems.length + ')</span>' +
     '</div>';
 
     if (favCount > 0 || activeModFilter === "FAV") {
-      html += '<div class="folder-chip' + (activeModFilter === "FAV" ? " active" : "") + '" style="--chip-color:#ffd54f;" onclick="setModFilter('FAV')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "FAV" ? " active" : "") + '" style="--chip-color:#ffd54f;" onclick="setModFilter(\'FAV\')">' +
         '<span>⭐ Preferiti (' + favCount + ')</span>' +
       '</div>';
     }
 
     if (projLinkedCount > 0 || activeModFilter === "HAS_PROJ") {
-      html += '<div class="folder-chip' + (activeModFilter === "HAS_PROJ" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter('HAS_PROJ')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "HAS_PROJ" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter(\'HAS_PROJ\')">' +
         '<span>📂 Con Progetto (' + projLinkedCount + ')</span>' +
       '</div>';
     }
 
     if (odCount > 0 || activeModFilter === "ONEDRIVE") {
-      html += '<div class="folder-chip' + (activeModFilter === "ONEDRIVE" ? " active" : "") + '" style="--chip-color:#29b6f6;" onclick="setModFilter('ONEDRIVE')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "ONEDRIVE" ? " active" : "") + '" style="--chip-color:#29b6f6;" onclick="setModFilter(\'ONEDRIVE\')">' +
         '<span class="folder-dot" style="background:#29b6f6;"></span>' +
         '<span>OneDrive (' + odCount + ')</span>' +
       '</div>';
     }
 
     if (spCount > 0 || activeModFilter === "SHAREPOINT") {
-      html += '<div class="folder-chip' + (activeModFilter === "SHAREPOINT" ? " active" : "") + '" style="--chip-color:#26a69a;" onclick="setModFilter('SHAREPOINT')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "SHAREPOINT" ? " active" : "") + '" style="--chip-color:#26a69a;" onclick="setModFilter(\'SHAREPOINT\')">' +
         '<span class="folder-dot" style="background:#26a69a;"></span>' +
         '<span>SharePoint (' + spCount + ')</span>' +
       '</div>';
@@ -5331,8 +5288,8 @@ Content-Type: application/json
       var cnt = allItems.filter(function(i) { return (i.sector || "Generale") === sec; }).length;
       var col = DEPT_COLORS[sec] || FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
       var isAct = (activeModFilter === "SEC:" + sec) ? " active" : "";
-      var safeSec = sec.replace(/'/g, "\'");
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setModFilter('SEC:' + safeSec + '')">' +
+      var safeSec = sec.replace(/'/g, "\\'");
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setModFilter(\'SEC:' + safeSec + '\')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(sec) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -5415,11 +5372,11 @@ Content-Type: application/json
         : '';
 
       var extActions = item.platform !== "gdrive"
-        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal('' + item.id + '', null)">✏️</button>' +
-          '<button type="button" class="file-icon-btn del" title="Elimina collegamento" onclick="deleteModExternalLink('' + item.id + '')">✕</button>'
+        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal(\'' + item.id + '\', null)">✏️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina collegamento" onclick="deleteModExternalLink(\'' + item.id + '\')">✕</button>'
         : '';
 
-      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + borderCol + ';" onclick="openModItemPreview('' + item.id + '')">' +
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + borderCol + ';" onclick="openModItemPreview(\'' + item.id + '\')">' +
         '<div class="drive-file-info">' +
           '<div class="drive-file-title">' + iconEmoji + ' ' + escapeHtml(item.title) + '</div>' +
           '<div class="drive-file-meta">' +
@@ -5429,7 +5386,7 @@ Content-Type: application/json
           '</div>' +
         '</div>' +
         '<div class="file-actions" onclick="event.stopPropagation()">' +
-          '<button type="button" class="file-icon-btn' + (isFav ? " fav-active" : "") + '" title="Fissa tra i preferiti" onclick="toggleModFavorite('' + item.id + '')">' + (isFav ? "★" : "☆") + '</button>' +
+          '<button type="button" class="file-icon-btn' + (isFav ? " fav-active" : "") + '" title="Fissa tra i preferiti" onclick="toggleModFavorite(\'' + item.id + '\')">' + (isFav ? "★" : "☆") + '</button>' +
           extActions +
         '</div>' +
       '</div>';
@@ -5690,26 +5647,17 @@ Content-Type: application/json
         };
         var boundary = "-------pikdashlauncher987654321";
         var body =
-          "
---" + boundary + "
-Content-Type: application/json; charset=UTF-8
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
           JSON.stringify(metadata) +
-          "
---" + boundary + "
-Content-Type: application/json
-
-" +
+          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
           jsonContent +
-          "
---" + boundary + "--";
+          "\r\n--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary="" + boundary + """
+            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
           },
           body: body
         });
@@ -5753,7 +5701,7 @@ Content-Type: application/json
       activeLauncherTheme = "ALL";
     }
 
-    var html = '<div class="folder-chip' + (activeLauncherTheme === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setLauncherThemeFilter('ALL')">' +
+    var html = '<div class="folder-chip' + (activeLauncherTheme === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setLauncherThemeFilter(\'ALL\')">' +
       '<span>🚀 Tutti (' + launcherItems.length + ')</span>' +
     '</div>';
 
@@ -5761,8 +5709,8 @@ Content-Type: application/json
       var cnt = launcherItems.filter(function(i) { return (i.theme || "Generale") === th; }).length;
       var col = FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
       var isAct = (activeLauncherTheme === th) ? " active" : "";
-      var safeTh = th.replace(/'/g, "\'");
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setLauncherThemeFilter('' + safeTh + '')">' +
+      var safeTh = th.replace(/'/g, "\\'");
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setLauncherThemeFilter(\'' + safeTh + '\')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(th) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -5796,7 +5744,7 @@ Content-Type: application/json
     });
 
     if (filtered.length === 0) {
-      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale o un'app.</div>';
+      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale o un\'app.</div>';
       return;
     }
 
@@ -5828,16 +5776,16 @@ Content-Type: application/json
         var brBadge = brLabel ? '<span class="browser-pill">' + brLabel + '</span>' : '';
 
         html += '<a class="launch-tile" draggable="true" data-lnc-id="' + item.id + '" href="' + finalHref + '"' + targetAttr + ' style="--tile-accent:' + accent + ';" ' +
-          'ondragstart="handleTileDragStart(event, '' + item.id + '')" ' +
+          'ondragstart="handleTileDragStart(event, \'' + item.id + '\')" ' +
           'ondragover="handleTileDragOver(event)" ' +
           'ondragleave="handleTileDragLeave(event)" ' +
-          'ondrop="handleTileDrop(event, '' + item.id + '')" ' +
+          'ondrop="handleTileDrop(event, \'' + item.id + '\')" ' +
           'ondragend="handleTileDragEnd(event)">' +
           '<div class="launch-tile-top">' +
             '<div class="launch-icon-box">' + escapeHtml(item.icon || "🌐") + '</div>' +
             '<div class="launch-tile-actions" onclick="event.preventDefault(); event.stopPropagation();">' +
-              '<button type="button" class="launch-mini-btn" title="Modifica pulsante" onclick="openLauncherModal('' + item.id + '')">✏️</button>' +
-              '<button type="button" class="launch-mini-btn" title="Elimina pulsante" onclick="deleteLauncherItem('' + item.id + '')">✕</button>' +
+              '<button type="button" class="launch-mini-btn" title="Modifica pulsante" onclick="openLauncherModal(\'' + item.id + '\')">✏️</button>' +
+              '<button type="button" class="launch-mini-btn" title="Elimina pulsante" onclick="deleteLauncherItem(\'' + item.id + '\')">✕</button>' +
             '</div>' +
           '</div>' +
           '<div>' +
@@ -5950,7 +5898,7 @@ Content-Type: application/json
     var box = document.getElementById("lncEmojiPicker");
     box.innerHTML = LAUNCHER_EMOJIS.map(function(em) {
       var sel = (em === currentIcon) ? " selected" : "";
-      return '<div class="emoji-opt' + sel + '" onclick="selectLauncherEmoji('' + em + '')">' + em + '</div>';
+      return '<div class="emoji-opt' + sel + '" onclick="selectLauncherEmoji(\'' + em + '\')">' + em + '</div>';
     }).join("");
   }
 
@@ -5963,7 +5911,7 @@ Content-Type: application/json
     var box = document.getElementById("lncColorSwatches");
     box.innerHTML = FOLDER_PALETTE.map(function(c) {
       var sel = (c.hex.toLowerCase() === selectedLauncherColor.toLowerCase()) ? " selected" : "";
-      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectLauncherColor('' + c.hex + '')"></div>';
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectLauncherColor(\'' + c.hex + '\')"></div>';
     }).join("");
   }
 
@@ -6141,7 +6089,7 @@ Content-Type: application/json
             '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
             '<div class="day-header-right">' +
               badge +
-              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, '' + dStr + '', '')">+</button>' +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\', \'\')">+</button>' +
             '</div>' +
           '</div>' +
           holTag +
@@ -6266,11 +6214,11 @@ Content-Type: application/json
     listEl.innerHTML = sorted.map(function(t) {
       var isDone = (t.status === "completed");
       return '<div class="task-item' + (isDone ? " done" : "") + '">' +
-        '<div class="task-check" onclick="toggleTask('' + t.id + '')">' + (isDone ? "✓" : "") + '</div>' +
-        '<div class="task-text" onclick="toggleTask('' + t.id + '')">' + escapeHtml(t.title) + '</div>' +
+        '<div class="task-check" onclick="toggleTask(\'' + t.id + '\')">' + (isDone ? "✓" : "") + '</div>' +
+        '<div class="task-text" onclick="toggleTask(\'' + t.id + '\')">' + escapeHtml(t.title) + '</div>' +
         '<div class="task-row-actions">' +
-          '<button type="button" class="file-icon-btn" title="Modifica obiettivo" onclick="editWeeklyTask('' + t.id + '')">✏️</button>' +
-          '<button type="button" class="memo-del" title="Elimina obiettivo" onclick="deleteWeeklyTask('' + t.id + '')">✕</button>' +
+          '<button type="button" class="file-icon-btn" title="Modifica obiettivo" onclick="editWeeklyTask(\'' + t.id + '\')">✏️</button>' +
+          '<button type="button" class="memo-del" title="Elimina obiettivo" onclick="deleteWeeklyTask(\'' + t.id + '\')">✕</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -6330,8 +6278,7 @@ Content-Type: application/json
     }
 
     if (!bodyText && file.webViewLink) {
-      bodyText = "Consulta l'appunto su Google Drive:
-" + file.webViewLink;
+      bodyText = "Consulta l'appunto su Google Drive:\n" + file.webViewLink;
     }
 
     var subject = encodeURIComponent(file.name);
