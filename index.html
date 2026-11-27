@@ -7578,12 +7578,13 @@
     "Servizi Sociali": "#64b5f6",
     "Anagrafe": "#ffb74d",
     "Demografici": "#ffb74d",
-    "Servizi demografici": "#ffb74d",
+    "Servizi Demografici": "#ffb74d",
     "Biblioteca": "#81c784",
     "Ragioneria": "#4dd0e1",
     "Contabilità": "#4dd0e1",
     "Tributi": "#f48fb1",
     "Personale": "#aed581",
+    "Risorse Umane": "#aed581",
     "Ufficio Tecnico": "#ff8a65",
     "PNRR & Bandi": "#4fc3f7",
     "Gare & Contratti": "#e57373",
@@ -7617,7 +7618,7 @@
     if (/affari\s*generali|segreteria|organi/i.test(a)) return "Affari Generali";
     if (/ragioneri|bilanci|contabil|finanzi/i.test(a)) return "Ragioneria";
     if (/tribut|imu|tari|fiscal/i.test(a)) return "Tributi";
-    if (/personal|dipendent|risorse\s*umane/i.test(a)) return "Personale";
+    if (/risorse\s*umane|personal|dipendent/i.test(a)) return "Risorse Umane";
     if (/tecnic|lavori\s*pubblici|urbanistic|edilizi|territori/i.test(a)) return "Ufficio Tecnico";
     if (/appalt|contratt|gare/i.test(a)) return "Gare & Contratti";
     return a.charAt(0).toUpperCase() + a.slice(1);
@@ -7655,9 +7656,7 @@
     var t = (line || "").replace(/['’´`]/g, "'").trim();
     if (!t || t.length < 2) return true;
     if (/^(planning|scadenzario|stampa|esporta|filtra|cerca|menu|cookie|privacy)$/i.test(t)) return true;
-    // Singola parola del giorno della settimana (es. "Venerdì" nel riquadro calendario di Formula)
     if (/^(luned[iì]|marted[iì]|mercoled[iì]|gioved[iì]|venerd[iì]|sabato|domenica)$/i.test(t)) return true;
-    // Singolo mese o singolo anno nel riquadro calendario di Formula
     if (/^(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)$/i.test(t)) return true;
     if (/^20\d{2}$/.test(t)) return true;
     return false;
@@ -7666,14 +7665,18 @@
   function isFormulaAreaLabel(line) {
     var t = (line || "").trim();
     if (!t || t.length > 45) return false;
-    if (/^(servizi\s+demografici|servizi\s+sociali|affari\s+generali|segreteria|ragioneria|contabilit[àa]|bilancio|tributi|personale|ufficio\s+tecnico|lavori\s+pubblici|gare\s+&\s+contratti|appalti)$/i.test(t)) {
+    if (/^(risorse\s+umane|servizi\s+demografici|servizi\s+sociali|affari\s+generali|segreteria|ragioneria|contabilit[àa]|bilancio|tributi|personale|ufficio\s+tecnico|lavori\s+pubblici|gare\s+&\s+contratti|appalti)$/i.test(t)) {
       return true;
     }
     return false;
   }
 
+  function isNormativeCitationLine(line) {
+    var t = (line || "").trim();
+    return /^[\(\[]?\s*(art\.|artt\.|articolo|articoli|c\.|comma|d\.?\s*lgs\.?|d\.?\s*p\.?r\.?|d\.?\s*m\.?|decreto|legge|l\.|circolare|delibera|ordinanza)\b/i.test(t);
+  }
+
   // Parser dedicato alle schede copiate da Formula (https://formula.edkeditore.it/formula/index.php?page=scad)
-  // Raggruppa data + area + testo completo dell'adempimento senza spezzare le singole scadenze in righe spurie.
   function extractFormulaDeadlines(rawText, fallbackYear, fallbackMonth) {
     var lines = (rawText || "").split(/\r?\n/).map(function(l) {
       return l.replace(/['’´`]/g, "'").trim();
@@ -7695,7 +7698,7 @@
     for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
 
-      // 1. Controlla intestazione data completa (es. "Venerdì, 27 Novembre 2026" o "27/11/2026")
+      // 1. Controlla intestazione data completa (es. "Venerdì, 27 Novembre 2026" o "Martedì 1 Dicembre 2026")
       var fullDate = parseFormulaDateStr(line, fallbackYear, fallbackMonth);
       if (fullDate && line.length <= 42 && !/\b(art\.|legge|d\.lgs\.|d\.p\.r\.|d\.m\.)\b/i.test(line)) {
         currentDate = fullDate;
@@ -7705,7 +7708,7 @@
         continue;
       }
 
-      // 2. Controlla riquadro data spezzato (es. numero giorno "27" seguito da mese "Novembre" e anno "2026")
+      // 2. Controlla riquadro data spezzato (es. numero giorno "1" seguito da mese "Dicembre" e anno "2026")
       if (/^([1-9]|[0-2]\d|3[01])$/.test(line)) {
         pendingDayNum = String(parseInt(line, 10)).padStart(2, "0");
         if (pendingMonthNum) {
@@ -7734,29 +7737,36 @@
         continue;
       }
 
-      // 3. Controlla etichetta Argomento / Area (es. "Servizi demografici")
+      // 3. Controlla etichetta Argomento / Area su riga dedicata (es. "Risorse umane", "Servizi demografici")
       if (isFormulaAreaLabel(line)) {
         currentArea = normalizeFormulaArea(line);
         activeItem = null;
         continue;
       }
 
-      // 4. Salta rumore di pagina (PLANNING, nomi singoli giorni, ecc.)
+      // 4. Salta rumore di pagina
       if (isFormulaNoiseOrWeekday(line)) {
         continue;
       }
 
-      // 5. Se abbiamo già una scheda aperta per la stessa data e area, accoda le righe successive
-      //    (es. continuazione della frase o riferimenti normativi finali "(Art. 34, Legge n. 903/1965...)")
       var effectiveDate = currentDate || (String(fallbackYear) + "-" + String(fallbackMonth).padStart(2, "0") + "-" + String(new Date(fallbackYear, fallbackMonth, 0).getDate()).padStart(2, "0"));
 
-      if (activeItem && activeItem.dueDate === effectiveDate && activeItem.sector === currentArea) {
-        // Se la riga inizia con "(" o è la prosecuzione della frase senza essere un nuovo titolo breve con due punti
-        var startsNorma = /^\(/.test(line);
-        var looksLikeNewShortTitle = line.length <= 75 && !startsNorma && activeItem.fullText.length > 60 && /[.!?]$/.test(activeItem.fullText);
+      // Se la riga inizia con il nome di un'area seguito da uno spazio (es. "Risorse umane COMUNICAZIONE DEI COMPENSI...")
+      var workingLine = line;
+      var workingArea = currentArea;
+      var inlineAreaMatch = workingLine.match(/^(Risorse\s+umane|Servizi\s+demografici|Servizi\s+sociali|Affari\s+generali|Segreteria|Ragioneria|Contabilit[àa]|Bilancio|Tributi|Personale|Ufficio\s+tecnico|Gare\s+&\s+contratti)\s+(.+)$/i);
+      if (inlineAreaMatch) {
+        workingArea = normalizeFormulaArea(inlineAreaMatch[1]);
+        currentArea = workingArea;
+        workingLine = inlineAreaMatch[2].trim();
+        activeItem = null;
+      }
 
-        if (!looksLikeNewShortTitle) {
-          activeItem.fullText = (activeItem.fullText + " " + line).replace(/\s+/g, " ").trim();
+      // 5. Se la riga è un riferimento normativo ("Art. 53, c. 11, D.Lgs. 30 marzo 2001, n. 165") o una continuazione
+      //    della scadenza attiva, accodala SEMPRE alla nota della scadenza corrente e NON crearla come scadenza a sé stante!
+      if (activeItem && activeItem.dueDate === effectiveDate) {
+        if (isNormativeCitationLine(workingLine) || workingLine.length > 75 || !/^[A-ZÀÈÉÌÒÙ]{4,}/.test(workingLine)) {
+          activeItem.fullText = (activeItem.fullText + " " + workingLine).replace(/\s+/g, " ").trim();
           var built = formatFormulaTitleAndNote(activeItem.fullText);
           activeItem.title = built.title;
           activeItem.note = built.note;
@@ -7764,15 +7774,15 @@
         }
       }
 
-      // 6. Crea una nuova scheda scadenza ordinata
-      var parsedText = formatFormulaTitleAndNote(line);
+      // 6. Nuova scadenza
+      var parsedText = formatFormulaTitleAndNote(workingLine);
       var newEntry = {
         id: "fscad_" + Date.now() + "_" + i,
         title: parsedText.title,
         dueDate: effectiveDate,
-        sector: currentArea,
+        sector: workingArea,
         note: parsedText.note,
-        fullText: line,
+        fullText: workingLine,
         url: "https://formula.edkeditore.it/formula/index.php?page=scad",
         selected: true,
         alreadyExists: false
@@ -7788,27 +7798,33 @@
     var clean = (fullStr || "").replace(/\s+/g, " ").trim();
     var note = "Fonte: Formula Scadenzario";
 
-    // Estrai eventuale riferimento normativo finale tra parentesi come nota
-    var normaMatch = clean.match(/\(([^()]{8,220})\)\s*$/);
-    if (normaMatch && /\b(art\.|legge|l\.|d\.lgs\.|d\.p\.r\.|d\.m\.|decreto|delibera|circolare)\b/i.test(normaMatch[1])) {
-      note = normaMatch[1].trim();
-      clean = clean.slice(0, normaMatch.index).trim();
+    // Estrai eventuale riferimento normativo finale (tra parentesi o staccato alla fine)
+    var normaParenMatch = clean.match(/\(([^()]{6,220})\)\s*$/);
+    if (normaParenMatch && /\b(art\.|artt\.|legge|l\.|d\.lgs\.|d\.p\.r\.|d\.m\.|decreto|delibera|circolare)\b/i.test(normaParenMatch[1])) {
+      note = normaParenMatch[1].trim();
+      clean = clean.slice(0, normaParenMatch.index).trim();
+    }
+
+    var normaTailMatch = clean.match(/\b((?:Art\.|Artt\.|D\.Lgs\.|D\.P\.R\.|Legge)\s+[^.]+)$/i);
+    if (normaTailMatch && clean.indexOf(normaTailMatch[1]) > 50) {
+      var tailText = normaTailMatch[1].trim();
+      note = (note !== "Fonte: Formula Scadenzario") ? (note + " • " + tailText) : tailText;
+      clean = clean.slice(0, clean.indexOf(normaTailMatch[1])).trim();
     }
 
     var title = clean;
-    if (clean.length > 135) {
-      // Cerca un punto o punto e virgola entro i primi 135 caratteri
+    if (clean.length > 130) {
       var cutPos = -1;
       var periodIdx = clean.indexOf(".");
-      if (periodIdx > 25 && periodIdx <= 135) cutPos = periodIdx + 1;
+      if (periodIdx > 25 && periodIdx <= 130) cutPos = periodIdx + 1;
       if (cutPos === -1) {
-        var spaceIdx = clean.lastIndexOf(" ", 130);
-        cutPos = spaceIdx > 30 ? spaceIdx : 130;
+        var spaceIdx = clean.lastIndexOf(" ", 125);
+        cutPos = spaceIdx > 30 ? spaceIdx : 125;
       }
       var rest = clean.slice(cutPos).replace(/^[;:,.\s-]+/, "").trim();
       title = clean.slice(0, cutPos).trim() + (cutPos < clean.length && !/[.!?]$/.test(clean.slice(0, cutPos).trim()) ? "..." : "");
       if (rest) {
-        note = (note !== "Fonte: Formula Scadenzario") ? (rest.slice(0, 180) + " (" + note + ")") : rest.slice(0, 220);
+        note = (note !== "Fonte: Formula Scadenzario") ? (rest.slice(0, 170) + " • " + note) : rest.slice(0, 220);
       }
     }
 
