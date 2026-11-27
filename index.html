@@ -7600,7 +7600,8 @@
     "Ragioneria",
     "Tributi",
     "Personale",
-    "Ufficio Tecnico"
+    "Ufficio Tecnico",
+    "Gare & Contratti"
   ];
 
   var activeScadTopicFilter = "ALL";
@@ -8041,31 +8042,28 @@
     return found;
   }
 
-  async function fetchPdsDeadlinesForMonth(yearMonthStr, silentAutoMode) {
+    async function fetchPdsDeadlinesForMonth(yearMonthStr, silentAutoMode) {
     var statusBadge = document.getElementById("pdsAutoSyncStatus");
     var modalStatus = document.getElementById("pdsFetchStatusLabel");
     if (statusBadge) {
       statusBadge.innerText = "🌐 PA Sync: lettura...";
       statusBadge.classList.remove("live");
     }
-    if (modalStatus) modalStatus.innerText = "Connessione a lapostadelsindaco.it in corso...";
+    if (modalStatus) modalStatus.innerText = "Connessione a paweb.it in corso...";
 
     var parts = (yearMonthStr || toIsoDate(new Date()).slice(0, 7)).split("-");
     var y = parseInt(parts[0], 10);
     var m = parseInt(parts[1], 10);
-    var lastDay = new Date(y, m, 0).getDate();
-    var targetUrl = "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione?date=" + y + "-" + String(m).padStart(2, "0") + "-" + String(lastDay).padStart(2, "0");
+    var pawebUrl = "https://www.paweb.it/scadenzario.php?bdinr=007&color=E1E2E3&font=00607F";
 
     var rawPayload = "";
     var isMarkdownReader = false;
 
-    var baseUrl = "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione";
     var sources = [
-      { url: "https://r.jina.ai/" + targetUrl, mode: "markdown" },
-      { url: "https://r.jina.ai/" + baseUrl, mode: "markdown" },
-      { url: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(targetUrl), mode: "html" },
-      { url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl), mode: "html" },
-      { url: "https://api.allorigins.win/get?url=" + encodeURIComponent(targetUrl), mode: "allorigins_json" }
+      { url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(pawebUrl), mode: "html" },
+      { url: "https://api.allorigins.win/get?url=" + encodeURIComponent(pawebUrl), mode: "allorigins_json" },
+      { url: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(pawebUrl), mode: "html" },
+      { url: "https://r.jina.ai/" + pawebUrl, mode: "markdown" }
     ];
 
     for (var i = 0; i < sources.length; i++) {
@@ -8095,18 +8093,21 @@
     }
 
     if (!rawPayload) {
-      if (statusBadge) statusBadge.innerText = "🌐 PA Sync: blocco sito (usa Incolla)";
-      if (modalStatus) modalStatus.innerText = "Il server di lapostadelsindaco.it blocca la lettura automatica esterna. Apri il portale dal link in alto a destra, copia le scadenze e incollale con '📋 Incolla testo dal sito'.";
+      if (statusBadge) statusBadge.innerText = "🌐 PA Sync: offline/proxy";
+      if (modalStatus) modalStatus.innerText = "PAWeb non raggiungibile al momento. Puoi aprire il portale dal link in alto a destra e usare '📋 Incolla testo dal sito'.";
       return [];
     }
 
-    var extracted = isMarkdownReader
-      ? extractPdsItemsFromTextOrMarkdown(rawPayload, y, m)
-      : extractPdsItemsFromHtml(rawPayload, y, m);
-
-    if (extracted.length === 0 && !isMarkdownReader) {
-      extracted = extractPdsItemsFromTextOrMarkdown(rawPayload.replace(/<[^>]+>/g, "\n"), y, m);
+    var textForParser = rawPayload;
+    if (!isMarkdownReader) {
+      var parser = new DOMParser();
+      var dom = parser.parseFromString(rawPayload, "text/html");
+      // Rimuovi script, style, header/footer inutili
+      dom.querySelectorAll("script, style, nav, footer").forEach(function(el) { el.remove(); });
+      textForParser = (dom.body && dom.body.innerText) ? dom.body.innerText : rawPayload.replace(/<[^>]+>/g, "\n");
     }
+
+    var extracted = extractPawebDeadlinesFromText(textForParser, y, m);
     pdsFetchedCandidates = extracted;
 
     var dismissedIds = [];
@@ -8127,11 +8128,11 @@
           title: cand.title,
           dueDate: cand.dueDate,
           sector: cand.sector,
-          kind: "Scadenza PA (Auto/Importata)",
-          source: "lapostadelsindaco",
+          kind: "Scadenza PA (PAWeb)",
+          source: "paweb",
           url: cand.url,
           freq: "Una tantum",
-          note: "Fonte: La Posta del Sindaco",
+          note: cand.note || "Fonte: PAWeb Scadenzario",
           done: false
         });
         cand.alreadyExists = true;
@@ -8152,13 +8153,142 @@
     }
     if (modalStatus) {
       modalStatus.innerText = extracted.length > 0
-        ? ("Trovate " + extracted.length + " scadenze sul portale per il periodo selezionato.")
-        : "Nessuna scadenza strutturata rilevata automaticamente. Puoi incollare il testo copiato dal portale.";
+        ? ("Estratte " + extracted.length + " scadenze da PAWeb per argomento e data.")
+        : "Nessuna scadenza rilevata automaticamente. Puoi incollare il testo copiato da PAWeb.";
     }
 
     renderPdsFetchedList();
     return extracted;
   }
+
+  function extractPawebDeadlinesFromText(rawText, fallbackYear, fallbackMonth) {
+    var lines = (rawText || "").split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+    var found = [];
+    var seenKeys = {};
+
+    var knownPawebSections = [
+      "Adempimenti previdenziali",
+      "Affari generali",
+      "Contabilità e Bilancio",
+      "Finanza e mutui",
+      "Fisco e Tributi",
+      "Gestione del Territorio",
+      "Personale",
+      "Revisione e controlli",
+      "Servizi demografici",
+      "Servizi sociali"
+    ];
+
+    var currentTopic = "Affari Generali";
+    var currentDate = "";
+
+    var weekdayMonthRegex = /^(?:luned[iì]|marted[iì]|mercoled[iì]|gioved[iì]|venerd[iì]|sabato|domenica)\s+(\d{1,2})\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)(?:\s+(\d{4}))?$/i;
+    var monthMap = {
+      gennaio: "01", febbraio: "02", marzo: "03", aprile: "04",
+      maggio: "05", giugno: "06", luglio: "07", agosto: "08",
+      settembre: "09", ottobre: "10", novembre: "11", dicembre: "12"
+    };
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, "$1").trim();
+      if (!line || line.length < 4) continue;
+
+      // Controlla se la riga è una sezione/argomento di PAWeb
+      var matchedSec = knownPawebSections.find(function(sec) {
+        return line.toLowerCase() === sec.toLowerCase();
+      });
+      if (matchedSec) {
+        currentTopic = normalizePdsTopic(matchedSec);
+        continue;
+      }
+
+      // Controlla se la riga è una data tipo "lunedì 30 novembre" o "martedì 01 dicembre"
+      var wm = line.match(weekdayMonthRegex);
+      if (wm) {
+        var dd = String(parseInt(wm[1], 10)).padStart(2, "0");
+        var mm = monthMap[wm[2].toLowerCase()] || String(fallbackMonth).padStart(2, "0");
+        var yy = wm[3] || String(fallbackYear);
+        // Se siamo a fine anno (nov/dic) e la scadenza è a gennaio, usa l'anno successivo
+        if (!wm[3] && fallbackMonth >= 11 && parseInt(mm, 10) <= 2) {
+          yy = String(fallbackYear + 1);
+        }
+        currentDate = yy + "-" + mm + "-" + dd;
+        continue;
+      }
+
+      var isoOrDmy = parseItalianDateToIso(line, fallbackYear, fallbackMonth);
+      if (isoOrDmy && line.length <= 35) {
+        currentDate = isoOrDmy;
+        continue;
+      }
+
+      // Salta intestazioni sito / cookie / footer
+      if (/^(bdi\s*-|questo sito utilizza|accetto|toggle navigation|home\b|chi siamo|privacy|contatti|paweb|gruppo_cel|scadenzario\b|info legali|rete vendita|lavora con noi|strumenti|forum scadenzario|assistenza|via giuseppe|copyright)/i.test(line)) {
+        continue;
+      }
+
+      if (!currentDate) continue;
+
+      // Su PAWeb, una voce ha un titolo breve/medio e spesso una descrizione più lunga subito dopo
+      var title = line;
+      var note = "Fonte: PAWeb Scadenzario";
+      if (title.length > 140) {
+        // Se la riga è molto lunga, estrai la prima frase come titolo e il resto come nota
+        var splitIdx = title.indexOf(". ");
+        if (splitIdx > 25 && splitIdx < 150) {
+          note = title.slice(splitIdx + 2).slice(0, 220);
+          title = title.slice(0, splitIdx + 1);
+        } else {
+          title = title.slice(0, 120) + "...";
+        }
+      }
+
+      var dedupKey = currentDate + "|" + title.toLowerCase().slice(0, 55);
+      if (seenKeys[dedupKey]) continue;
+      seenKeys[dedupKey] = true;
+
+      found.push({
+        title: title,
+        dueDate: currentDate,
+        sector: currentTopic,
+        note: note,
+        url: "https://www.paweb.it/scadenzario.php?bdinr=007&color=E1E2E3&font=00607F",
+        selected: true
+      });
+    }
+
+    return found;
+  }
+
+  // Aggiorna anche parsePastedPdsText per usare extractPawebDeadlinesFromText
+  parsePastedPdsText = function() {
+    var raw = document.getElementById("pdsRawPasteInput").value || "";
+    var monthVal = document.getElementById("pdsTargetMonthInput").value || toIsoDate(new Date()).slice(0, 7);
+    var parts = monthVal.split("-");
+    var y = parseInt(parts[0], 10);
+    var m = parseInt(parts[1], 10);
+
+    var parsed = extractPawebDeadlinesFromText(raw, y, m);
+    if (parsed.length === 0) {
+      alert("Non sono riuscito a riconoscere scadenze nel testo incollato.");
+      return;
+    }
+
+    var dismissedIds = [];
+    try { dismissedIds = JSON.parse(localStorage.getItem("dash_pds_dismissed") || "[]"); } catch (e) {}
+
+    parsed.forEach(function(cand) {
+      var sig = cand.dueDate + "|" + cand.title.toLowerCase().slice(0, 50);
+      cand.alreadyExists = scadenzeItems.some(function(s) {
+        return (s.dueDate + "|" + (s.title || "").toLowerCase().slice(0, 50)) === sig;
+      });
+      cand.selected = !cand.alreadyExists;
+    });
+
+    pdsFetchedCandidates = parsed;
+    document.getElementById("pdsFetchStatusLabel").innerText = "Estratte " + parsed.length + " scadenze dal testo incollato.";
+    renderPdsFetchedList();
+  };
 
   function renderPdsTopicsSelector() {
     var box = document.getElementById("pdsTopicsSelectBar");
