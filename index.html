@@ -61,7 +61,7 @@
       flex-direction: column;
       justify-content: space-between;
       gap: 5px;
-      min-width: 215px;
+      min-width: 195px;
       flex-shrink: 0;
     }
 
@@ -129,7 +129,7 @@
     /* TILE TABS (9 SCHEDE) */
     .tile-nav {
       display: grid;
-      grid-template-columns: repeat(9, minmax(76px, 112px));
+      grid-template-columns: repeat(9, minmax(68px, 106px));
       gap: 4px;
       background: var(--bg);
       padding: 4px;
@@ -632,13 +632,17 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px 18px;
+      padding: 12px 16px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: flex-start;
       gap: 12px;
       flex-shrink: 0;
       flex-wrap: wrap;
+      width: 100%;
+    }
+    .scad-toolbar .launcher-search {
+      width: 185px;
     }
     .scad-list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 4px; }
     .scad-row {
@@ -7976,10 +7980,74 @@
     return found;
   }
 
+  function extractPdsItemsFromTextOrMarkdown(rawText, targetYear, targetMonth) {
+    var lines = (rawText || "").split(/\r?\n/).map(function(l) { return l.trim(); }).filter(Boolean);
+    var found = [];
+    var seenKeys = {};
+    var currentTopic = "Affari Generali";
+    var currentDate = "";
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      // Pulizia sintassi markdown [Titolo](https://...)
+      var mdLinkMatch = line.match(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/);
+      var cleanLine = line.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, "$1").replace(/^[#>*\-\s]+/, "").trim();
+
+      if (/^(affari generali|servizi sociali|demografici|anagrafe|ragioneria|tributi|personale|ufficio tecnico|segreteria|contabilità)$/i.test(cleanLine)) {
+        currentTopic = normalizePdsTopic(cleanLine);
+        continue;
+      }
+
+      var lineDate = parseItalianDateToIso(cleanLine, targetYear, targetMonth);
+      if (lineDate && cleanLine.length <= 32) {
+        currentDate = lineDate;
+        continue;
+      }
+
+      var effectiveDate = lineDate || currentDate;
+      if (!effectiveDate) continue;
+      if (cleanLine.length < 12 || cleanLine.length > 260) continue;
+      if (/^(menu|cerca|accedi|abbonati|scadenzario|cookie|privacy|leggi tutto|vai alla scheda|precedente|successivo)/i.test(cleanLine)) continue;
+
+      // Rimuovi eventuale prefisso data dal titolo
+      var cleanTitle = cleanLine
+        .replace(/^\d{1,2}[\/\.-]\d{1,2}[\/\.-]\d{2,4}\s*[-–:]?\s*/, "")
+        .replace(/^\d{1,2}\s+(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)(\s+\d{4})?\s*[-–:]?\s*/i, "")
+        .trim();
+
+      if (cleanTitle.length < 10) continue;
+
+      var detectedTopic = currentTopic;
+      if (/affari generali|segreteria|deliber|consiglio|giunta/i.test(cleanLine)) detectedTopic = "Affari Generali";
+      else if (/social|scuol|nido|isee|disabil|anzian/i.test(cleanLine)) detectedTopic = "Servizi Sociali";
+      else if (/anagraf|demograf|elettoral|stato civile|leva/i.test(cleanLine)) detectedTopic = "Demografici";
+      else if (/ragioneri|bilanci|contabil|tesorer|pareggio|rendiconto/i.test(cleanLine)) detectedTopic = "Ragioneria";
+      else if (/tribut|imu|tari|canone unico/i.test(cleanLine)) detectedTopic = "Tributi";
+      else if (/personal|aran|stipend|assunzion|piao/i.test(cleanLine)) detectedTopic = "Personale";
+      else if (/tecnic|lavori pubblici|anac|cig|appalt/i.test(cleanLine)) detectedTopic = "Ufficio Tecnico";
+
+      var dedupKey = effectiveDate + "|" + cleanTitle.toLowerCase().slice(0, 60);
+      if (seenKeys[dedupKey]) continue;
+      seenKeys[dedupKey] = true;
+
+      found.push({
+        title: cleanTitle,
+        dueDate: effectiveDate,
+        sector: detectedTopic,
+        url: (mdLinkMatch && mdLinkMatch[2]) ? mdLinkMatch[2] : ("https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione?date=" + effectiveDate),
+        selected: true
+      });
+    }
+    return found;
+  }
+
   async function fetchPdsDeadlinesForMonth(yearMonthStr, silentAutoMode) {
     var statusBadge = document.getElementById("pdsAutoSyncStatus");
     var modalStatus = document.getElementById("pdsFetchStatusLabel");
-    if (statusBadge) statusBadge.innerText = "🌐 PA Sync: lettura...";
+    if (statusBadge) {
+      statusBadge.innerText = "🌐 PA Sync: lettura...";
+      statusBadge.classList.remove("live");
+    }
     if (modalStatus) modalStatus.innerText = "Connessione a lapostadelsindaco.it in corso...";
 
     var parts = (yearMonthStr || toIsoDate(new Date()).slice(0, 7)).split("-");
@@ -7988,39 +8056,57 @@
     var lastDay = new Date(y, m, 0).getDate();
     var targetUrl = "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione?date=" + y + "-" + String(m).padStart(2, "0") + "-" + String(lastDay).padStart(2, "0");
 
-    var htmlContent = "";
-    var proxies = [
-      "https://api.allorigins.win/get?url=" + encodeURIComponent(targetUrl),
-      "https://corsproxy.io/?" + encodeURIComponent(targetUrl)
+    var rawPayload = "";
+    var isMarkdownReader = false;
+
+    var baseUrl = "https://lapostadelsindaco.it/scadenzario-pubblica-amministrazione";
+    var sources = [
+      { url: "https://r.jina.ai/" + targetUrl, mode: "markdown" },
+      { url: "https://r.jina.ai/" + baseUrl, mode: "markdown" },
+      { url: "https://api.codetabs.com/v1/proxy?quest=" + encodeURIComponent(targetUrl), mode: "html" },
+      { url: "https://api.allorigins.win/raw?url=" + encodeURIComponent(targetUrl), mode: "html" },
+      { url: "https://api.allorigins.win/get?url=" + encodeURIComponent(targetUrl), mode: "allorigins_json" }
     ];
 
-    for (var i = 0; i < proxies.length; i++) {
+    for (var i = 0; i < sources.length; i++) {
       try {
-        var res = await fetch(proxies[i]);
+        var controller = new AbortController();
+        var timer = setTimeout(function() { controller.abort(); }, 9000);
+        var res = await fetch(sources[i].url, { signal: controller.signal });
+        clearTimeout(timer);
         if (!res.ok) continue;
-        if (proxies[i].indexOf("allorigins") !== -1) {
+
+        if (sources[i].mode === "allorigins_json") {
           var j = await res.json();
-          if (j && j.contents && j.contents.length > 500) {
-            htmlContent = j.contents;
+          if (j && j.contents && j.contents.length > 400) {
+            rawPayload = j.contents;
+            isMarkdownReader = false;
             break;
           }
         } else {
           var txt = await res.text();
-          if (txt && txt.length > 500) {
-            htmlContent = txt;
+          if (txt && txt.length > 400 && !/403 Forbidden|Access Denied|Cloudflare/i.test(txt.slice(0, 600))) {
+            rawPayload = txt;
+            isMarkdownReader = (sources[i].mode === "markdown");
             break;
           }
         }
       } catch (e) {}
     }
 
-    if (!htmlContent) {
-      if (statusBadge) statusBadge.innerText = "🌐 PA Sync: offline/proxy";
-      if (modalStatus) modalStatus.innerText = "Portale non raggiungibile direttamente via proxy. Puoi usare il tasto '📋 Incolla testo dal sito' qui a destra.";
+    if (!rawPayload) {
+      if (statusBadge) statusBadge.innerText = "🌐 PA Sync: blocco sito (usa Incolla)";
+      if (modalStatus) modalStatus.innerText = "Il server di lapostadelsindaco.it blocca la lettura automatica esterna. Apri il portale dal link in alto a destra, copia le scadenze e incollale con '📋 Incolla testo dal sito'.";
       return [];
     }
 
-    var extracted = extractPdsItemsFromHtml(htmlContent, y, m);
+    var extracted = isMarkdownReader
+      ? extractPdsItemsFromTextOrMarkdown(rawPayload, y, m)
+      : extractPdsItemsFromHtml(rawPayload, y, m);
+
+    if (extracted.length === 0 && !isMarkdownReader) {
+      extracted = extractPdsItemsFromTextOrMarkdown(rawPayload.replace(/<[^>]+>/g, "\n"), y, m);
+    }
     pdsFetchedCandidates = extracted;
 
     var dismissedIds = [];
