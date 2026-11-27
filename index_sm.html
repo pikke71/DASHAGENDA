@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#111215">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>PIKDASH Mobile — Progetti & Settimana</title>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg: #111215;
+      --surface: #181a1f;
+      --card: #1d2026;
+      --card-active: #252932;
+      --border: #2c303a;
+      --lilac: #b39ddb;
+      --lilac-tile: #2b2838;
+      --lilac-dim: rgba(179, 157, 219, 0.14);
+      --lilac-glow: rgba(179, 157, 219, 0.35);
+      --cyan: #4fc3f7;
+      --pink: #f48fb1;
+      --orange: #ff9800;
+      --green: #81c784;
+      --red: #ef5350;
+      --text: #f1f3f5;
+      --muted: #9aa0a6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* TOP HEADER MOBILE */
+    .mob-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .mob-brand {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .mob-logo {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+    }
+
+    .mob-title-wrap {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .mob-title {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mob-title span { color: var(--lilac); }
+    .mob-badge {
+      font-size: 0.62rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 5px;
+      background: var(--lilac-dim);
+      border: 1px solid var(--lilac-glow);
+      color: var(--lilac);
+    }
+
+    .mob-sub {
+      font-size: 0.66rem;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mob-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    button {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 7px 11px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    button:active { transform: scale(0.97); }
+    button.primary { background: var(--lilac); color: #121316; border-color: var(--lilac); font-weight: 700; }
+    button.cyan-btn { background: rgba(79, 195, 247, 0.16); color: var(--cyan); border-color: rgba(79, 195, 247, 0.4); }
+
+    .sync-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--muted);
+      display: inline-block;
+      margin-right: 4px;
+    }
+    .sync-dot.live { background: var(--green); box-shadow: 0 0 8px rgba(129, 199, 132, 0.6); }
+
+    /* MAIN SCROLL VIEWS */
+    .mob-main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px 82px;
+      display: none;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .mob-main.active { display: flex; }
+
+    /* FILTER PILLS HORIZONTAL */
+    .pill-scroll {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    .pill-scroll::-webkit-scrollbar { display: none; }
+
+    .filter-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 99px;
+      padding: 6px 12px;
+      font-size: 0.77rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .filter-pill.active {
+      background: var(--lilac-tile);
+      border-color: var(--pill-color, var(--lilac));
+      color: #fff;
+    }
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--pill-color, var(--lilac));
+    }
+
+    /* SEARCH BAR */
+    .mob-search {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 13px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+      outline: none;
+      flex-shrink: 0;
+    }
+    .mob-search:focus { border-color: var(--lilac); }
+
+    /* PROJECT CARDS */
+    .proj-group-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--muted);
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .proj-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--p-col, var(--lilac));
+      border-radius: 13px;
+      padding: 13px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .proj-card:active { background: var(--card-active); }
+
+    .proj-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .proj-card-title {
+      font-size: 0.96rem;
+      font-weight: 700;
+      line-height: 1.3;
+      color: var(--text);
+    }
+
+    .proj-pct-badge {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--p-col, var(--lilac));
+      background: rgba(255,255,255,0.05);
+      padding: 2px 8px;
+      border-radius: 7px;
+      flex-shrink: 0;
+    }
+
+    .proj-bar-bg {
+      height: 6px;
+      background: var(--bg);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .proj-bar-fill {
+      height: 100%;
+      background: var(--p-col, var(--lilac));
+      border-radius: 99px;
+      transition: width 0.25s ease;
+    }
+
+    .proj-status-line {
+      font-size: 0.8rem;
+      color: #cfd4dc;
+      background: var(--surface);
+      padding: 7px 10px;
+      border-radius: 8px;
+      line-height: 1.35;
+    }
+
+    .proj-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding-top: 2px;
+    }
+
+    .proj-counts {
+      display: flex;
+      gap: 8px;
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+
+    .proj-chip-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* PROJECT DETAIL FULLSCREEN SHEET */
+    .sheet-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 40;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .sheet-overlay.open { display: flex; }
+
+    .sheet-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .sheet-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 14px 36px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .sec-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .sec-label {
+      font-size: 0.73rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .status-textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px 11px;
+      border-radius: 9px;
+      font-size: 0.86rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 60px;
+      outline: none;
+    }
+    .status-textarea:focus { border-color: var(--lilac); }
+
+    .step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      padding: 9px 10px;
+      background: var(--surface);
+      border-radius: 9px;
+      cursor: pointer;
+    }
+    .step-row.done .step-txt {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+    .step-chk {
+      width: 21px;
+      height: 21px;
+      border-radius: 6px;
+      border: 2px solid var(--lilac);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #121316;
+      margin-top: 1px;
+    }
+    .step-row.done .step-chk { background: var(--lilac); }
+    .step-txt { font-size: 0.88rem; line-height: 1.35; flex: 1; }
+
+    .add-step-bar {
+      display: flex;
+      gap: 7px;
+    }
+    .add-step-bar input {
+      flex: 1;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 11px;
+      border-radius: 9px;
+      font-size: 0.85rem;
+      outline: none;
+    }
+
+    .att-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 11px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cyan);
+      border-radius: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .att-item.note-type { border-left-color: var(--lilac); }
+    .att-title { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
+    .att-sub { font-size: 0.71rem; color: var(--muted); margin-top: 2px; }
+
+    /* WEEK VIEW MOBILE */
+    .week-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      padding: 7px 10px;
+      flex-shrink: 0;
+    }
+    .week-nav-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--lilac);
+    }
+
+    .day-strip {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+      flex-shrink: 0;
+    }
+
+    .day-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+    }
+    .day-pill.today { border-color: var(--lilac); }
+    .day-pill.selected {
+      background: var(--lilac);
+      border-color: var(--lilac);
+      color: #121316;
+    }
+    .day-pill.holiday:not(.selected) .dp-name,
+    .day-pill.holiday:not(.selected) .dp-num { color: var(--orange); }
+
+    .dp-name { font-size: 0.64rem; font-weight: 700; opacity: 0.85; }
+    .dp-num { font-size: 0.92rem; font-weight: 800; }
+    .dp-dots { display: flex; gap: 3px; height: 5px; align-items: center; }
+    .dp-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--cyan); }
+    .day-pill.selected .dp-dot { background: #121316; }
+
+    .selected-day-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2px 2px;
+    }
+    .selected-day-banner h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+
+    .ev-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--lilac);
+      border-radius: 12px;
+      padding: 12px 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .ev-card.dash { border-left-color: var(--cyan); }
+    .ev-card.pers { border-left-color: var(--pink); }
+
+    .ev-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .ev-time {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--lilac);
+    }
+    .ev-card.dash .ev-time { color: var(--cyan); }
+    .ev-card.pers .ev-time { color: var(--pink); }
+
+    .ev-tag {
+      font-size: 0.64rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 5px;
+      background: var(--lilac-dim);
+      color: var(--lilac);
+    }
+    .ev-card.dash .ev-tag { background: rgba(79,195,247,0.16); color: var(--cyan); }
+    .ev-card.pers .ev-tag { background: rgba(244,143,177,0.16); color: var(--pink); }
+
+    .ev-title { font-size: 0.94rem; font-weight: 700; line-height: 1.3; }
+    .ev-desc { font-size: 0.79rem; color: var(--muted); white-space: pre-line; line-height: 1.35; }
+
+    /* FLOATING ACTION BUTTON */
+    .fab-add {
+      position: fixed;
+      right: 16px;
+      bottom: 74px;
+      background: var(--cyan);
+      color: #111215;
+      border: none;
+      border-radius: 99px;
+      padding: 12px 18px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+      z-index: 25;
+      display: none;
+      align-items: center;
+      gap: 6px;
+    }
+    .fab-add.visible { display: inline-flex; }
+
+    /* BOTTOM TAB BAR */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 62px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      z-index: 30;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .nav-item {
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .nav-item.active {
+      color: var(--lilac);
+      background: rgba(179, 157, 219, 0.08);
+    }
+    .nav-ico { font-size: 1.2rem; line-height: 1; }
+
+    /* MODAL */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.78);
+      z-index: 60;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .modal-bg.open { display: flex; }
+    .modal-sheet {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-radius: 18px 18px 0 0;
+      padding: 18px 16px 26px;
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .modal-sheet h3 { font-size: 1rem; margin-bottom: 2px; }
+    .modal-sheet label { font-size: 0.77rem; color: var(--muted); margin-top: 4px; }
+    .modal-sheet input, .modal-sheet select, .modal-sheet textarea {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-family: inherit;
+      outline: none;
+    }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    /* NOTE READER CONTENT */
+    .note-reader-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      color: #e6e9ef;
+    }
+    .note-reader-box p { margin-bottom: 10px; }
+    .note-reader-box ul, .note-reader-box ol { margin: 8px 0 10px 20px; }
+    .note-reader-box a { color: var(--cyan); }
+  </style>
+</head>
+<body>
+
+  <!-- TOP HEADER -->
+  <header class="mob-header">
+    <div class="mob-brand">
+      <svg class="mob-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+        <rect x="2" y="13.5" width="9" height="20.5" rx="2.5" fill="#B39DDB"/>
+        <rect x="13.5" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+        <rect x="13.5" y="13.5" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+        <rect x="13.5" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+        <rect x="25" y="2" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+        <rect x="25" y="13.5" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+        <rect x="25" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+      </svg>
+      <div class="mob-title-wrap">
+        <div class="mob-title">PIK<span>DASH</span> <span class="mob-badge">MOBILE</span></div>
+        <div class="mob-sub" id="syncStatusText"><span class="sync-dot" id="syncDot"></span>In attesa di sync</div>
+      </div>
+    </div>
+    <div class="mob-actions">
+      <button type="button" class="primary" id="btnMobSync">🔄 Sync</button>
+      <button type="button" id="btnMobOptions" title="Impostazioni">⚙️</button>
+    </div>
+  </header>
+
+  <!-- ==================== VISTA 1: PROGETTI & DOCUMENTI ==================== -->
+  <main id="viewMobProgetti" class="mob-main active">
+    <div class="pill-scroll" id="mobProjDeptPills"></div>
+    <input type="search" id="mobProjSearch" class="mob-search" placeholder="🔎 Cerca progetto, pratica o stato...">
+    <div id="mobProjectsContainer" style="display:flex; flex-direction:column; gap:10px;">
+      <p style="color:var(--muted); font-size:0.88rem; text-align:center; padding:24px 10px;">Premi <strong>🔄 Sync</strong> in alto per caricare i progetti e i documenti collegati.</p>
+    </div>
+  </main>
+
+  <!-- ==================== VISTA 2: SETTIMANA & IMPEGNI ==================== -->
+  <main id="viewMobSettimana" class="mob-main">
+    <div class="week-nav-bar">
+      <button type="button" id="btnMobPrevWeek" style="padding:5px 10px;">←</button>
+      <span class="week-nav-title" id="mobWeekLabel">Settimana</span>
+      <div style="display:flex; gap:5px;">
+        <button type="button" id="btnMobToday" style="padding:5px 9px; font-size:0.75rem;">Oggi</button>
+        <button type="button" id="btnMobNextWeek" style="padding:5px 10px;">→</button>
+      </div>
+    </div>
+
+    <div class="day-strip" id="mobDayStrip"></div>
+
+    <div class="selected-day-banner">
+      <h2 id="mobSelectedDayTitle">Oggi</h2>
+      <span style="font-size:0.76rem; color:var(--muted);" id="mobDayCount">0 impegni</span>
+    </div>
+
+    <div id="mobDayEventsList" style="display:flex; flex-direction:column; gap:9px;"></div>
+  </main>
+
+  <!-- PULSANTE FLOTTANTE NUOVO IMPEGNO (VISIBILE IN SETTIMANA) -->
+  <button type="button" class="fab-add" id="fabNewEvent">+ Impegno</button>
+
+  <!-- BARRA DI NAVIGAZIONE IN BASSO -->
+  <nav class="bottom-nav">
+    <button type="button" class="nav-item active" data-target="viewMobProgetti">
+      <span class="nav-ico">📂</span>
+      <span>Progetti</span>
+    </button>
+    <button type="button" class="nav-item" data-target="viewMobSettimana">
+      <span class="nav-ico">📅</span>
+      <span>Settimana</span>
+    </button>
+  </nav>
+
+  <!-- SCHEDA DETTAGLIO PROGETTO A SCHERMO INTERO -->
+  <div class="sheet-overlay" id="projDetailSheet">
+    <div class="sheet-header">
+      <button type="button" id="btnCloseProjSheet" style="padding:6px 10px;">← Indietro</button>
+      <span style="font-size:0.8rem; font-weight:700; color:var(--lilac);" id="sheetDeptBadge">Servizio</span>
+      <span style="font-size:0.82rem; font-weight:800;" id="sheetPctBadge">0%</span>
+    </div>
+    <div class="sheet-body">
+      <div>
+        <h2 id="sheetProjTitle" style="font-size:1.12rem; line-height:1.3; margin-bottom:8px;">Titolo Progetto</h2>
+        <div class="proj-bar-bg"><div class="proj-bar-fill" id="sheetBarFill" style="width:0%;"></div></div>
+      </div>
+
+      <div class="sec-box">
+        <div class="sec-label">
+          <span>📍 Punto Situazione / Note</span>
+          <button type="button" id="btnSheetSaveStatus" class="cyan-btn" style="padding:4px 10px; font-size:0.74rem;">Salva</button>
+        </div>
+        <textarea id="sheetStatusInput" class="status-textarea" placeholder="Aggiorna qui lo stato della pratica..."></textarea>
+      </div>
+
+      <div class="sec-box">
+        <div class="sec-label">
+          <span>✅ Fasi Operative</span>
+          <span id="sheetStepsCounter">0/0</span>
+        </div>
+        <div class="add-step-bar">
+          <input type="text" id="sheetNewStepInput" placeholder="+ Nuova fase operativa...">
+          <button type="button" id="btnSheetAddStep" class="primary">+</button>
+        </div>
+        <div id="sheetStepsList" style="display:flex; flex-direction:column; gap:7px;"></div>
+      </div>
+
+      <div class="sec-box">
+        <div class="sec-label">
+          <span>📎 Appunti & Documenti Relativi</span>
+          <span id="sheetDocsCounter">0</span>
+        </div>
+        <div id="sheetDocsList" style="display:flex; flex-direction:column; gap:8px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LETTORE APPUNTO GOOGLE DOCS A SCHERMO INTERO -->
+  <div class="sheet-overlay" id="noteReaderSheet">
+    <div class="sheet-header">
+      <button type="button" id="btnCloseNoteSheet" style="padding:6px 10px;">← Chiudi</button>
+      <span style="font-size:0.8rem; font-weight:700; color:var(--lilac);">Appunto Drive</span>
+      <a id="btnNoteOpenGDocs" href="#" target="_blank" rel="noopener noreferrer" style="background:var(--lilac); color:#121316; padding:5px 10px; border-radius:8px; font-size:0.76rem; font-weight:700; text-decoration:none;">↗ Docs</a>
+    </div>
+    <div class="sheet-body">
+      <h2 id="noteReaderTitle" style="font-size:1.08rem; line-height:1.3;">Titolo Appunto</h2>
+      <div class="note-reader-box" id="noteReaderBody">Caricamento contenuto...</div>
+    </div>
+  </div>
+
+  <!-- MODALE NUOVO APPUNTAMENTO RAPIDO -->
+  <div class="modal-bg" id="mobEventModal">
+    <div class="modal-sheet">
+      <h3>📅 Nuovo Impegno</h3>
+      <label>Titolo:</label>
+      <input type="text" id="mobEvTitle" placeholder="Es. Riunione, Sopralluogo, Telefonata...">
+      <div class="row-2">
+        <div>
+          <label>Data:</label>
+          <input type="date" id="mobEvDate">
+        </div>
+        <div>
+          <label>Tipo:</label>
+          <select id="mobEvCat">
+            <option value="office">🏢 Ufficio</option>
+            <option value="personal">👤 Personale</option>
+          </select>
+        </div>
+      </div>
+      <div class="row-2">
+        <div>
+          <label>Inizio:</label>
+          <input type="time" id="mobEvStart" value="09:00">
+        </div>
+        <div>
+          <label>Fine:</label>
+          <input type="time" id="mobEvEnd" value="10:00">
+        </div>
+      </div>
+      <label>Note (facoltativo):</label>
+      <input type="text" id="mobEvNote" placeholder="Dettagli...">
+      <div style="display:flex; gap:8px; margin-top:8px;">
+        <button type="button" id="btnCancelMobEv" style="flex:1;">Annulla</button>
+        <button type="button" id="btnSaveMobEv" class="primary" style="flex:1;">Salva su Calendar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODALE OPZIONI & CLIENT ID -->
+  <div class="modal-bg" id="mobOptionsModal">
+    <div class="modal-sheet">
+      <h3>⚙️ Configurazione Sync Google</h3>
+      <label>Email Google:</label>
+      <input type="text" id="mobCfgHint" value="guidpol@gmail.com">
+      <label>Google OAuth Client ID (stesso di PIKDASH):</label>
+      <input type="text" id="mobCfgClientId" value="944286670464-v1j1vdvo2pik0t5jjvm89k3c1od3nh0f.apps.googleusercontent.com">
+      <label>Lista Progetti:</label>
+      <input type="text" id="mobCfgProjList" value="Dashboard Progetti">
+      <label>Cartella Appunti Drive:</label>
+      <input type="text" id="mobCfgDriveFolder" value="Appunti Scanner">
+      <label>Cartella Modulistica Drive:</label>
+      <input type="text" id="mobCfgModFolder" value="Modulistica Ufficio">
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button type="button" id="btnCloseMobOptions" style="flex:1;">Chiudi</button>
+        <button type="button" id="btnSaveMobOptions" class="primary" style="flex:1;">Salva e Sincronizza</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+  var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive";
+  var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
+  var MESI_BREVI = ["Gen", "Feb", "Mar", "Apr", "Mag", "Giu", "Lug", "Ago", "Set", "Ott", "Nov", "Dic"];
+  var DEPT_COLORS = {
+    "Servizi Sociali": "#64b5f6",
+    "Segreteria": "#b39ddb",
+    "Biblioteca": "#81c784",
+    "Anagrafe": "#ffb74d",
+    "Generale": "#f48fb1"
+  };
+
+  var accessToken = null;
+  var tokenClient = null;
+  var currentMonday = getMonday(new Date());
+  var selectedDateStr = toIsoDate(new Date());
+
+  var projectsListId = null;
+  var projectsData = [];
+  var activeDept = "ALL";
+  var openedProjectId = null;
+
+  var weekEvents = [];
+  var driveFiles = [];
+  var modDriveFiles = [];
+  var modExternalLinks = [];
+  var docProjectMap = {};
+  var noteProjectMap = {};
+
+  function getMonday(d) {
+    var date = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    var day = date.getDay();
+    var diff = date.getDate() - day + (day === 0 ? -6 : 1);
+    return new Date(date.setDate(diff));
+  }
+
+  function toIsoDate(d) {
+    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+  }
+
+  function addDays(d, n) {
+    var res = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    res.setDate(res.getDate() + n);
+    return res;
+  }
+
+  function getWeekNumber(d) {
+    var date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    var dayNum = date.getUTCDay() || 7;
+    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+    var yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
+  }
+
+  function escapeHtml(str) {
+    return (str || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function setStatus(text, isLive) {
+    var el = document.getElementById("syncStatusText");
+    el.innerHTML = '<span class="sync-dot' + (isLive ? " live" : "") + '"></span>' + escapeHtml(text);
+  }
+
+  function loadSnapshot() {
+    try {
+      var p = JSON.parse(localStorage.getItem("dash_cache_projects") || "[]");
+      var e = JSON.parse(localStorage.getItem("dash_cache_events") || "[]");
+      var df = JSON.parse(localStorage.getItem("dash_cache_drive") || "[]");
+      var mf = JSON.parse(localStorage.getItem("dash_cache_mod_files") || "[]");
+      var ml = JSON.parse(localStorage.getItem("dash_cache_mod_links") || "[]");
+      var dpm = JSON.parse(localStorage.getItem("dash_cache_doc_proj_map") || "{}");
+      var npm = JSON.parse(localStorage.getItem("dash_cache_note_proj_map") || "{}");
+      if (p.length) projectsData = p;
+      if (e.length) weekEvents = e;
+      if (df.length) driveFiles = df;
+      if (mf.length) modDriveFiles = mf;
+      if (ml.length) modExternalLinks = ml;
+      if (dpm && typeof dpm === "object") docProjectMap = dpm;
+      if (npm && typeof npm === "object") noteProjectMap = npm;
+    } catch (err) {}
+    renderDeptPills();
+    renderProjects();
+    renderWeekView();
+  }
+
+  function saveSnapshot() {
+    try {
+      localStorage.setItem("dash_cache_projects", JSON.stringify(projectsData));
+      localStorage.setItem("dash_cache_events", JSON.stringify(weekEvents));
+      localStorage.setItem("dash_cache_drive", JSON.stringify(driveFiles));
+      localStorage.setItem("dash_cache_mod_files", JSON.stringify(modDriveFiles));
+      localStorage.setItem("dash_cache_mod_links", JSON.stringify(modExternalLinks));
+      localStorage.setItem("dash_cache_doc_proj_map", JSON.stringify(docProjectMap));
+      localStorage.setItem("dash_cache_note_proj_map", JSON.stringify(noteProjectMap));
+    } catch (err) {}
+  }
+
+  window.addEventListener("load", function() {
+    var sHint = localStorage.getItem("dash_login_hint");
+    var sClient = localStorage.getItem("dash_client_id");
+    var sProj = localStorage.getItem("dash_projects_list");
+    var sDrive = localStorage.getItem("dash_drive_folder");
+    var sMod = localStorage.getItem("dash_mod_folder");
+
+    if (sHint) document.getElementById("mobCfgHint").value = sHint;
+    if (sClient) document.getElementById("mobCfgClientId").value = sClient;
+    if (sProj) document.getElementById("mobCfgProjList").value = sProj;
+    if (sDrive) document.getElementById("mobCfgDriveFolder").value = sDrive;
+    if (sMod) document.getElementById("mobCfgModFolder").value = sMod;
+
+    loadSnapshot();
+
+    // Bottom tabs
+    document.querySelectorAll(".nav-item").forEach(function(btn) {
+      btn.onclick = function() {
+        var target = btn.getAttribute("data-target");
+        document.querySelectorAll(".nav-item").forEach(function(b) { b.classList.remove("active"); });
+        btn.classList.add("active");
+        document.querySelectorAll(".mob-main").forEach(function(m) { m.classList.remove("active"); });
+        document.getElementById(target).classList.add("active");
+        var fab = document.getElementById("fabNewEvent");
+        if (target === "viewMobSettimana") fab.classList.add("visible");
+        else fab.classList.remove("visible");
+      };
+    });
+
+    document.getElementById("btnMobSync").onclick = function() { requestAuth(false); };
+    document.getElementById("mobProjSearch").addEventListener("input", renderProjects);
+
+    // Project Sheet controls
+    document.getElementById("btnCloseProjSheet").onclick = function() {
+      document.getElementById("projDetailSheet").classList.remove("open");
+      openedProjectId = null;
+    };
+    document.getElementById("btnSheetSaveStatus").onclick = saveSheetStatus;
+    document.getElementById("btnSheetAddStep").onclick = addSheetStep;
+    document.getElementById("sheetNewStepInput").addEventListener("keypress", function(e) {
+      if (e.key === "Enter") addSheetStep();
+    });
+
+    // Note Reader controls
+    document.getElementById("btnCloseNoteSheet").onclick = function() {
+      document.getElementById("noteReaderSheet").classList.remove("open");
+    };
+
+    // Week controls
+    document.getElementById("btnMobPrevWeek").onclick = function() {
+      currentMonday = addDays(currentMonday, -7);
+      selectedDateStr = toIsoDate(currentMonday);
+      if (accessToken) loadAllMobileData(); else renderWeekView();
+    };
+    document.getElementById("btnMobNextWeek").onclick = function() {
+      currentMonday = addDays(currentMonday, 7);
+      selectedDateStr = toIsoDate(currentMonday);
+      if (accessToken) loadAllMobileData(); else renderWeekView();
+    };
+    document.getElementById("btnMobToday").onclick = function() {
+      var now = new Date();
+      currentMonday = getMonday(now);
+      selectedDateStr = toIsoDate(now);
+      if (accessToken) loadAllMobileData(); else renderWeekView();
+    };
+
+    // New Event Modal
+    document.getElementById("fabNewEvent").onclick = function() {
+      if (!accessToken) { requestAuth(false); return; }
+      document.getElementById("mobEvTitle").value = "";
+      document.getElementById("mobEvDate").value = selectedDateStr;
+      document.getElementById("mobEvStart").value = "09:00";
+      document.getElementById("mobEvEnd").value = "10:00";
+      document.getElementById("mobEvNote").value = "";
+      document.getElementById("mobEventModal").classList.add("open");
+    };
+    document.getElementById("btnCancelMobEv").onclick = function() {
+      document.getElementById("mobEventModal").classList.remove("open");
+    };
+    document.getElementById("btnSaveMobEv").onclick = saveNewMobileEvent;
+
+    // Options Modal
+    document.getElementById("btnMobOptions").onclick = function() {
+      document.getElementById("mobOptionsModal").classList.add("open");
+    };
+    document.getElementById("btnCloseMobOptions").onclick = function() {
+      document.getElementById("mobOptionsModal").classList.remove("open");
+    };
+    document.getElementById("btnSaveMobOptions").onclick = function() {
+      localStorage.setItem("dash_login_hint", document.getElementById("mobCfgHint").value.trim());
+      localStorage.setItem("dash_client_id", document.getElementById("mobCfgClientId").value.trim());
+      localStorage.setItem("dash_projects_list", document.getElementById("mobCfgProjList").value.trim() || "Dashboard Progetti");
+      localStorage.setItem("dash_drive_folder", document.getElementById("mobCfgDriveFolder").value.trim() || "Appunti Scanner");
+      localStorage.setItem("dash_mod_folder", document.getElementById("mobCfgModFolder").value.trim() || "Modulistica Ufficio");
+      document.getElementById("mobOptionsModal").classList.remove("open");
+      requestAuth(false);
+    };
+
+    initAutoAuth();
+  });
+
+  function initAutoAuth() {
+    var savedToken = localStorage.getItem("dash_access_token");
+    var savedExp = parseInt(localStorage.getItem("dash_token_exp") || "0", 10);
+    if (savedToken && Date.now() < savedExp - 60000) {
+      accessToken = savedToken;
+      loadAllMobileData();
+      return;
+    }
+    var tries = 0;
+    var timer = setInterval(function() {
+      tries++;
+      if (window.google && google.accounts && google.accounts.oauth2) {
+        clearInterval(timer);
+        requestAuth(true);
+      } else if (tries > 25) {
+        clearInterval(timer);
+        setStatus("Tocca Sync per collegarti", false);
+      }
+    }, 200);
+  }
+
+  function requestAuth(silent) {
+    var clientId = document.getElementById("mobCfgClientId").value.trim();
+    var hint = document.getElementById("mobCfgHint").value.trim();
+    if (!clientId) return;
+    if (!silent) setStatus("Accesso Google...", false);
+
+    tokenClient = google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: SCOPES,
+      hint: hint || undefined,
+      callback: function(resp) {
+        if (resp && resp.access_token) {
+          accessToken = resp.access_token;
+          var expSec = parseInt(resp.expires_in || "3500", 10);
+          localStorage.setItem("dash_access_token", accessToken);
+          localStorage.setItem("dash_token_exp", String(Date.now() + expSec * 1000));
+          loadAllMobileData();
+        } else if (silent) {
+          setStatus("Tocca Sync per collegarti", false);
+        }
+      },
+      error_callback: function() {
+        setStatus("Tocca Sync per collegarti", false);
+      }
+    });
+
+    if (silent) tokenClient.requestAccessToken({ prompt: "none" });
+    else tokenClient.requestAccessToken();
+  }
+
+  async function loadAllMobileData() {
+    setStatus("Sincronizzazione...", false);
+    try {
+      await Promise.all([
+        fetchProjects(),
+        fetchWeekCalendar(),
+        fetchDriveAttachments()
+      ]);
+      saveSnapshot();
+      renderDeptPills();
+      renderProjects();
+      if (openedProjectId) openProjectSheet(openedProjectId);
+      renderWeekView();
+      var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+      setStatus("Aggiornato alle " + nowStr, true);
+    } catch (err) {
+      if (String(err.message).indexOf("401") !== -1) {
+        localStorage.removeItem("dash_access_token");
+        accessToken = null;
+        setStatus("Sessione scaduta — tocca Sync", false);
+      } else {
+        setStatus("Errore sync (" + err.message + ")", false);
+      }
+    }
+  }
+
+  // ==================== FETCH PROJECTS (GOOGLE TASKS) ====================
+  async function fetchProjects() {
+    var listName = document.getElementById("mobCfgProjList").value.trim() || "Dashboard Progetti";
+    var lRes = await fetch("https://tasks.googleapis.com/tasks/v1/users/@me/lists", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    if (!lRes.ok) throw new Error("Tasks " + lRes.status);
+    var lData = await lRes.json();
+    var found = (lData.items || []).find(function(l) {
+      return (l.title || "").toLowerCase().trim() === listName.toLowerCase().trim();
+    });
+    if (!found) return;
+    projectsListId = found.id;
+
+    var tRes = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks?showCompleted=true&showHidden=true&maxResults=100", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var tData = await tRes.json();
+    var all = (tData.items || []).filter(function(t) { return (t.title || "").trim() !== ""; });
+    var parents = all.filter(function(t) { return !t.parent; });
+    var children = all.filter(function(t) { return !!t.parent; });
+
+    projectsData = parents.map(function(p) {
+      var m = (p.title || "").match(/^\[([^\]]+)\]\s*(.*)$/);
+      var dept = m ? m[1].trim() : "Generale";
+      var title = m ? m[2].trim() : p.title;
+      var statusNote = "";
+      var driveFolderId = "";
+      if (p.notes) {
+        try {
+          var parsed = JSON.parse(p.notes);
+          statusNote = parsed.statusNote || "";
+          driveFolderId = parsed.driveFolderId || "";
+        } catch (e) { statusNote = p.notes; }
+      }
+      var steps = children
+        .filter(function(s) { return s.parent === p.id; })
+        .sort(function(a, b) { return (a.position || "").localeCompare(b.position || ""); })
+        .map(function(s) { return { id: s.id, title: s.title, done: s.status === "completed" }; });
+
+      return {
+        id: p.id,
+        dept: dept,
+        title: title,
+        due: p.due ? p.due.slice(0, 10) : "",
+        statusNote: statusNote,
+        driveFolderId: driveFolderId,
+        done: p.status === "completed",
+        steps: steps
+      };
+    });
+  }
+
+  // ==================== FETCH DRIVE NOTES & MODULISTICA ====================
+  async function fetchDriveAttachments() {
+    var notesFolderName = document.getElementById("mobCfgDriveFolder").value.trim() || "Appunti Scanner";
+    var modFolderName = document.getElementById("mobCfgModFolder").value.trim() || "Modulistica Ufficio";
+
+    // 1. Appunti Scanner
+    var qNotesRoot = encodeURIComponent("name = '" + notesFolderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var nrRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qNotesRoot + "&fields=files(id)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var nrData = await nrRes.json();
+    if (nrData.files && nrData.files.length > 0) {
+      var nRootId = nrData.files[0].id;
+      var qSub = encodeURIComponent("'" + nRootId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+      var subRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qSub + "&fields=files(id)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      var subData = await subRes.json();
+      var pIds = [nRootId].concat((subData.files || []).map(function(s) { return s.id; }));
+      var clause = pIds.map(function(id) { return "'" + id + "' in parents"; }).join(" or ");
+      var qDocs = encodeURIComponent("(" + clause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_launcher.json' and name != 'pikdash_scadenze.json' and name != 'pikdash_team.json' and trashed = false");
+      var docsRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qDocs + "&orderBy=modifiedTime desc&pageSize=100&fields=files(id,name,mimeType,webViewLink,parents)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      var docsData = await docsRes.json();
+      driveFiles = (docsData.files || []).map(function(d) {
+        return {
+          id: d.id,
+          name: d.name,
+          mimeType: d.mimeType,
+          webViewLink: d.webViewLink || "",
+          parentId: (d.parents && d.parents[0]) || nRootId
+        };
+      });
+    }
+
+    // 2. Modulistica & Link esterni (pikdash_modulistica_links.json)
+    var qModRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var mrRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qModRoot + "&fields=files(id)", {
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+    var mrData = await mrRes.json();
+    if (mrData.files && mrData.files.length > 0) {
+      var mRootId = mrData.files[0].id;
+      var qSubM = encodeURIComponent("'" + mRootId + "' in parents and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+      var subMRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qSubM + "&fields=files(id,name)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      var subMData = await subMRes.json();
+      var mSubs = subMData.files || [];
+      var mpIds = [mRootId].concat(mSubs.map(function(s) { return s.id; }));
+      var mClause = mpIds.map(function(id) { return "'" + id + "' in parents"; }).join(" or ");
+      var qMDocs = encodeURIComponent("(" + mClause + ") and mimeType != 'application/vnd.google-apps.folder' and name != 'pikdash_modulistica_links.json' and trashed = false");
+      var mDocsRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qMDocs + "&pageSize=100&fields=files(id,name,mimeType,webViewLink)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      var mDocsData = await mDocsRes.json();
+      modDriveFiles = (mDocsData.files || []).map(function(d) {
+        return {
+          id: "gd_" + d.id,
+          title: d.name,
+          platform: "gdrive",
+          format: (d.mimeType || "").indexOf("pdf") !== -1 ? "PDF Drive" : "Documento Drive",
+          url: d.webViewLink || ""
+        };
+      });
+
+      var qCfg = encodeURIComponent("name = 'pikdash_modulistica_links.json' and '" + mRootId + "' in parents and trashed = false");
+      var cfgRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qCfg + "&fields=files(id)", {
+        headers: { "Authorization": "Bearer " + accessToken }
+      });
+      var cfgData = await cfgRes.json();
+      if (cfgData.files && cfgData.files.length > 0) {
+        var dlRes = await fetch("https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(cfgData.files[0].id) + "?alt=media", {
+          headers: { "Authorization": "Bearer " + accessToken }
+        });
+        if (dlRes.ok) {
+          var parsed = await dlRes.json();
+          if (parsed && typeof parsed === "object") {
+            modExternalLinks = Array.isArray(parsed.links) ? parsed.links : [];
+            docProjectMap = parsed.projectMap || {};
+            noteProjectMap = parsed.noteProjectMap || {};
+          }
+        }
+      }
+    }
+  }
+
+  function getProjectAttachments(proj) {
+    var docs = [];
+    modDriveFiles.forEach(function(f) {
+      if (docProjectMap[f.id] === proj.id) {
+        docs.push({ kind: "doc", title: f.title, sub: f.format, url: f.url });
+      }
+    });
+    modExternalLinks.forEach(function(l) {
+      var pid = l.projectId || docProjectMap[l.id] || "";
+      if (pid === proj.id) {
+        var plat = (l.platform || "Link").toUpperCase();
+        docs.push({ kind: "doc", title: l.title, sub: plat + (l.format ? " • " + l.format : ""), url: l.url });
+      }
+    });
+
+    var notes = [];
+    driveFiles.forEach(function(n) {
+      var linkedDirectly = (noteProjectMap[n.id] === proj.id);
+      var linkedByFolder = (proj.driveFolderId && n.parentId === proj.driveFolderId);
+      if (linkedDirectly || linkedByFolder) {
+        notes.push({ kind: "note", id: n.id, title: n.name, sub: "Appunto Google Drive", url: n.webViewLink });
+      }
+    });
+
+    return { docs: docs, notes: notes };
+  }
+
+  // ==================== RENDER PROJECTS ====================
+  function renderDeptPills() {
+    var box = document.getElementById("mobProjDeptPills");
+    var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Generale"];
+    var html = '<button type="button" class="filter-pill' + (activeDept === "ALL" ? " active" : "") + '" style="--pill-color:#b39ddb;" onclick="setMobileDept(\'ALL\')">Tutti (' + projectsData.length + ')</button>';
+
+    depts.forEach(function(d) {
+      var cnt = projectsData.filter(function(p) { return p.dept === d; }).length;
+      if (cnt === 0 && activeDept !== d) return;
+      var col = DEPT_COLORS[d] || "#b39ddb";
+      html += '<button type="button" class="filter-pill' + (activeDept === d ? " active" : "") + '" style="--pill-color:' + col + ';" onclick="setMobileDept(\'' + d + '\')">' +
+        '<span class="pill-dot" style="background:' + col + ';"></span>' + escapeHtml(d) + ' (' + cnt + ')' +
+      '</button>';
+    });
+    box.innerHTML = html;
+  }
+
+  function setMobileDept(d) {
+    activeDept = d;
+    renderDeptPills();
+    renderProjects();
+  }
+
+  function renderProjects() {
+    var container = document.getElementById("mobProjectsContainer");
+    var term = (document.getElementById("mobProjSearch").value || "").toLowerCase().trim();
+
+    var list = projectsData.filter(function(p) {
+      if (activeDept !== "ALL" && p.dept !== activeDept) return false;
+      if (!term) return true;
+      return (p.title + " " + p.dept + " " + (p.statusNote || "")).toLowerCase().indexOf(term) !== -1;
+    });
+
+    if (list.length === 0) {
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.86rem; text-align:center; padding:24px 10px;">Nessun progetto trovato.</p>';
+      return;
+    }
+
+    var groups = {};
+    list.forEach(function(p) {
+      if (!groups[p.dept]) groups[p.dept] = [];
+      groups[p.dept].push(p);
+    });
+
+    var html = "";
+    Object.keys(groups).forEach(function(dept) {
+      var col = DEPT_COLORS[dept] || "#b39ddb";
+      html += '<div class="proj-group-label"><span class="pill-dot" style="background:' + col + ';"></span>' + escapeHtml(dept) + '</div>';
+
+      groups[dept].forEach(function(p) {
+        var total = p.steps.length;
+        var done = p.steps.filter(function(s) { return s.done; }).length;
+        var pct = total === 0 ? (p.done ? 100 : 0) : Math.round((done / total) * 100);
+        var att = getProjectAttachments(p);
+
+        html += '<div class="proj-card" style="--p-col:' + col + ';" onclick="openProjectSheet(\'' + p.id + '\')">' +
+          '<div class="proj-card-head">' +
+            '<div class="proj-card-title">' + escapeHtml(p.title) + '</div>' +
+            '<span class="proj-pct-badge" style="--p-col:' + col + ';">' + pct + '%</span>' +
+          '</div>' +
+          '<div class="proj-bar-bg"><div class="proj-bar-fill" style="width:' + pct + '%; background:' + col + ';"></div></div>' +
+          (p.statusNote ? '<div class="proj-status-line">📍 ' + escapeHtml(p.statusNote) + '</div>' : '') +
+          '<div class="proj-card-footer">' +
+            '<div class="proj-counts">' +
+              '<span>✅ ' + done + '/' + total + ' fasi</span>' +
+              (p.due ? '<span>• Scad. ' + p.due.split("-").reverse().join("/") + '</span>' : '') +
+            '</div>' +
+            '<div style="display:flex; gap:6px;">' +
+              '<span class="proj-chip-btn">📝 ' + att.notes.length + '</span>' +
+              '<span class="proj-chip-btn">📄 ' + att.docs.length + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      });
+    });
+
+    container.innerHTML = html;
+  }
+
+  function openProjectSheet(projId) {
+    var proj = projectsData.find(function(p) { return p.id === projId; });
+    if (!proj) return;
+    openedProjectId = projId;
+
+    var col = DEPT_COLORS[proj.dept] || "#b39ddb";
+    var total = proj.steps.length;
+    var done = proj.steps.filter(function(s) { return s.done; }).length;
+    var pct = total === 0 ? (proj.done ? 100 : 0) : Math.round((done / total) * 100);
+
+    document.getElementById("sheetDeptBadge").innerText = proj.dept;
+    document.getElementById("sheetDeptBadge").style.color = col;
+    document.getElementById("sheetPctBadge").innerText = pct + "%";
+    document.getElementById("sheetPctBadge").style.color = col;
+    document.getElementById("sheetProjTitle").innerText = proj.title;
+    document.getElementById("sheetBarFill").style.width = pct + "%";
+    document.getElementById("sheetBarFill").style.background = col;
+    document.getElementById("sheetStatusInput").value = proj.statusNote || "";
+    document.getElementById("sheetStepsCounter").innerText = done + "/" + total;
+
+    var stepsEl = document.getElementById("sheetStepsList");
+    if (total === 0) {
+      stepsEl.innerHTML = '<p style="color:var(--muted); font-size:0.82rem;">Nessuna fase operativa inserita.</p>';
+    } else {
+      var sorted = proj.steps.slice().sort(function(a, b) { return a.done === b.done ? 0 : (a.done ? 1 : -1); });
+      stepsEl.innerHTML = sorted.map(function(s) {
+        return '<div class="step-row' + (s.done ? " done" : "") + '" onclick="toggleMobileStep(\'' + s.id + '\')">' +
+          '<div class="step-chk">' + (s.done ? "✓" : "") + '</div>' +
+          '<div class="step-txt">' + escapeHtml(s.title) + '</div>' +
+        '</div>';
+      }).join("");
+    }
+
+    var att = getProjectAttachments(proj);
+    var totalAtt = att.notes.length + att.docs.length;
+    document.getElementById("sheetDocsCounter").innerText = String(totalAtt);
+
+    var docsEl = document.getElementById("sheetDocsList");
+    if (totalAtt === 0) {
+      docsEl.innerHTML = '<p style="color:var(--muted); font-size:0.82rem;">Nessun appunto o documento collegato a questo progetto.</p>';
+    } else {
+      var attHtml = "";
+      att.notes.forEach(function(n) {
+        attHtml += '<div class="att-item note-type" style="cursor:pointer;" onclick="openNoteReader(\'' + n.id + '\')">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="att-title">📝 ' + escapeHtml(n.title) + '</div>' +
+            '<div class="att-sub">Appunto Drive • Tocca per leggere</div>' +
+          '</div>' +
+          '<span style="color:var(--lilac); font-weight:700;">Leggi ›</span>' +
+        '</div>';
+      });
+      att.docs.forEach(function(d) {
+        attHtml += '<a class="att-item" href="' + escapeHtml(d.url || "#") + '" target="_blank" rel="noopener noreferrer">' +
+          '<div style="min-width:0; flex:1;">' +
+            '<div class="att-title">📄 ' + escapeHtml(d.title) + '</div>' +
+            '<div class="att-sub">' + escapeHtml(d.sub) + '</div>' +
+          '</div>' +
+          '<span style="color:var(--cyan); font-weight:700;">Apri ↗</span>' +
+        '</a>';
+      });
+      docsEl.innerHTML = attHtml;
+    }
+
+    document.getElementById("projDetailSheet").classList.add("open");
+  }
+
+  async function toggleMobileStep(stepId) {
+    var proj = projectsData.find(function(p) { return p.id === openedProjectId; });
+    if (!proj) return;
+    var step = proj.steps.find(function(s) { return s.id === stepId; });
+    if (!step) return;
+
+    step.done = !step.done;
+    saveSnapshot();
+    renderProjects();
+    openProjectSheet(proj.id);
+
+    if (accessToken && projectsListId) {
+      await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(stepId), {
+        method: "PATCH",
+        headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+        body: JSON.stringify({ id: stepId, status: step.done ? "completed" : "needsAction" })
+      });
+    }
+  }
+
+  async function saveSheetStatus() {
+    var proj = projectsData.find(function(p) { return p.id === openedProjectId; });
+    if (!proj) return;
+    var val = document.getElementById("sheetStatusInput").value.trim();
+    proj.statusNote = val;
+    saveSnapshot();
+    renderProjects();
+
+    if (!accessToken || !projectsListId) {
+      alert("Nota salvata in locale (premi Sync per inviarla su Google Tasks).");
+      return;
+    }
+    setStatus("Salvataggio nota...", false);
+    var encodedNotes = JSON.stringify({ driveFolderId: proj.driveFolderId || "", statusNote: val });
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks/" + encodeURIComponent(proj.id), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: proj.id, notes: encodedNotes })
+    });
+    setStatus("Nota salvata", true);
+  }
+
+  async function addSheetStep() {
+    var proj = projectsData.find(function(p) { return p.id === openedProjectId; });
+    var input = document.getElementById("sheetNewStepInput");
+    var title = input.value.trim();
+    if (!proj || !title) return;
+    if (!accessToken || !projectsListId) { requestAuth(false); return; }
+
+    input.value = "";
+    setStatus("Aggiunta fase...", false);
+    var res = await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(projectsListId) + "/tasks?parent=" + encodeURIComponent(proj.id), {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title })
+    });
+    if (res.ok) {
+      await fetchProjects();
+      saveSnapshot();
+      renderProjects();
+      openProjectSheet(proj.id);
+      setStatus("Fase aggiunta", true);
+    }
+  }
+
+  // ==================== NOTE READER ====================
+  async function openNoteReader(noteId) {
+    var file = driveFiles.find(function(f) { return f.id === noteId; });
+    if (!file) return;
+
+    document.getElementById("noteReaderTitle").innerText = file.name;
+    var gBtn = document.getElementById("btnNoteOpenGDocs");
+    if (file.webViewLink) {
+      gBtn.href = file.webViewLink;
+      gBtn.style.display = "inline-block";
+    } else {
+      gBtn.style.display = "none";
+    }
+
+    var bodyEl = document.getElementById("noteReaderBody");
+    bodyEl.innerText = "Caricamento testo...";
+    document.getElementById("noteReaderSheet").classList.add("open");
+
+    if (!accessToken) {
+      bodyEl.innerText = "Tocca Sync per leggere l'appunto direttamente qui oppure usa il pulsante 'Docs' in alto a destra.";
+      return;
+    }
+
+    try {
+      var expUrl = "https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(noteId) + "/export?mimeType=text/html";
+      var res = await fetch(expUrl, { headers: { "Authorization": "Bearer " + accessToken } });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      var rawHtml = await res.text();
+      var doc = new DOMParser().parseFromString(rawHtml, "text/html");
+      doc.querySelectorAll("script, style").forEach(function(el) { el.remove(); });
+      bodyEl.innerHTML = doc.body.innerHTML.trim() || "(Appunto vuoto)";
+    } catch (e) {
+      bodyEl.innerText = "Anteprima non disponibile. Apri con il tasto 'Docs' in alto a destra.";
+    }
+  }
+
+  // ==================== FETCH & RENDER WEEK CALENDAR ====================
+  async function fetchWeekCalendar() {
+    var sunday = addDays(currentMonday, 6);
+    var tMin = encodeURIComponent(toIsoDate(currentMonday) + "T00:00:00Z");
+    var tMax = encodeURIComponent(toIsoDate(addDays(sunday, 1)) + "T23:59:59Z");
+    var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=" + tMin + "&timeMax=" + tMax + "&singleEvents=true&orderBy=startTime";
+
+    var res = await fetch(url, { headers: { "Authorization": "Bearer " + accessToken } });
+    if (!res.ok) throw new Error("Calendar " + res.status);
+    var data = await res.json();
+
+    weekEvents = (data.items || []).map(function(item) {
+      var isAllDay = !!(item.start && item.start.date);
+      var dateStr = isAllDay ? item.start.date : item.start.dateTime.slice(0, 10);
+      var startTime = isAllDay ? "Tutto il giorno" : item.start.dateTime.slice(11, 16);
+      var endTime = isAllDay ? "" : item.end.dateTime.slice(11, 16);
+      var rawTitle = item.summary || "(Senza titolo)";
+      var isPersonal = /^\[personale\]/i.test(rawTitle);
+      var priv = (item.extendedProperties && item.extendedProperties.private) || {};
+
+      return {
+        id: item.id,
+        date: dateStr,
+        isAllDay: isAllDay,
+        startTime: startTime,
+        endTime: endTime,
+        title: rawTitle.replace(/^\[personale\]\s*/i, ""),
+        isPersonal: isPersonal,
+        isFromDashboard: priv.source === "dashboard",
+        description: item.description || ""
+      };
+    });
+  }
+
+  function renderWeekView() {
+    var sunday = addDays(currentMonday, 6);
+    var wk = getWeekNumber(currentMonday);
+    document.getElementById("mobWeekLabel").innerText =
+      "Sett. " + wk + " (" + currentMonday.getDate() + " " + MESI_BREVI[currentMonday.getMonth()] + " – " + sunday.getDate() + " " + MESI_BREVI[sunday.getMonth()] + ")";
+
+    var todayStr = toIsoDate(new Date());
+    var strip = document.getElementById("mobDayStrip");
+    strip.innerHTML = "";
+
+    for (var i = 0; i < 7; i++) {
+      (function(idx) {
+        var d = addDays(currentMonday, idx);
+        var dStr = toIsoDate(d);
+        var evs = weekEvents.filter(function(e) { return e.date === dStr; });
+        var isSun = d.getDay() === 0;
+
+        var pill = document.createElement("div");
+        pill.className = "day-pill" + (dStr === todayStr ? " today" : "") + (dStr === selectedDateStr ? " selected" : "") + (isSun ? " holiday" : "");
+        pill.onclick = function() {
+          selectedDateStr = dStr;
+          renderWeekView();
+        };
+
+        var dotsHtml = evs.slice(0, 3).map(function() { return '<span class="dp-dot"></span>'; }).join("");
+        pill.innerHTML =
+          '<span class="dp-name">' + GIORNI_BREVI[idx] + '</span>' +
+          '<span class="dp-num">' + d.getDate() + '</span>' +
+          '<div class="dp-dots">' + dotsHtml + '</div>';
+        strip.appendChild(pill);
+      })(i);
+    }
+
+    var parts = selectedDateStr.split("-");
+    var selDate = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+    document.getElementById("mobSelectedDayTitle").innerText =
+      selDate.toLocaleDateString("it-IT", { weekday: "long", day: "numeric", month: "long" });
+
+    var dayEvs = weekEvents.filter(function(e) { return e.date === selectedDateStr; });
+    document.getElementById("mobDayCount").innerText = dayEvs.length + (dayEvs.length === 1 ? " impegno" : " impegni");
+
+    var listEl = document.getElementById("mobDayEventsList");
+    if (dayEvs.length === 0) {
+      listEl.innerHTML = '<div style="background:var(--card); border:1px solid var(--border); border-radius:12px; padding:22px; text-align:center; color:var(--muted); font-size:0.86rem;">Nessun impegno in agenda per questo giorno.</div>';
+      return;
+    }
+
+    listEl.innerHTML = dayEvs.map(function(ev) {
+      var cls = ev.isPersonal ? " pers" : (ev.isFromDashboard ? " dash" : "");
+      var tag = ev.isPersonal ? "Personale" : (ev.isFromDashboard ? "Dashboard" : "E-Ink");
+      var timeStr = ev.isAllDay ? "Tutto il giorno" : (ev.startTime + (ev.endTime ? " – " + ev.endTime : ""));
+      return '<div class="ev-card' + cls + '">' +
+        '<div class="ev-top">' +
+          '<span class="ev-time">' + timeStr + '</span>' +
+          '<span class="ev-tag">' + tag + '</span>' +
+        '</div>' +
+        '<div class="ev-title">' + escapeHtml(ev.title) + '</div>' +
+        (ev.description ? '<div class="ev-desc">' + escapeHtml(ev.description) + '</div>' : '') +
+      '</div>';
+    }).join("");
+  }
+
+  async function saveNewMobileEvent() {
+    var title = document.getElementById("mobEvTitle").value.trim();
+    var dateVal = document.getElementById("mobEvDate").value;
+    var isPers = document.getElementById("mobEvCat").value === "personal";
+    var startVal = document.getElementById("mobEvStart").value || "09:00";
+    var endVal = document.getElementById("mobEvEnd").value || "10:00";
+    var noteVal = document.getElementById("mobEvNote").value.trim();
+
+    if (!title || !dateVal || !accessToken) return;
+    document.getElementById("mobEventModal").classList.remove("open");
+    setStatus("Salvataggio impegno...", false);
+
+    var payload = {
+      summary: isPers ? ("[Personale] " + title) : title,
+      description: noteVal,
+      start: { dateTime: dateVal + "T" + startVal + ":00", timeZone: "Europe/Rome" },
+      end: { dateTime: dateVal + "T" + endVal + ":00", timeZone: "Europe/Rome" },
+      extendedProperties: { private: { source: "dashboard" } }
+    };
+
+    var res = await fetch("https://www.googleapis.com/calendar/v3/calendars/primary/events", {
+      method: "POST",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      selectedDateStr = dateVal;
+      currentMonday = getMonday(new Date(dateVal + "T12:00:00"));
+      await fetchWeekCalendar();
+      saveSnapshot();
+      renderWeekView();
+      setStatus("Impegno salvato", true);
+    }
+  }
+</script>
+</body>
+</html>
