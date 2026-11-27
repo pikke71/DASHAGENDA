@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PIKDASH 0.92B — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
+  <title>PIKDASH 0.93B — Agenda, Progetti, Scadenzario, Team, Riunioni, Appunti & Portali</title>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     :root {
@@ -18,6 +18,7 @@
       --lilac-glow: rgba(179, 157, 219, 0.35);
       --dash-event: #4fc3f7;
       --personal: #f48fb1;
+      --holiday-orange: #ff9800;
       --prio-high: #ef5350;
       --prio-med: #ffb74d;
       --prio-low: #b39ddb;
@@ -40,11 +41,11 @@
       overflow: hidden;
     }
 
-    /* TOP BAR */
+    /* TOP BAR UNIFORMATA */
     header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: stretch;
       padding: 8px 14px;
       border-bottom: 1px solid var(--border);
       background: var(--surface);
@@ -52,14 +53,26 @@
       gap: 10px;
     }
 
-    /* LOGO PIKDASH BENTO + VERSIONE */
+    /* COLONNA SINISTRA: LOGO CLICCABILE + SYNC SOTTO */
     .brand-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 5px;
+      min-width: 215px;
+      flex-shrink: 0;
+    }
+
+    .brand-click-area {
       display: flex;
       align-items: center;
       gap: 9px;
-      min-width: 190px;
-      flex-shrink: 0;
+      cursor: pointer;
+      padding: 2px 4px;
+      border-radius: 8px;
+      transition: background 0.15s ease;
     }
+    .brand-click-area:hover { background: rgba(255, 255, 255, 0.04); }
 
     .logo-container {
       display: flex;
@@ -98,6 +111,19 @@
     }
     .brand-sub { font-size: 0.65rem; color: var(--muted); line-height: 1; }
 
+    .brand-sync-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding-left: 2px;
+    }
+
+    .btn-sync-compact {
+      padding: 3px 9px;
+      font-size: 0.72rem;
+      border-radius: 6px;
+    }
+
     /* TILE TABS (9 SCHEDE) */
     .tile-nav {
       display: grid;
@@ -114,7 +140,7 @@
       background: var(--surface);
       border: 1px solid transparent;
       border-radius: 9px;
-      padding: 5px 5px;
+      padding: 6px 5px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -133,25 +159,36 @@
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
     }
 
-    .tile-icon { font-size: 0.95rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
+    .tile-icon { font-size: 0.96rem; line-height: 1; margin-bottom: 1px; color: var(--text); }
     .tile-tab.active .tile-icon { color: var(--lilac); }
     .tile-title { font-size: 0.75rem; font-weight: 700; color: var(--text); }
     .tile-sub { font-size: 0.59rem; color: var(--muted); white-space: nowrap; }
     .tile-tab.active .tile-sub { color: #d1c4e9; }
 
+    /* PULSANTI DESTRA UNIFORMATI IN ALTEZZA ALLE SCHEDE */
     .header-right {
       display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 4px;
-      min-width: 160px;
+      align-items: stretch;
+      gap: 6px;
       flex-shrink: 0;
     }
 
-    .header-actions-row { display: flex; align-items: center; gap: 5px; }
+    .header-tall-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 13px;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      min-height: 100%;
+    }
+    .header-tall-btn .btn-ico { font-size: 1.05rem; line-height: 1; }
 
     .sync-badge {
-      font-size: 0.68rem;
+      font-size: 0.67rem;
       color: var(--muted);
       padding: 2px 8px;
       background: var(--bg);
@@ -201,7 +238,7 @@
     }
     .view-section.active { display: flex; }
 
-    /* RIEPILOGO UFFICIO */
+    /* RIEPILOGO UFFICIO (NUMERI E DESCRIZIONI CENTRATI) */
     .summary-strip {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -228,16 +265,23 @@
     }
 
     .summary-kpis { flex: 1; display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
-    .kpi-box { display: flex; flex-direction: column; gap: 2px; }
-    .kpi-num { font-size: 1.8rem; font-weight: 600; line-height: 1.05; color: var(--text); }
+    .kpi-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 3px;
+    }
+    .kpi-num { font-size: 1.85rem; font-weight: 700; line-height: 1.05; color: var(--text); }
     .kpi-num.cyan { color: var(--dash-event); }
     .kpi-num.orange { color: var(--kpi-orange); }
     .kpi-num.green { color: var(--kpi-green); }
     .kpi-num.lilac { color: var(--lilac); }
-    .kpi-label { font-size: 0.75rem; color: var(--muted); }
+    .kpi-label { font-size: 0.76rem; color: var(--muted); text-align: center; }
 
-    /* AGENDA */
-    .top-row { display: grid; grid-template-columns: 1.2fr 1fr; gap: 14px; height: 41%; min-height: 215px; }
+    /* AGENDA + OROLOGIO INGRANDITO */
+    .top-row { display: grid; grid-template-columns: 1.24fr 1fr; gap: 14px; height: 42%; min-height: 220px; }
 
     .card {
       background: var(--card);
@@ -256,10 +300,10 @@
     .week-nav-inline button { padding: 4px 10px; font-size: 0.76rem; }
     .week-label-inline { font-size: 0.84rem; font-weight: 600; color: var(--lilac); min-width: 190px; text-align: center; }
 
-    .now-grid { display: grid; grid-template-columns: 195px 1fr; gap: 16px; flex: 1; overflow: hidden; }
-    .clock-box { display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); padding-right: 14px; }
-    .clock-time { font-size: 2.5rem; font-weight: 300; letter-spacing: -1px; line-height: 1; }
-    .clock-date { font-size: 0.84rem; color: var(--muted); margin-top: 6px; text-transform: capitalize; }
+    .now-grid { display: grid; grid-template-columns: 235px 1fr; gap: 16px; flex: 1; overflow: hidden; }
+    .clock-box { display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--border); padding-right: 16px; }
+    .clock-time { font-size: 3.35rem; font-weight: 300; letter-spacing: -1.5px; line-height: 0.98; color: var(--text); }
+    .clock-date { font-size: 1.02rem; font-weight: 600; color: var(--lilac); margin-top: 8px; text-transform: capitalize; line-height: 1.25; }
     .next-pill {
       margin-top: 12px;
       background: var(--lilac-dim);
@@ -306,7 +350,7 @@
     .resched-btn { background: var(--bg); border: 1px solid var(--border); color: var(--muted); padding: 4px 8px; border-radius: 6px; font-size: 0.73rem; flex-shrink: 0; }
     .resched-btn:hover { color: var(--text); border-color: var(--dash-event); }
 
-    /* TASKS */
+    /* TASKS (CON MODIFICA & ELIMINA) */
     .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; flex-shrink: 0; }
     .progress-bar { flex: 1; height: 7px; background: var(--bg); border-radius: 99px; overflow: hidden; }
     .progress-fill { height: 100%; background: var(--lilac); width: 0%; transition: width 0.3s ease; border-radius: 99px; }
@@ -333,7 +377,6 @@
       padding: 7px 10px;
       border-radius: 8px;
       background: var(--surface);
-      cursor: pointer;
       transition: background 0.15s;
     }
     .task-item:hover { background: var(--card-hover); }
@@ -349,12 +392,15 @@
       font-size: 0.72rem;
       color: #121316;
       font-weight: 800;
+      cursor: pointer;
     }
     .task-item.done .task-check { background: var(--lilac); }
     .task-item.done .task-text { text-decoration: line-through; color: var(--muted); }
-    .task-text { font-size: 0.85rem; flex: 1; }
+    .task-text { font-size: 0.85rem; flex: 1; cursor: pointer; }
+    .task-row-actions { display: flex; align-items: center; gap: 4px; opacity: 0.45; transition: opacity 0.15s; }
+    .task-item:hover .task-row-actions { opacity: 1; }
 
-    /* 7-DAY WEEK GRID */
+    /* 7-DAY WEEK GRID + DOMENICHE E FESTIVI IN ARANCIONE */
     .bottom-card { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     .week-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 9px; flex: 1; overflow: hidden; }
     .day-col {
@@ -371,6 +417,7 @@
     .day-col:hover { border-color: #4a4f5e; background: #1d2027; }
     .day-col.today { border-color: var(--lilac); box-shadow: 0 0 14px rgba(179, 157, 219, 0.16); }
     .day-col.selected { background: #222630; border-color: var(--lilac); }
+    .day-col.holiday-col { border-top: 3px solid var(--holiday-orange); }
     .day-col-header {
       display: flex;
       justify-content: space-between;
@@ -381,6 +428,19 @@
       font-size: 0.78rem;
       font-weight: 700;
       text-transform: uppercase;
+    }
+    .day-col.holiday-col .day-col-header > span:first-child { color: var(--holiday-orange); }
+    .holiday-name-tag {
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: var(--holiday-orange);
+      background: rgba(255, 152, 0, 0.14);
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-bottom: 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .day-header-right { display: flex; align-items: center; gap: 4px; }
     .today-badge { background: var(--lilac); color: #121316; font-size: 0.62rem; padding: 1px 5px; border-radius: 4px; font-weight: 800; }
@@ -404,8 +464,73 @@
     .mini-ev-time { color: var(--lilac); font-weight: 600; font-size: 0.69rem; display: block; }
     .mini-ev.from-dash .mini-ev-time { color: var(--dash-event); }
     .mini-ev.personal .mini-ev-time { color: var(--personal); }
-    .legend-row { display: flex; align-items: center; gap: 12px; font-size: 0.74rem; color: var(--muted); }
+    .legend-row { display: flex; align-items: center; gap: 11px; font-size: 0.73rem; color: var(--muted); }
     .leg-dot { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; }
+
+    /* VISTA MENSILE COMPLETA */
+    .month-weekdays-header {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 7px;
+      text-align: center;
+      font-size: 0.74rem;
+      font-weight: 800;
+      color: var(--muted);
+      padding-bottom: 4px;
+      flex-shrink: 0;
+    }
+    .month-weekdays-header div:last-child { color: var(--holiday-orange); }
+    .month-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      grid-auto-rows: 1fr;
+      gap: 7px;
+      overflow-y: auto;
+    }
+    .month-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      padding: 6px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.15s ease;
+    }
+    .month-cell:hover { background: var(--card-hover); border-color: #4a4f5e; }
+    .month-cell.other-month { opacity: 0.38; }
+    .month-cell.today { border-color: var(--lilac); box-shadow: inset 0 0 0 1px var(--lilac); }
+    .month-cell.holiday-cell { border-top: 3px solid var(--holiday-orange); }
+    .month-cell-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .month-cell.holiday-cell .month-day-num { color: var(--holiday-orange); }
+    .month-cell-events {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .month-ev-pill {
+      font-size: 0.68rem;
+      padding: 2px 5px;
+      border-radius: 4px;
+      background: var(--card);
+      border-left: 2px solid var(--lilac);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .month-ev-pill.from-dash { border-left-color: var(--dash-event); }
+    .month-ev-pill.personal { border-left-color: var(--personal); }
 
     /* PROMEMORIA */
     .quick-memo-bar { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 13px 18px; display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
@@ -599,7 +724,7 @@
       outline: none;
     }
 
-    /* ==================== PREPARAZIONE RIUNIONI (BRIEFING + VERBALE) ==================== */
+    /* PREPARAZIONE RIUNIONI */
     .meeting-search-bar {
       background: var(--card);
       border: 1px solid var(--border);
@@ -940,23 +1065,29 @@
 <body>
 
   <header>
+    <!-- LOGO CLICCABILE + SYNC SOTTO IL NOME COMUNE -->
     <div class="brand-col">
-      <!-- LOGO PIKDASH BENTO -->
-      <div class="logo-container">
-        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="2" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
-          <rect x="2" y="13.5" width="9" height="20.5" rx="2.5" fill="#B39DDB"/>
-          <rect x="13.5" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
-          <rect x="13.5" y="13.5" width="9" height="9" rx="2.5" fill="#B39DDB"/>
-          <rect x="13.5" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
-          <rect x="25" y="2" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
-          <rect x="25" y="13.5" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
-          <rect x="25" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
-        </svg>
+      <div class="brand-click-area" id="btnBrandHome" title="Torna ad Agenda">
+        <div class="logo-container">
+          <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+            <rect x="2" y="13.5" width="9" height="20.5" rx="2.5" fill="#B39DDB"/>
+            <rect x="13.5" y="2" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+            <rect x="13.5" y="13.5" width="9" height="9" rx="2.5" fill="#B39DDB"/>
+            <rect x="13.5" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+            <rect x="25" y="2" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+            <rect x="25" y="13.5" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+            <rect x="25" y="25" width="9" height="9" rx="2.5" fill="#4FC3F7"/>
+          </svg>
+        </div>
+        <div class="brand-text-wrapper">
+          <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.93B</span></span>
+          <span class="brand-sub">Comune di San Martino di Venezze</span>
+        </div>
       </div>
-      <div class="brand-text-wrapper">
-        <span class="brand-title">PIK<span class="brand-dash">DASH</span> <span class="brand-ver">0.92B</span></span>
-        <span class="brand-sub">Comune di San Martino di Venezze</span>
+      <div class="brand-sync-row">
+        <button type="button" id="btnSync" class="primary btn-sync-compact">🔄 Sync</button>
+        <span class="sync-badge" id="syncBadge">In attesa di sync</span>
       </div>
     </div>
 
@@ -1009,13 +1140,16 @@
       </button>
     </nav>
 
+    <!-- PULSANTI DESTRA DI PARI ALTEZZA ALLE SCHEDE -->
     <div class="header-right">
-      <div class="header-actions-row">
-        <button type="button" id="btnNewEventTop" class="accent-cyan">+ Appuntamento</button>
-        <button type="button" id="btnSync" class="primary">🔄 Sync</button>
-        <button type="button" id="btnOpenSettings" title="Impostazioni">⚙️</button>
-      </div>
-      <span class="sync-badge" id="syncBadge">In attesa di sync</span>
+      <button type="button" id="btnNewEventTop" class="accent-cyan header-tall-btn">
+        <span class="btn-ico">➕</span>
+        <span>Appuntamento</span>
+      </button>
+      <button type="button" id="btnOpenSettings" class="header-tall-btn" title="Impostazioni">
+        <span class="btn-ico">⚙️</span>
+        <span>Opzioni</span>
+      </button>
     </div>
   </header>
 
@@ -1090,7 +1224,10 @@
 
     <div class="card bottom-card">
       <div class="card-header">
-        <span class="card-title">Panoramica Settimanale</span>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <span class="card-title">Panoramica Settimanale</span>
+          <button type="button" id="btnOpenMonthView" class="accent-cyan" style="padding:4px 10px; font-size:0.75rem;">🗓️ Mese intero</button>
+        </div>
         <div class="week-nav-inline">
           <button type="button" id="btnPrevWeek">← Prec.</button>
           <span class="week-label-inline" id="weekLabel">Settimana corrente</span>
@@ -1098,12 +1235,49 @@
           <button type="button" id="btnNextWeek">Succ. →</button>
         </div>
         <div class="legend-row">
-          <span><i class="leg-dot" style="background:var(--lilac);"></i>Agenda E-Ink</span>
-          <span><i class="leg-dot" style="background:var(--dash-event);"></i>Da Dashboard</span>
+          <span><i class="leg-dot" style="background:var(--lilac);"></i>E-Ink</span>
+          <span><i class="leg-dot" style="background:var(--dash-event);"></i>Dashboard</span>
           <span><i class="leg-dot" style="background:var(--personal);"></i>Personale</span>
+          <span><i class="leg-dot" style="background:var(--holiday-orange);"></i>Festivo</span>
         </div>
       </div>
       <div class="week-grid" id="weekGrid"></div>
+    </div>
+  </section>
+
+  <!-- ==================== VISTA MENSILE COMPLETA ==================== -->
+  <section id="viewMensile" class="view-section">
+    <div class="card" style="flex:1;">
+      <div class="card-header">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button type="button" id="btnBackToWeekView">← Torna a Settimana</button>
+          <span class="card-title" style="font-size:0.86rem; color:var(--text);">Calendario Mensile</span>
+        </div>
+        <div class="week-nav-inline">
+          <button type="button" id="btnPrevMonth">← Mese Prec.</button>
+          <span class="week-label-inline" id="monthLabel" style="min-width:170px; font-size:0.95rem;">Mese</span>
+          <button type="button" id="btnCurrentMonth">Mese Corrente</button>
+          <button type="button" id="btnNextMonth">Mese Succ. →</button>
+        </div>
+        <div class="legend-row">
+          <span><i class="leg-dot" style="background:var(--lilac);"></i>E-Ink</span>
+          <span><i class="leg-dot" style="background:var(--dash-event);"></i>Dashboard</span>
+          <span><i class="leg-dot" style="background:var(--personal);"></i>Personale</span>
+          <span><i class="leg-dot" style="background:var(--holiday-orange);"></i>Domeniche / Festivi</span>
+        </div>
+      </div>
+
+      <div class="month-weekdays-header">
+        <div>LUNEDÌ</div>
+        <div>MARTEDÌ</div>
+        <div>MERCOLEDÌ</div>
+        <div>GIOVEDÌ</div>
+        <div>VENERDÌ</div>
+        <div>SABATO</div>
+        <div>DOMENICA</div>
+      </div>
+
+      <div class="month-grid" id="monthGrid"></div>
     </div>
   </section>
 
@@ -1172,7 +1346,7 @@
         <div class="proj-filter-bar" id="projDeptFilterBar"></div>
 
         <div class="proj-list" id="projectsListContainer">
-          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza o crea un nuovo progetto per iniziare.</p>
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sync o crea un nuovo progetto per iniziare.</p>
         </div>
       </div>
 
@@ -1294,7 +1468,6 @@
     </div>
 
     <div class="meeting-layout">
-      <!-- COLONNA SINISTRA: DOSSIER ESTRATTO DA TUTTE LE SEZIONI -->
       <div class="card">
         <div class="card-header">
           <span class="card-title" id="meetingBriefingTitle">🎙️ Dossier Briefing & Elementi Rilevanti</span>
@@ -1306,7 +1479,6 @@
         </div>
       </div>
 
-      <!-- COLONNA DESTRA: APPUNTI DURANTE LA RIUNIONE & AZIONI -->
       <div class="card">
         <div class="card-header">
           <span class="card-title">✍️ Verbale & Appunti Riunione</span>
@@ -1327,7 +1499,6 @@
         </div>
         <div id="meetingNotesEditor" class="meeting-notes-editor" contenteditable="true" data-placeholder="Annota qui decisioni, punti discussi e attività emerse durante la riunione..."></div>
 
-        <!-- CONVERTI DECISIONE IN AZIONE OPERATIVA -->
         <div class="meeting-action-bar">
           <span style="font-size:0.72rem; font-weight:800; text-transform:uppercase; color:var(--dash-event);">⚡ Trasforma subito una decisione in azione:</span>
           <div class="add-row" style="margin-bottom:0;">
@@ -1345,7 +1516,7 @@
     </div>
   </section>
 
-  <!-- ==================== VISTA 7: APPUNTI DRIVE & NOTE FORMATTATE ==================== -->
+  <!-- ==================== VISTA 7: APPUNTI DRIVE & NOTE FORMATTATE + INVIO EMAIL ==================== -->
   <section id="viewAppunti" class="view-section">
     <div class="drive-layout">
       <div class="card">
@@ -1362,7 +1533,7 @@
 
         <input type="text" id="driveSearchInput" class="drive-search" placeholder="🔎 Cerca tra i titoli degli appunti...">
         <div class="drive-list" id="driveFilesList">
-          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza per caricare gli appunti.</p>
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sync per caricare gli appunti.</p>
         </div>
       </div>
 
@@ -1370,6 +1541,7 @@
         <div class="card-header">
           <span class="card-title" id="drivePreviewTitle" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Anteprima Documento</span>
           <div class="drive-preview-header-actions" id="previewActionsBar" style="display:none;">
+            <button type="button" id="btnEmailSelectedDoc" class="accent-cyan" style="padding:5px 10px; font-size:0.78rem;">✉️ Invia Email</button>
             <button type="button" id="btnRenameSelectedDoc" style="padding:5px 10px; font-size:0.78rem;">✏️ Rinomina</button>
             <button type="button" id="btnMoveSelectedDoc" style="padding:5px 10px; font-size:0.78rem;">📁 Sposta</button>
             <button type="button" id="btnDeleteSelectedDoc" class="danger-btn" style="padding:5px 10px; font-size:0.78rem;">🗑️ Elimina</button>
@@ -1397,7 +1569,7 @@
 
         <input type="text" id="modSearchInput" class="drive-search" placeholder="🔎 Cerca documento PDF, Word, OneDrive, SharePoint o progetto...">
         <div class="drive-list" id="modItemsList">
-          <p style="color:var(--muted); font-size:0.86rem;">Premi Sincronizza per leggere i documenti da Google Drive o aggiungi collegamenti a OneDrive / SharePoint.</p>
+          <p style="color:var(--muted); font-size:0.86rem;">Premi Sync per leggere i documenti da Google Drive o aggiungi collegamenti a OneDrive / SharePoint.</p>
         </div>
       </div>
 
@@ -1526,7 +1698,7 @@
     </div>
   </div>
 
-  <!-- MODALE COLLEGAMENTO DOCUMENTO (ONEDRIVE / SHAREPOINT / PROGETTO) -->
+  <!-- MODALE COLLEGAMENTO DOCUMENTO -->
   <div class="modal-backdrop" id="modLinkModal">
     <div class="modal">
       <h3 id="modLinkModalTitle">🔗 Nuovo Collegamento Documento (OneDrive / SharePoint)</h3>
@@ -1818,7 +1990,7 @@
   <!-- MODALE IMPOSTAZIONI -->
   <div class="modal-backdrop" id="settingsModal">
     <div class="modal">
-      <h3>⚙️ Configurazione PIKDASH 0.92B</h3>
+      <h3>⚙️ Configurazione PIKDASH 0.93B</h3>
       <label>Email Google (per auto-login silenzioso):</label>
       <input type="text" id="cfgLoginHint" value="guidpol@gmail.com">
       <label>Google OAuth Client ID:</label>
@@ -1839,8 +2011,7 @@
       </div>
     </div>
   </div>
-<!-- FINE PARTE 1 -->
-<!-- INIZIO PARTE 2 -->
+
 <script>
   var SCOPES = "https://www.googleapis.com/auth/calendar.events https://www.googleapis.com/auth/tasks https://www.googleapis.com/auth/drive";
   var GIORNI_BREVI = ["LUN", "MAR", "MER", "GIO", "VEN", "SAB", "DOM"];
@@ -2689,7 +2860,7 @@
             '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
             '<div class="day-header-right">' +
               badge +
-              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, \'' + dStr + '\', \'\')">+</button>' +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, '' + dStr + '', '')">+</button>' +
             '</div>' +
           '</div>' +
           '<div class="day-events">' + evHtml + '</div>';
@@ -2730,7 +2901,7 @@
             noteHtml +
           '</div>' +
         '</div>' +
-        '<button type="button" class="resched-btn" title="Riprogramma o modifica" onclick="openEventModal(\'' + ev.id + '\')">📅 Riprogramma</button>' +
+        '<button type="button" class="resched-btn" title="Riprogramma o modifica" onclick="openEventModal('' + ev.id + '')">📅 Riprogramma</button>' +
       '</div>';
     }).join("");
 
@@ -2811,7 +2982,7 @@
 
     listEl.innerHTML = sorted.map(function(t) {
       var isDone = (t.status === "completed");
-      return '<div class="task-item' + (isDone ? " done" : "") + '" onclick="toggleTask(\'' + t.id + '\')">' +
+      return '<div class="task-item' + (isDone ? " done" : "") + '" onclick="toggleTask('' + t.id + '')">' +
         '<div class="task-check">' + (isDone ? "✓" : "") + '</div>' +
         '<div class="task-text">' + escapeHtml(t.title) + '</div>' +
       '</div>';
@@ -2853,8 +3024,7 @@
       saveCachedSnapshot();
     }
   }
-<!-- FINE PARTE 2 -->
-<!-- INIZIO PARTE 3 -->
+
   // ==================== 3. PROMEMORIA & COSE RAPIDE DA FARE ====================
   function parseMemoTitle(rawTitle) {
     var match = (rawTitle || "").match(/^\[(TELEFONATE|PERSONE|RAPIDE|VERIFICARE|IDEE)\|(high|med|low)\]\s*(.*)$/i);
@@ -2920,10 +3090,10 @@
 
       listEl.innerHTML = items.map(function(m) {
         return '<div class="memo-item prio-' + m.priority + (m.done ? " done" : "") + '">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleMemo(\'' + m.id + '\')">' + (m.done ? "✓" : "") + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleMemo('' + m.id + '')">' + (m.done ? "✓" : "") + '</div>' +
           '<span class="prio-pill ' + m.priority + '">' + prioLabels[m.priority] + '</span>' +
-          '<span class="memo-title" style="cursor:pointer;" onclick="toggleMemo(\'' + m.id + '\')">' + escapeHtml(m.title) + '</span>' +
-          '<button type="button" class="memo-del" title="Elimina" onclick="deleteMemo(\'' + m.id + '\')">✕</button>' +
+          '<span class="memo-title" style="cursor:pointer;" onclick="toggleMemo('' + m.id + '')">' + escapeHtml(m.title) + '</span>' +
+          '<button type="button" class="memo-del" title="Elimina" onclick="deleteMemo('' + m.id + '')">✕</button>' +
         '</div>';
       }).join("");
     });
@@ -3051,7 +3221,7 @@
   function renderProjFilterBar() {
     var bar = document.getElementById("projDeptFilterBar");
     var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Generale"];
-    var html = '<div class="folder-chip' + (activeDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setProjDeptFilter(\'ALL\')">' +
+    var html = '<div class="folder-chip' + (activeDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setProjDeptFilter('ALL')">' +
       '<span>Tutti (' + projectsData.length + ')</span>' +
     '</div>';
 
@@ -3060,7 +3230,7 @@
       if (cnt === 0 && activeDeptFilter !== dept) return;
       var col = DEPT_COLORS[dept] || "#b39ddb";
       var isAct = (activeDeptFilter === dept) ? " active" : "";
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setProjDeptFilter(\'' + dept + '\')">' +
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setProjDeptFilter('' + dept + '')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -3096,7 +3266,7 @@
       var docsCount = allDocs.filter(function(d) { return d.projectId === p.id; }).length;
       var isAct = (p.id === selectedProjectId) ? " active" : "";
 
-      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject(\'' + p.id + '\')">' +
+      return '<div class="proj-card' + isAct + '" style="--proj-color:' + col + ';" onclick="selectProject('' + p.id + '')">' +
         '<div class="proj-card-top">' +
           '<span class="proj-card-title">' + escapeHtml(p.title) + '</span>' +
           '<span class="proj-dept-pill" style="--proj-color:' + col + ';">' + escapeHtml(p.dept) + '</span>' +
@@ -3161,14 +3331,14 @@
       });
 
       stepsListEl.innerHTML = sortedSteps.map(function(step) {
-        var safeStepTitle = step.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-        var safeProjTitle = proj.title.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+        var safeStepTitle = step.title.replace(/'/g, "\'").replace(/"/g, "&quot;");
+        var safeProjTitle = proj.title.replace(/'/g, "\'").replace(/"/g, "&quot;");
         return '<div class="proj-step-item' + (step.done ? " done" : "") + '">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep(\'' + step.id + '\')">' + (step.done ? "✓" : "") + '</div>' +
-          '<div class="proj-step-text" onclick="toggleProjectStep(\'' + step.id + '\')">' + escapeHtml(step.title) + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleProjectStep('' + step.id + '')">' + (step.done ? "✓" : "") + '</div>' +
+          '<div class="proj-step-text" onclick="toggleProjectStep('' + step.id + '')">' + escapeHtml(step.title) + '</div>' +
           '<div class="proj-step-actions">' +
-            '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, \'[' + safeProjTitle + '] ' + safeStepTitle + '\')">📅</button>' +
-            '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep(\'' + step.id + '\')">✕</button>' +
+            '<button type="button" class="file-icon-btn" title="Pianifica su Calendar" onclick="openEventModal(null, selectedDateStr, '[' + safeProjTitle + '] ' + safeStepTitle + '')">📅</button>' +
+            '<button type="button" class="memo-del" title="Rimuovi fase" onclick="deleteProjectStep('' + step.id + '')">✕</button>' +
           '</div>' +
         '</div>';
       }).join("");
@@ -3183,7 +3353,7 @@
       var platIcons = { gdrive: "📄", onedrive: "☁️", sharepoint: "🔷", external: "🌐" };
       docsListEl.innerHTML = linkedDocs.map(function(doc) {
         var ico = platIcons[doc.platform] || "📄";
-        return '<div class="proj-doc-chip" onclick="jumpToDocument(\'' + doc.id + '\')" title="Apri anteprima nella sezione Documenti">' +
+        return '<div class="proj-doc-chip" onclick="jumpToDocument('' + doc.id + '')" title="Apri anteprima nella sezione Documenti">' +
           '<div style="min-width:0; flex:1;">' +
             '<div class="proj-doc-chip-title">' + ico + ' ' + escapeHtml(doc.title) + '</div>' +
             '<div style="font-size:0.69rem; color:var(--muted); margin-top:2px;">' + escapeHtml(doc.format || doc.platform.toUpperCase()) + '</div>' +
@@ -3444,17 +3614,26 @@
         };
         var boundary = "-------pikdashscadenze11223344";
         var body =
-          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json; charset=UTF-8
+
+" +
           JSON.stringify(metadata) +
-          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json
+
+" +
           jsonContent +
-          "\r\n--" + boundary + "--";
+          "
+--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+            "Content-Type": "multipart/related; boundary="" + boundary + """
           },
           body: body
         });
@@ -3473,17 +3652,17 @@
     var doneCount = scadenzeItems.filter(function(s) { return s.done; }).length;
 
     var html =
-      '<div class="folder-chip' + (activeScadFilter === "ACTIVE" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setScadFilter(\'ACTIVE\')">' +
+      '<div class="folder-chip' + (activeScadFilter === "ACTIVE" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setScadFilter('ACTIVE')">' +
         '<span>⏳ Attive (' + activeCount + ')</span>' +
       '</div>' +
-      '<div class="folder-chip' + (activeScadFilter === "URGENT" ? " active" : "") + '" style="--chip-color:#ef5350;" onclick="setScadFilter(\'URGENT\')">' +
+      '<div class="folder-chip' + (activeScadFilter === "URGENT" ? " active" : "") + '" style="--chip-color:#ef5350;" onclick="setScadFilter('URGENT')">' +
         '<span class="folder-dot" style="background:#ef5350;"></span>' +
         '<span>Entro 7 gg / Scadute (' + urgentCount + ')</span>' +
       '</div>' +
-      '<div class="folder-chip' + (activeScadFilter === "DONE" ? " active" : "") + '" style="--chip-color:#81c784;" onclick="setScadFilter(\'DONE\')">' +
+      '<div class="folder-chip' + (activeScadFilter === "DONE" ? " active" : "") + '" style="--chip-color:#81c784;" onclick="setScadFilter('DONE')">' +
         '<span>✅ Completate (' + doneCount + ')</span>' +
       '</div>' +
-      '<div class="folder-chip' + (activeScadFilter === "ALL" ? " active" : "") + '" style="--chip-color:#64b5f6;" onclick="setScadFilter(\'ALL\')">' +
+      '<div class="folder-chip' + (activeScadFilter === "ALL" ? " active" : "") + '" style="--chip-color:#64b5f6;" onclick="setScadFilter('ALL')">' +
         '<span>Tutte (' + scadenzeItems.length + ')</span>' +
       '</div>';
 
@@ -3553,11 +3732,11 @@
 
       var formattedDate = s.dueDate ? s.dueDate.split("-").reverse().join("/") : "—";
       var secCol = DEPT_COLORS[s.sector] || "#b39ddb";
-      var safeTitle = (s.title || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      var safeTitle = (s.title || "").replace(/'/g, "\'").replace(/"/g, "&quot;");
 
       return '<div class="scad-row' + (s.done ? " done" : "") + '" style="--scad-color:' + borderCol + ';">' +
         '<div class="scad-left">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleScadenzaDone(\'' + s.id + '\')">' + (s.done ? "✓" : "") + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleScadenzaDone('' + s.id + '')">' + (s.done ? "✓" : "") + '</div>' +
           '<div class="scad-date-box">' +
             '<div class="scad-date-main">' + formattedDate + '</div>' +
             '<span class="scad-days-pill ' + pillClass + '">' + pillText + '</span>' +
@@ -3572,9 +3751,9 @@
           '</div>' +
         '</div>' +
         '<div class="scad-actions">' +
-          '<button type="button" class="file-icon-btn" title="Fissa su Google Calendar" onclick="openEventModal(null, \'' + (s.dueDate || selectedDateStr) + '\', \'SCADENZA: ' + safeTitle + '\')">📅 Calendar</button>' +
-          '<button type="button" class="file-icon-btn" title="Modifica scadenza" onclick="openScadenzaModal(\'' + s.id + '\')">✏️</button>' +
-          '<button type="button" class="file-icon-btn del" title="Elimina" onclick="deleteScadenzaItem(\'' + s.id + '\')">✕</button>' +
+          '<button type="button" class="file-icon-btn" title="Fissa su Google Calendar" onclick="openEventModal(null, '' + (s.dueDate || selectedDateStr) + '', 'SCADENZA: ' + safeTitle + '')">📅 Calendar</button>' +
+          '<button type="button" class="file-icon-btn" title="Modifica scadenza" onclick="openScadenzaModal('' + s.id + '')">✏️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina" onclick="deleteScadenzaItem('' + s.id + '')">✕</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -3720,17 +3899,26 @@
         };
         var boundary = "-------pikdashteam99887766";
         var body =
-          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json; charset=UTF-8
+
+" +
           JSON.stringify(metadata) +
-          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json
+
+" +
           jsonContent +
-          "\r\n--" + boundary + "--";
+          "
+--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+            "Content-Type": "multipart/related; boundary="" + boundary + """
           },
           body: body
         });
@@ -3752,7 +3940,7 @@
     var bar = document.getElementById("teamDeptFilterBar");
     var depts = ["Servizi Sociali", "Segreteria", "Biblioteca", "Anagrafe", "Altro"];
 
-    var html = '<div class="folder-chip' + (activeTeamDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setTeamDeptFilter(\'ALL\')">' +
+    var html = '<div class="folder-chip' + (activeTeamDeptFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setTeamDeptFilter('ALL')">' +
       '<span>Tutti (' + teamMembers.length + ')</span>' +
     '</div>';
 
@@ -3761,7 +3949,7 @@
       if (cnt === 0 && activeTeamDeptFilter !== dept) return;
       var col = DEPT_COLORS[dept] || "#b39ddb";
       var isAct = (activeTeamDeptFilter === dept) ? " active" : "";
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setTeamDeptFilter(\'' + dept + '\')">' +
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setTeamDeptFilter('' + dept + '')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(dept) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -3783,7 +3971,7 @@
     });
 
     var allActiveCount = teamDelegations.filter(function(d) { return d.status !== "done"; }).length;
-    var html = '<div class="member-card' + (selectedMemberId === "ALL" ? " active" : "") + '" style="--member-color:#b39ddb;" onclick="selectTeamMember(\'ALL\')">' +
+    var html = '<div class="member-card' + (selectedMemberId === "ALL" ? " active" : "") + '" style="--member-color:#b39ddb;" onclick="selectTeamMember('ALL')">' +
       '<div class="member-avatar" style="background:#b39ddb;">👥</div>' +
       '<div class="member-info">' +
         '<div class="member-name">Tutto il Team</div>' +
@@ -3803,14 +3991,14 @@
       var isAct = (selectedMemberId === m.id) ? " active" : "";
       var activeTasks = teamDelegations.filter(function(d) { return d.memberId === m.id && d.status !== "done"; }).length;
 
-      html += '<div class="member-card' + isAct + '" style="--member-color:' + col + ';" onclick="selectTeamMember(\'' + m.id + '\')">' +
+      html += '<div class="member-card' + isAct + '" style="--member-color:' + col + ';" onclick="selectTeamMember('' + m.id + '')">' +
         '<div class="member-avatar" style="background:' + col + ';">' + escapeHtml(getInitials(m.name)) + '</div>' +
         '<div class="member-info">' +
           '<div class="member-name">' + escapeHtml(m.name) + '</div>' +
           '<div class="member-role">' + escapeHtml(m.dept) + (m.role ? ' • ' + escapeHtml(m.role) : '') + '</div>' +
           '<div class="member-stats"><span class="member-count-badge" style="--member-color:' + col + ';">' + activeTasks + ' in carico</span></div>' +
         '</div>' +
-        '<button type="button" class="file-icon-btn" title="Modifica scheda dipendente" onclick="event.stopPropagation(); openMemberModal(\'' + m.id + '\')">✏️</button>' +
+        '<button type="button" class="file-icon-btn" title="Modifica scheda dipendente" onclick="event.stopPropagation(); openMemberModal('' + m.id + '')">✏️</button>' +
       '</div>';
     });
 
@@ -3869,7 +4057,7 @@
     });
 
     if (filtered.length === 0) {
-      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessuna pratica assegnata in questa vista. Usa la barra qui sopra per delegare un\'attività.</p>';
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.86rem;">Nessuna pratica assegnata in questa vista. Usa la barra qui sopra per delegare un'attività.</p>';
       return;
     }
 
@@ -3882,7 +4070,7 @@
 
       return '<div class="delegation-item' + (isDone ? " done" : "") + '" style="--member-color:' + mColor + ';">' +
         '<div class="del-left">' +
-          '<div class="task-check" style="cursor:pointer;" onclick="toggleDelegationDone(\'' + d.id + '\')">' + (isDone ? "✓" : "") + '</div>' +
+          '<div class="task-check" style="cursor:pointer;" onclick="toggleDelegationDone('' + d.id + '')">' + (isDone ? "✓" : "") + '</div>' +
           '<div style="min-width:0; flex:1;">' +
             '<div class="del-title">' + escapeHtml(d.title) + '</div>' +
             '<div class="del-meta">' +
@@ -3892,13 +4080,13 @@
           '</div>' +
         '</div>' +
         '<div style="display:flex; align-items:center; gap:6px; flex-shrink:0;">' +
-          '<select class="del-status-select" onchange="changeDelegationStatus(\'' + d.id + '\', this.value)">' +
+          '<select class="del-status-select" onchange="changeDelegationStatus('' + d.id + '', this.value)">' +
             '<option value="todo"' + (d.status === "todo" ? " selected" : "") + '>⏳ Da avviare</option>' +
             '<option value="doing"' + (d.status === "doing" ? " selected" : "") + '>🔵 In corso</option>' +
             '<option value="review"' + (d.status === "review" ? " selected" : "") + '>🟠 Da firmare / rivedere</option>' +
             '<option value="done"' + (d.status === "done" ? " selected" : "") + '>✅ Completata</option>' +
           '</select>' +
-          '<button type="button" class="memo-del" title="Rimuovi delega" onclick="deleteDelegationItem(\'' + d.id + '\')">✕</button>' +
+          '<button type="button" class="memo-del" title="Rimuovi delega" onclick="deleteDelegationItem('' + d.id + '')">✕</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -3993,7 +4181,7 @@
     var box = document.getElementById("memColorSwatches");
     box.innerHTML = FOLDER_PALETTE.map(function(c) {
       var sel = (c.hex.toLowerCase() === selectedMemberColor.toLowerCase()) ? " selected" : "";
-      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectMemberColor(\'' + c.hex + '\')"></div>';
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectMemberColor('' + c.hex + '')"></div>';
     }).join("");
   }
 
@@ -4116,7 +4304,6 @@
       return searchTokens.some(function(tok) { return low.indexOf(tok) !== -1; });
     }
 
-    // 1. Progetti rilevanti
     var matchedProjects = projectsData.filter(function(p) {
       if (filterProjectId !== "ALL") return p.id === filterProjectId;
       if (!hasFilter) return !p.done;
@@ -4124,7 +4311,6 @@
       return matchesAnyToken(p.title + " " + p.dept + " " + (p.statusNote || "") + " " + stepsTxt);
     });
 
-    // 2. Deleghe Team rilevanti
     var matchedDelegations = teamDelegations.filter(function(d) {
       if (filterMemberId !== "ALL" && d.memberId !== filterMemberId) return false;
       if (!hasFilter) return d.status !== "done";
@@ -4133,13 +4319,11 @@
       return matchesAnyToken(d.title + " " + mName);
     });
 
-    // 3. Scadenze rilevanti
     var matchedScadenze = scadenzeItems.filter(function(s) {
       if (!hasFilter) return !s.done && getDaysDiffFromToday(s.dueDate) <= 30;
       return matchesAnyToken(s.title + " " + (s.sector || "") + " " + (s.note || ""));
     });
 
-    // 4. Promemoria & Obiettivi rilevanti
     var matchedMemos = memoItems.filter(function(m) {
       if (!hasFilter) return !m.done && m.priority === "high";
       return matchesAnyToken(m.title);
@@ -4149,7 +4333,6 @@
       return matchesAnyToken(t.title);
     });
 
-    // 5. Appunti Drive & Documenti rilevanti
     var matchedNotes = driveFiles.filter(function(f) {
       if (!hasFilter) return false;
       return matchesAnyToken(f.name);
@@ -4160,7 +4343,6 @@
       return matchesAnyToken(doc.title + " " + (doc.sector || "") + " " + (doc.note || ""));
     });
 
-    // 6. Appuntamenti Calendar della settimana
     var matchedEvents = weekEvents.filter(function(ev) {
       if (!hasFilter) return false;
       return matchesAnyToken(ev.title + " " + (ev.description || ""));
@@ -4179,7 +4361,6 @@
       html += '<div style="font-size:0.78rem; color:var(--muted); padding:2px 4px;">📌 <strong>Panoramica rapida pre-riunione</strong> (progetti attivi, deleghe in corso, scadenze entro 30 gg e priorità urgenti). Usa la ricerca sopra per filtrare un tema specifico.</div>';
     }
 
-    // Sezione Progetti
     if (matchedProjects.length > 0) {
       summaryLines.push("PROGETTI & PRATICHE:");
       html += '<div class="briefing-section"><div class="briefing-sec-head"><span>📂 Progetti & Stato Pratiche (' + matchedProjects.length + ')</span></div>';
@@ -4193,13 +4374,12 @@
             (p.statusNote ? '<div class="briefing-item-sub" style="color:var(--dash-event);">📍 Punto situazione: ' + escapeHtml(p.statusNote) + '</div>' : '') +
             (openSteps.length > 0 ? '<div class="briefing-item-sub">Da completare: ' + escapeHtml(openSteps.join(" • ")) + '</div>' : '') +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewProgetti\'); selectProject(\'' + p.id + '\')">Apri</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewProgetti'); selectProject('' + p.id + '')">Apri</button>' +
         '</div>';
       });
       html += '</div>';
     }
 
-    // Sezione Team & Deleghe
     if (matchedDelegations.length > 0) {
       summaryLines.push("DELEGHE TEAM:");
       var statusLabels = { todo: "Da avviare", doing: "In corso", review: "Da firmare/rivedere", done: "Completata" };
@@ -4213,13 +4393,12 @@
             '<div class="briefing-item-title">' + escapeHtml(d.title) + '</div>' +
             '<div class="briefing-item-sub">👤 ' + escapeHtml(mName) + ' • Stato: <strong>' + (statusLabels[d.status] || d.status) + '</strong>' + (d.dueDate ? ' • Scad. ' + d.dueDate.split("-").reverse().join("/") : '') + '</div>' +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewTeam\')">Vai a Team</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewTeam')">Vai a Team</button>' +
         '</div>';
       });
       html += '</div>';
     }
 
-    // Sezione Scadenze
     if (matchedScadenze.length > 0) {
       summaryLines.push("SCADENZE:");
       html += '<div class="briefing-section"><div class="briefing-sec-head orange"><span>⏳ Scadenze & Adempimenti (' + matchedScadenze.length + ')</span></div>';
@@ -4231,13 +4410,12 @@
             '<div class="briefing-item-title">' + escapeHtml(s.title) + '</div>' +
             '<div class="briefing-item-sub">📅 ' + fDate + ' • ' + escapeHtml(s.sector || "Generale") + (s.note ? ' • ' + escapeHtml(s.note) : '') + '</div>' +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewScadenzario\')">Apri</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewScadenzario')">Apri</button>' +
         '</div>';
       });
       html += '</div>';
     }
 
-    // Sezione Promemoria & Obiettivi
     if (matchedMemos.length > 0 || matchedTasks.length > 0) {
       summaryLines.push("PROMEMORIA & OBIETTIVI:");
       html += '<div class="briefing-section"><div class="briefing-sec-head"><span>☑️ Promemoria & Obiettivi (' + (matchedMemos.length + matchedTasks.length) + ')</span></div>';
@@ -4257,7 +4435,6 @@
       html += '</div>';
     }
 
-    // Sezione Appunti & Documenti
     if (matchedNotes.length > 0 || matchedDocs.length > 0) {
       summaryLines.push("APPUNTI & DOCUMENTI:");
       html += '<div class="briefing-section"><div class="briefing-sec-head green"><span>📝 Appunti & Documenti Correlati (' + (matchedNotes.length + matchedDocs.length) + ')</span></div>';
@@ -4265,7 +4442,7 @@
         summaryLines.push("- Appunto Drive: " + f.name);
         html += '<div class="briefing-item">' +
           '<div class="briefing-item-title">📝 ' + escapeHtml(f.name) + '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="switchMainView(\'viewAppunti\'); openDrivePreview(\'' + f.id + '\')">Leggi</button>' +
+          '<button type="button" class="file-icon-btn" onclick="switchMainView('viewAppunti'); openDrivePreview('' + f.id + '')">Leggi</button>' +
         '</div>';
       });
       matchedDocs.forEach(function(doc) {
@@ -4275,13 +4452,12 @@
             '<div class="briefing-item-title">📄 ' + escapeHtml(doc.title) + '</div>' +
             '<div class="briefing-item-sub">' + escapeHtml(doc.platform.toUpperCase()) + ' • ' + escapeHtml(doc.sector || "Generale") + '</div>' +
           '</div>' +
-          '<button type="button" class="file-icon-btn" onclick="jumpToDocument(\'' + doc.id + '\')">Apri</button>' +
+          '<button type="button" class="file-icon-btn" onclick="jumpToDocument('' + doc.id + '')">Apri</button>' +
         '</div>';
       });
       html += '</div>';
     }
 
-    // Sezione Appuntamenti Calendar
     if (matchedEvents.length > 0) {
       summaryLines.push("AGENDA SETTIMANA:");
       html += '<div class="briefing-section"><div class="briefing-sec-head cyan"><span>📅 Appuntamenti in Agenda (' + matchedEvents.length + ')</span></div>';
@@ -4300,7 +4476,8 @@
       html = '<div style="padding:24px; text-align:center; color:var(--muted);">Nessun elemento trovato per i filtri impostati. Prova con un termine più breve o seleziona "Tutti".</div>';
     }
 
-    lastBriefingTextSummary = summaryLines.join("\n");
+    lastBriefingTextSummary = summaryLines.join("
+");
     resultsEl.innerHTML = html;
   }
 
@@ -4310,7 +4487,8 @@
       alert("Nessun elemento estratto da importare.");
       return;
     }
-    var lines = lastBriefingTextSummary.split("\n");
+    var lines = lastBriefingTextSummary.split("
+");
     var htmlChunk = "<p><strong>--- PUNTI ESTRATTI PER LA RIUNIONE ---</strong></p><ul>";
     lines.forEach(function(l) {
       if (l.indexOf("- ") === 0) {
@@ -4335,7 +4513,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 0.92B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Verbale generato da PIKDASH 0.93B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -4347,15 +4525,22 @@
       };
 
       var boundary = "-------314159265358979323846";
-      var delimiter = "\r\n--" + boundary + "\r\n";
-      var closeDelim = "\r\n--" + boundary + "--";
+      var delimiter = "
+--" + boundary + "
+";
+      var closeDelim = "
+--" + boundary + "--";
 
       var multipartRequestBody =
         delimiter +
-        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+        "Content-Type: application/json; charset=UTF-8
+
+" +
         JSON.stringify(metadata) +
         delimiter +
-        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
+        "Content-Type: text/html; charset=UTF-8
+
+" +
         htmlBody +
         closeDelim;
 
@@ -4363,7 +4548,7 @@
         method: "POST",
         headers: {
           "Authorization": "Bearer " + accessToken,
-          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          "Content-Type": "multipart/related; boundary="" + boundary + """
         },
         body: multipartRequestBody
       });
@@ -4497,7 +4682,7 @@
     var folderName = document.getElementById("cfgDriveFolder").value.trim() || "Appunti Scanner";
     document.getElementById("driveFolderTitle").innerText = "📁 " + folderName;
 
-    var qRoot = encodeURIComponent("name = '" + folderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var qRoot = encodeURIComponent("name = '" + folderName.replace(/'/g, "\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
     var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
       headers: { "Authorization": "Bearer " + accessToken }
     });
@@ -4586,7 +4771,7 @@
       var htmlBody =
         "<html><body style='font-family:Arial,sans-serif;line-height:1.55;'>" +
         "<h1>" + escapeHtml(title) + "</h1>" +
-        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.92B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
+        "<p style='color:#666;font-size:12px;'>Creato da PIKDASH 0.93B il " + new Date().toLocaleDateString("it-IT") + "</p>" +
         "<hr>" +
         (cleanContentHtml || "<p></p>") +
         "</body></html>";
@@ -4598,15 +4783,22 @@
       };
 
       var boundary = "-------314159265358979323846";
-      var delimiter = "\r\n--" + boundary + "\r\n";
-      var closeDelim = "\r\n--" + boundary + "--";
+      var delimiter = "
+--" + boundary + "
+";
+      var closeDelim = "
+--" + boundary + "--";
 
       var multipartRequestBody =
         delimiter +
-        "Content-Type: application/json; charset=UTF-8\r\n\r\n" +
+        "Content-Type: application/json; charset=UTF-8
+
+" +
         JSON.stringify(metadata) +
         delimiter +
-        "Content-Type: text/html; charset=UTF-8\r\n\r\n" +
+        "Content-Type: text/html; charset=UTF-8
+
+" +
         htmlBody +
         closeDelim;
 
@@ -4614,7 +4806,7 @@
         method: "POST",
         headers: {
           "Authorization": "Bearer " + accessToken,
-          "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+          "Content-Type": "multipart/related; boundary="" + boundary + """
         },
         body: multipartRequestBody
       });
@@ -4631,12 +4823,12 @@
 
   function renderDriveFoldersBar() {
     var bar = document.getElementById("driveFoldersBar");
-    var html = '<div class="folder-chip' + (activeFolderFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setFolderFilter(\'ALL\')">' +
+    var html = '<div class="folder-chip' + (activeFolderFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setFolderFilter('ALL')">' +
       '<span>🗂️ Tutti (' + driveFiles.length + ')</span>' +
     '</div>';
 
     var rootCount = driveFiles.filter(function(f) { return f.parentId === rootDriveFolderId; }).length;
-    html += '<div class="folder-chip' + (activeFolderFilter === "ROOT" ? " active" : "") + '" style="--chip-color:#9aa0a6;" onclick="setFolderFilter(\'ROOT\')">' +
+    html += '<div class="folder-chip' + (activeFolderFilter === "ROOT" ? " active" : "") + '" style="--chip-color:#9aa0a6;" onclick="setFolderFilter('ROOT')">' +
       '<span class="folder-dot" style="background:#9aa0a6;"></span>' +
       '<span>Senza cartella (' + rootCount + ')</span>' +
     '</div>';
@@ -4644,11 +4836,11 @@
     driveSubfolders.forEach(function(sf) {
       var cnt = driveFiles.filter(function(f) { return f.parentId === sf.id; }).length;
       var isAct = (activeFolderFilter === sf.id) ? " active" : "";
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + sf.color + ';" onclick="setFolderFilter(\'' + sf.id + '\')">' +
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + sf.color + ';" onclick="setFolderFilter('' + sf.id + '')">' +
         '<span class="folder-dot" style="background:' + sf.color + ';"></span>' +
         '<span>' + escapeHtml(sf.name) + ' (' + cnt + ')</span>' +
         '<span style="margin-left:3px; opacity:0.75;" onclick="event.stopPropagation()">' +
-          '<button type="button" class="folder-mini-btn" title="Modifica nome/colore" onclick="openFolderModal(\'' + sf.id + '\')">✏️</button>' +
+          '<button type="button" class="folder-mini-btn" title="Modifica nome/colore" onclick="openFolderModal('' + sf.id + '')">✏️</button>' +
         '</span>' +
       '</div>';
     });
@@ -4688,7 +4880,7 @@
     var box = document.getElementById("folderColorSwatches");
     box.innerHTML = FOLDER_PALETTE.map(function(c) {
       var sel = (c.hex.toLowerCase() === selectedSwatchColor.toLowerCase()) ? " selected" : "";
-      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectSwatch(\'' + c.hex + '\')"></div>';
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectSwatch('' + c.hex + '')"></div>';
     }).join("");
   }
 
@@ -4763,7 +4955,7 @@
       var dateStr = f.modifiedTime ? new Date(f.modifiedTime).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" }) : "";
       var isAct = (f.id === selectedDriveFileId) ? " active" : "";
 
-      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + folderColor + ';" onclick="openDrivePreview(\'' + f.id + '\')">' +
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + folderColor + ';" onclick="openDrivePreview('' + f.id + '')">' +
         '<div class="drive-file-info">' +
           '<div class="drive-file-title">📄 ' + escapeHtml(f.name) + '</div>' +
           '<div class="drive-file-meta">' +
@@ -4772,9 +4964,10 @@
           '</div>' +
         '</div>' +
         '<div class="file-actions" onclick="event.stopPropagation()">' +
-          '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile(\'' + f.id + '\')">✏️</button>' +
-          '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal(\'' + f.id + '\')">📁</button>' +
-          '<button type="button" class="file-icon-btn del" title="Elimina appunto (Cestino Drive)" onclick="deleteDriveFile(\'' + f.id + '\')">🗑️</button>' +
+          '<button type="button" class="file-icon-btn" title="Invia per Email" onclick="emailDriveNote('' + f.id + '')">✉️</button>' +
+          '<button type="button" class="file-icon-btn" title="Rinomina appunto" onclick="renameDriveFile('' + f.id + '')">✏️</button>' +
+          '<button type="button" class="file-icon-btn" title="Sposta in cartella" onclick="openMoveDocModal('' + f.id + '')">📁</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina appunto (Cestino Drive)" onclick="deleteDriveFile('' + f.id + '')">🗑️</button>' +
         '</div>' +
       '</div>';
     }).join("");
@@ -4904,7 +5097,7 @@
 
     var bodyEl = document.getElementById("drivePreviewBody");
     if (!accessToken) {
-      bodyEl.innerText = "Premi Sincronizza per leggere l'anteprima del documento oppure usa il pulsante 'Google Docs'.";
+      bodyEl.innerText = "Premi Sync per leggere l'anteprima del documento oppure usa il pulsante 'Google Docs'.";
       return;
     }
 
@@ -4934,7 +5127,7 @@
     var modFolderName = document.getElementById("cfgModFolder").value.trim() || "Modulistica Ufficio";
     document.getElementById("modFolderTitle").innerText = "📄 Documenti & Modulistica";
 
-    var qRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
+    var qRoot = encodeURIComponent("name = '" + modFolderName.replace(/'/g, "\'") + "' and mimeType = 'application/vnd.google-apps.folder' and trashed = false");
     var fRes = await fetch("https://www.googleapis.com/drive/v3/files?q=" + qRoot + "&fields=files(id,name)", {
       headers: { "Authorization": "Bearer " + accessToken }
     });
@@ -5038,17 +5231,26 @@
         };
         var boundary = "-------pikdashmodlinks554433221";
         var body =
-          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json; charset=UTF-8
+
+" +
           JSON.stringify(metadata) +
-          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json
+
+" +
           jsonContent +
-          "\r\n--" + boundary + "--";
+          "
+--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+            "Content-Type": "multipart/related; boundary="" + boundary + """
           },
           body: body
         });
@@ -5089,31 +5291,31 @@
     var odCount = allItems.filter(function(i) { return i.platform === "onedrive"; }).length;
     var spCount = allItems.filter(function(i) { return i.platform === "sharepoint"; }).length;
 
-    var html = '<div class="folder-chip' + (activeModFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter(\'ALL\')">' +
+    var html = '<div class="folder-chip' + (activeModFilter === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter('ALL')">' +
       '<span>🗂️ Tutti (' + allItems.length + ')</span>' +
     '</div>';
 
     if (favCount > 0 || activeModFilter === "FAV") {
-      html += '<div class="folder-chip' + (activeModFilter === "FAV" ? " active" : "") + '" style="--chip-color:#ffd54f;" onclick="setModFilter(\'FAV\')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "FAV" ? " active" : "") + '" style="--chip-color:#ffd54f;" onclick="setModFilter('FAV')">' +
         '<span>⭐ Preferiti (' + favCount + ')</span>' +
       '</div>';
     }
 
     if (projLinkedCount > 0 || activeModFilter === "HAS_PROJ") {
-      html += '<div class="folder-chip' + (activeModFilter === "HAS_PROJ" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter(\'HAS_PROJ\')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "HAS_PROJ" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setModFilter('HAS_PROJ')">' +
         '<span>📂 Con Progetto (' + projLinkedCount + ')</span>' +
       '</div>';
     }
 
     if (odCount > 0 || activeModFilter === "ONEDRIVE") {
-      html += '<div class="folder-chip' + (activeModFilter === "ONEDRIVE" ? " active" : "") + '" style="--chip-color:#29b6f6;" onclick="setModFilter(\'ONEDRIVE\')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "ONEDRIVE" ? " active" : "") + '" style="--chip-color:#29b6f6;" onclick="setModFilter('ONEDRIVE')">' +
         '<span class="folder-dot" style="background:#29b6f6;"></span>' +
         '<span>OneDrive (' + odCount + ')</span>' +
       '</div>';
     }
 
     if (spCount > 0 || activeModFilter === "SHAREPOINT") {
-      html += '<div class="folder-chip' + (activeModFilter === "SHAREPOINT" ? " active" : "") + '" style="--chip-color:#26a69a;" onclick="setModFilter(\'SHAREPOINT\')">' +
+      html += '<div class="folder-chip' + (activeModFilter === "SHAREPOINT" ? " active" : "") + '" style="--chip-color:#26a69a;" onclick="setModFilter('SHAREPOINT')">' +
         '<span class="folder-dot" style="background:#26a69a;"></span>' +
         '<span>SharePoint (' + spCount + ')</span>' +
       '</div>';
@@ -5129,8 +5331,8 @@
       var cnt = allItems.filter(function(i) { return (i.sector || "Generale") === sec; }).length;
       var col = DEPT_COLORS[sec] || FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
       var isAct = (activeModFilter === "SEC:" + sec) ? " active" : "";
-      var safeSec = sec.replace(/'/g, "\\'");
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setModFilter(\'SEC:' + safeSec + '\')">' +
+      var safeSec = sec.replace(/'/g, "\'");
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setModFilter('SEC:' + safeSec + '')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(sec) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -5213,11 +5415,11 @@
         : '';
 
       var extActions = item.platform !== "gdrive"
-        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal(\'' + item.id + '\', null)">✏️</button>' +
-          '<button type="button" class="file-icon-btn del" title="Elimina collegamento" onclick="deleteModExternalLink(\'' + item.id + '\')">✕</button>'
+        ? '<button type="button" class="file-icon-btn" title="Modifica collegamento" onclick="openModLinkModal('' + item.id + '', null)">✏️</button>' +
+          '<button type="button" class="file-icon-btn del" title="Elimina collegamento" onclick="deleteModExternalLink('' + item.id + '')">✕</button>'
         : '';
 
-      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + borderCol + ';" onclick="openModItemPreview(\'' + item.id + '\')">' +
+      return '<div class="drive-file-card' + isAct + '" style="--file-color:' + borderCol + ';" onclick="openModItemPreview('' + item.id + '')">' +
         '<div class="drive-file-info">' +
           '<div class="drive-file-title">' + iconEmoji + ' ' + escapeHtml(item.title) + '</div>' +
           '<div class="drive-file-meta">' +
@@ -5227,7 +5429,7 @@
           '</div>' +
         '</div>' +
         '<div class="file-actions" onclick="event.stopPropagation()">' +
-          '<button type="button" class="file-icon-btn' + (isFav ? " fav-active" : "") + '" title="Fissa tra i preferiti" onclick="toggleModFavorite(\'' + item.id + '\')">' + (isFav ? "★" : "☆") + '</button>' +
+          '<button type="button" class="file-icon-btn' + (isFav ? " fav-active" : "") + '" title="Fissa tra i preferiti" onclick="toggleModFavorite('' + item.id + '')">' + (isFav ? "★" : "☆") + '</button>' +
           extActions +
         '</div>' +
       '</div>';
@@ -5488,17 +5690,26 @@
         };
         var boundary = "-------pikdashlauncher987654321";
         var body =
-          "\r\n--" + boundary + "\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json; charset=UTF-8
+
+" +
           JSON.stringify(metadata) +
-          "\r\n--" + boundary + "\r\nContent-Type: application/json\r\n\r\n" +
+          "
+--" + boundary + "
+Content-Type: application/json
+
+" +
           jsonContent +
-          "\r\n--" + boundary + "--";
+          "
+--" + boundary + "--";
 
         var createRes = await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id", {
           method: "POST",
           headers: {
             "Authorization": "Bearer " + accessToken,
-            "Content-Type": "multipart/related; boundary=\"" + boundary + "\""
+            "Content-Type": "multipart/related; boundary="" + boundary + """
           },
           body: body
         });
@@ -5542,7 +5753,7 @@
       activeLauncherTheme = "ALL";
     }
 
-    var html = '<div class="folder-chip' + (activeLauncherTheme === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setLauncherThemeFilter(\'ALL\')">' +
+    var html = '<div class="folder-chip' + (activeLauncherTheme === "ALL" ? " active" : "") + '" style="--chip-color:#b39ddb;" onclick="setLauncherThemeFilter('ALL')">' +
       '<span>🚀 Tutti (' + launcherItems.length + ')</span>' +
     '</div>';
 
@@ -5550,8 +5761,8 @@
       var cnt = launcherItems.filter(function(i) { return (i.theme || "Generale") === th; }).length;
       var col = FOLDER_PALETTE[idx % FOLDER_PALETTE.length].hex;
       var isAct = (activeLauncherTheme === th) ? " active" : "";
-      var safeTh = th.replace(/'/g, "\\'");
-      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setLauncherThemeFilter(\'' + safeTh + '\')">' +
+      var safeTh = th.replace(/'/g, "\'");
+      html += '<div class="folder-chip' + isAct + '" style="--chip-color:' + col + ';" onclick="setLauncherThemeFilter('' + safeTh + '')">' +
         '<span class="folder-dot" style="background:' + col + ';"></span>' +
         '<span>' + escapeHtml(th) + ' (' + cnt + ')</span>' +
       '</div>';
@@ -5585,7 +5796,7 @@
     });
 
     if (filtered.length === 0) {
-      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale o un\'app.</div>';
+      container.innerHTML = '<div class="card" style="align-items:center; justify-content:center; padding:32px; color:var(--muted);">Nessun pulsante trovato. Clicca su <strong>+ Nuovo Pulsante</strong> per aggiungere un portale o un'app.</div>';
       return;
     }
 
@@ -5617,16 +5828,16 @@
         var brBadge = brLabel ? '<span class="browser-pill">' + brLabel + '</span>' : '';
 
         html += '<a class="launch-tile" draggable="true" data-lnc-id="' + item.id + '" href="' + finalHref + '"' + targetAttr + ' style="--tile-accent:' + accent + ';" ' +
-          'ondragstart="handleTileDragStart(event, \'' + item.id + '\')" ' +
+          'ondragstart="handleTileDragStart(event, '' + item.id + '')" ' +
           'ondragover="handleTileDragOver(event)" ' +
           'ondragleave="handleTileDragLeave(event)" ' +
-          'ondrop="handleTileDrop(event, \'' + item.id + '\')" ' +
+          'ondrop="handleTileDrop(event, '' + item.id + '')" ' +
           'ondragend="handleTileDragEnd(event)">' +
           '<div class="launch-tile-top">' +
             '<div class="launch-icon-box">' + escapeHtml(item.icon || "🌐") + '</div>' +
             '<div class="launch-tile-actions" onclick="event.preventDefault(); event.stopPropagation();">' +
-              '<button type="button" class="launch-mini-btn" title="Modifica pulsante" onclick="openLauncherModal(\'' + item.id + '\')">✏️</button>' +
-              '<button type="button" class="launch-mini-btn" title="Elimina pulsante" onclick="deleteLauncherItem(\'' + item.id + '\')">✕</button>' +
+              '<button type="button" class="launch-mini-btn" title="Modifica pulsante" onclick="openLauncherModal('' + item.id + '')">✏️</button>' +
+              '<button type="button" class="launch-mini-btn" title="Elimina pulsante" onclick="deleteLauncherItem('' + item.id + '')">✕</button>' +
             '</div>' +
           '</div>' +
           '<div>' +
@@ -5739,7 +5950,7 @@
     var box = document.getElementById("lncEmojiPicker");
     box.innerHTML = LAUNCHER_EMOJIS.map(function(em) {
       var sel = (em === currentIcon) ? " selected" : "";
-      return '<div class="emoji-opt' + sel + '" onclick="selectLauncherEmoji(\'' + em + '\')">' + em + '</div>';
+      return '<div class="emoji-opt' + sel + '" onclick="selectLauncherEmoji('' + em + '')">' + em + '</div>';
     }).join("");
   }
 
@@ -5752,7 +5963,7 @@
     var box = document.getElementById("lncColorSwatches");
     box.innerHTML = FOLDER_PALETTE.map(function(c) {
       var sel = (c.hex.toLowerCase() === selectedLauncherColor.toLowerCase()) ? " selected" : "";
-      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectLauncherColor(\'' + c.hex + '\')"></div>';
+      return '<div class="swatch' + sel + '" style="background:' + c.hex + ';" title="' + c.name + '" onclick="selectLauncherColor('' + c.hex + '')"></div>';
     }).join("");
   }
 
@@ -5829,7 +6040,363 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
   }
+
+  // ==================== ESTENSIONI PIKDASH 0.93B ====================
+  var currentMonthDate = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+  var monthEventsCache = [];
+
+  function getEasterDate(year) {
+    var a = year % 19;
+    var b = Math.floor(year / 100);
+    var c = year % 100;
+    var d = Math.floor(b / 4);
+    var e = b % 4;
+    var f = Math.floor((b + 8) / 25);
+    var g = Math.floor((b - f + 1) / 3);
+    var h = (19 * a + b - d - g + 15) % 30;
+    var i = Math.floor(c / 4);
+    var k = c % 4;
+    var l = (32 + 2 * e + 2 * i - h - k) % 7;
+    var m = Math.floor((a + 11 * h + 22 * l) / 451);
+    var month = Math.floor((h + l - 7 * m + 114) / 31);
+    var day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
+  }
+
+  function getItalianHolidayName(dateObj) {
+    var y = dateObj.getFullYear();
+    var m = dateObj.getMonth() + 1;
+    var d = dateObj.getDate();
+    var mmdd = String(m).padStart(2, "0") + "-" + String(d).padStart(2, "0");
+
+    var fixedHolidays = {
+      "01-01": "Capodanno",
+      "01-06": "Epifania",
+      "04-25": "Festa della Liberazione",
+      "05-01": "Festa dei Lavoratori",
+      "06-02": "Festa della Repubblica",
+      "08-15": "Ferragosto",
+      "11-01": "Tutti i Santi",
+      "11-11": "San Martino (Patrono)",
+      "12-08": "Immacolata Concezione",
+      "12-25": "Natale",
+      "12-26": "Santo Stefano"
+    };
+    if (fixedHolidays[mmdd]) return fixedHolidays[mmdd];
+
+    var easter = getEasterDate(y);
+    var easterMonday = addDays(easter, 1);
+    var isoCurrent = toIsoDate(dateObj);
+    if (isoCurrent === toIsoDate(easter)) return "Pasqua";
+    if (isoCurrent === toIsoDate(easterMonday)) return "Lunedì dell'Angelo";
+
+    return "";
+  }
+
+  renderWeekGrid = function() {
+    var sunday = addDays(currentMonday, 6);
+    var wkNum = getWeekNumber(currentMonday);
+    document.getElementById("weekLabel").innerText =
+      "Sett. " + wkNum + " (" + currentMonday.getDate() + " " + MESI_BREVI[currentMonday.getMonth()] +
+      " – " + sunday.getDate() + " " + MESI_BREVI[sunday.getMonth()] + ")";
+
+    var todayStr = toIsoDate(new Date());
+    var grid = document.getElementById("weekGrid");
+    grid.innerHTML = "";
+
+    for (var i = 0; i < 7; i++) {
+      (function(idx) {
+        var d = addDays(currentMonday, idx);
+        var dStr = toIsoDate(d);
+        var dayEvs = weekEvents.filter(function(e) { return e.date === dStr; });
+        var holidayName = getItalianHolidayName(d);
+        var isRedDay = (d.getDay() === 0 || holidayName !== "");
+
+        var col = document.createElement("div");
+        col.className = "day-col" +
+          (dStr === todayStr ? " today" : "") +
+          (dStr === selectedDateStr ? " selected" : "") +
+          (isRedDay ? " holiday-col" : "");
+        col.onclick = function() {
+          selectedDateStr = dStr;
+          renderWeekGrid();
+          renderDayDetail();
+        };
+
+        var badge = (dStr === todayStr) ? '<span class="today-badge">OGGI</span>' : "";
+        var holTag = holidayName ? '<div class="holiday-name-tag" title="' + escapeHtml(holidayName) + '">🟠 ' + escapeHtml(holidayName) + '</div>' : "";
+        var evHtml = dayEvs.length === 0
+          ? '<span style="color:#555a66; font-size:0.74rem;">Nessun impegno</span>'
+          : dayEvs.map(function(ev) {
+              var timeTxt = ev.isAllDay ? "Tutto il giorno" : ev.startTime;
+              var cls = ev.isPersonal ? " personal" : (ev.isFromDashboard ? " from-dash" : "");
+              return '<div class="mini-ev' + cls + '">' +
+                '<span class="mini-ev-time">' + timeTxt + '</span>' +
+                escapeHtml(ev.title) +
+              '</div>';
+            }).join("");
+
+        col.innerHTML =
+          '<div class="day-col-header">' +
+            '<span>' + GIORNI_BREVI[idx] + ' ' + d.getDate() + '</span>' +
+            '<div class="day-header-right">' +
+              badge +
+              '<button type="button" class="quick-add-day-btn" title="Nuovo appuntamento il ' + d.getDate() + '" onclick="event.stopPropagation(); openEventModal(null, '' + dStr + '', '')">+</button>' +
+            '</div>' +
+          '</div>' +
+          holTag +
+          '<div class="day-events">' + evHtml + '</div>';
+
+        grid.appendChild(col);
+      })(i);
+    }
+  };
+
+  async function openMonthView() {
+    switchMainView("viewMensile");
+    await loadAndRenderMonthGrid();
+  }
+
+  async function loadAndRenderMonthGrid() {
+    var year = currentMonthDate.getFullYear();
+    var month = currentMonthDate.getMonth();
+    var monthTitle = currentMonthDate.toLocaleDateString("it-IT", { month: "long", year: "numeric" });
+    document.getElementById("monthLabel").innerText = monthTitle.charAt(0).toUpperCase() + monthTitle.slice(1);
+
+    var firstOfMonth = new Date(year, month, 1);
+    var lastOfMonth = new Date(year, month + 1, 0);
+    var gridStart = getMonday(firstOfMonth);
+    var gridEnd = addDays(getMonday(lastOfMonth), 6);
+
+    if (accessToken) {
+      try {
+        var tMin = encodeURIComponent(toIsoDate(gridStart) + "T00:00:00Z");
+        var tMax = encodeURIComponent(toIsoDate(addDays(gridEnd, 1)) + "T23:59:59Z");
+        var url = "https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=" + tMin + "&timeMax=" + tMax + "&singleEvents=true&orderBy=startTime&maxResults=250";
+        var res = await fetch(url, { headers: { "Authorization": "Bearer " + accessToken } });
+        if (res.ok) {
+          var data = await res.json();
+          monthEventsCache = (data.items || []).map(function(item) {
+            var isAllDay = !!(item.start && item.start.date);
+            var dateStr = isAllDay ? item.start.date : item.start.dateTime.slice(0, 10);
+            var startTime = isAllDay ? "" : item.start.dateTime.slice(11, 16) + " ";
+            var rawTitle = item.summary || "(Senza titolo)";
+            var isPersonal = /^\[personale\]/i.test(rawTitle);
+            var privProps = (item.extendedProperties && item.extendedProperties.private) || {};
+            return {
+              date: dateStr,
+              startTime: startTime,
+              title: rawTitle.replace(/^\[personale\]\s*/i, ""),
+              isPersonal: isPersonal,
+              isFromDashboard: (privProps.source === "dashboard")
+            };
+          });
+        }
+      } catch (e) {}
+    } else {
+      monthEventsCache = weekEvents.slice();
+    }
+
+    var grid = document.getElementById("monthGrid");
+    grid.innerHTML = "";
+    var todayStr = toIsoDate(new Date());
+    var cursor = new Date(gridStart.getFullYear(), gridStart.getMonth(), gridStart.getDate());
+
+    while (cursor <= gridEnd) {
+      (function(dayObj) {
+        var dStr = toIsoDate(dayObj);
+        var isCurrentMonth = (dayObj.getMonth() === month);
+        var holName = getItalianHolidayName(dayObj);
+        var isRed = (dayObj.getDay() === 0 || holName !== "");
+        var dayEvs = monthEventsCache.filter(function(e) { return e.date === dStr; });
+
+        var cell = document.createElement("div");
+        cell.className = "month-cell" +
+          (!isCurrentMonth ? " other-month" : "") +
+          (dStr === todayStr ? " today" : "") +
+          (isRed ? " holiday-cell" : "");
+
+        cell.onclick = function() {
+          selectedDateStr = dStr;
+          currentMonday = getMonday(dayObj);
+          switchMainView("viewPanoramica");
+          if (accessToken) loadAllData(); else { renderWeekGrid(); renderDayDetail(); }
+        };
+
+        var evListHtml = dayEvs.map(function(ev) {
+          var cls = ev.isPersonal ? " personal" : (ev.isFromDashboard ? " from-dash" : "");
+          return '<div class="month-ev-pill' + cls + '" title="' + escapeHtml(ev.startTime + ev.title) + '">' +
+            escapeHtml(ev.startTime + ev.title) +
+          '</div>';
+        }).join("");
+
+        cell.innerHTML =
+          '<div class="month-cell-top">' +
+            '<span class="month-day-num">' + dayObj.getDate() + '</span>' +
+            (holName ? '<span style="font-size:0.62rem; color:var(--holiday-orange); max-width:85px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + escapeHtml(holName) + '</span>' : '') +
+          '</div>' +
+          '<div class="month-cell-events">' + evListHtml + '</div>';
+
+        grid.appendChild(cell);
+      })(new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate()));
+      cursor = addDays(cursor, 1);
+    }
+  }
+
+  renderTasks = function() {
+    var listEl = document.getElementById("tasksList");
+    var total = weeklyTasks.length;
+    var doneCount = weeklyTasks.filter(function(t) { return t.status === "completed"; }).length;
+    var pct = total === 0 ? 0 : Math.round((doneCount / total) * 100);
+
+    document.getElementById("tasksCounter").innerText = doneCount + "/" + total + " completati";
+    document.getElementById("tasksProgressFill").style.width = pct + "%";
+    document.getElementById("tasksProgressPct").innerText = pct + "%";
+
+    if (total === 0) {
+      listEl.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">Nessun obiettivo in lista.</p>';
+      return;
+    }
+
+    var sorted = weeklyTasks.slice().sort(function(a, b) {
+      if (a.status === b.status) return 0;
+      return a.status === "completed" ? 1 : -1;
+    });
+
+    listEl.innerHTML = sorted.map(function(t) {
+      var isDone = (t.status === "completed");
+      return '<div class="task-item' + (isDone ? " done" : "") + '">' +
+        '<div class="task-check" onclick="toggleTask('' + t.id + '')">' + (isDone ? "✓" : "") + '</div>' +
+        '<div class="task-text" onclick="toggleTask('' + t.id + '')">' + escapeHtml(t.title) + '</div>' +
+        '<div class="task-row-actions">' +
+          '<button type="button" class="file-icon-btn" title="Modifica obiettivo" onclick="editWeeklyTask('' + t.id + '')">✏️</button>' +
+          '<button type="button" class="memo-del" title="Elimina obiettivo" onclick="deleteWeeklyTask('' + t.id + '')">✕</button>' +
+        '</div>' +
+      '</div>';
+    }).join("");
+  };
+
+  async function editWeeklyTask(taskId) {
+    if (!accessToken || !tasksListId) return;
+    var task = weeklyTasks.find(function(t) { return t.id === taskId; });
+    if (!task) return;
+
+    var updated = prompt("Modifica obiettivo settimanale:", task.title);
+    if (!updated || updated.trim() === "" || updated.trim() === task.title) return;
+
+    task.title = updated.trim();
+    renderTasks();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks/" + encodeURIComponent(taskId), {
+      method: "PATCH",
+      headers: { "Authorization": "Bearer " + accessToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ id: taskId, title: task.title })
+    });
+  }
+
+  async function deleteWeeklyTask(taskId) {
+    if (!accessToken || !tasksListId) return;
+    var task = weeklyTasks.find(function(t) { return t.id === taskId; });
+    if (!task) return;
+    if (!confirm("Vuoi eliminare l'obiettivo '" + task.title + "'?")) return;
+
+    weeklyTasks = weeklyTasks.filter(function(t) { return t.id !== taskId; });
+    renderTasks();
+    saveCachedSnapshot();
+
+    await fetch("https://tasks.googleapis.com/tasks/v1/lists/" + encodeURIComponent(tasksListId) + "/tasks/" + encodeURIComponent(taskId), {
+      method: "DELETE",
+      headers: { "Authorization": "Bearer " + accessToken }
+    });
+  }
+
+  async function emailDriveNote(fileId) {
+    var file = driveFiles.find(function(f) { return f.id === fileId; });
+    if (!file) return;
+
+    var bodyText = "";
+    if (selectedDriveFileId === fileId) {
+      bodyText = document.getElementById("drivePreviewBody").innerText.trim();
+    } else if (accessToken) {
+      try {
+        setSyncBadge("Preparazione email...", false);
+        var expUrl = "https://www.googleapis.com/drive/v3/files/" + encodeURIComponent(fileId) + "/export?mimeType=text/plain";
+        var res = await fetch(expUrl, { headers: { "Authorization": "Bearer " + accessToken } });
+        if (res.ok) bodyText = (await res.text()).trim();
+        var nowStr = new Date().toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+        setSyncBadge("● Sync " + nowStr, true);
+      } catch (e) {}
+    }
+
+    if (!bodyText && file.webViewLink) {
+      bodyText = "Consulta l'appunto su Google Drive:
+" + file.webViewLink;
+    }
+
+    var subject = encodeURIComponent(file.name);
+    var mailBody = encodeURIComponent(bodyText.slice(0, 1800));
+    window.location.href = "mailto:?subject=" + subject + "&body=" + mailBody;
+  }
+
+  window.addEventListener("load", function() {
+    var btnBrandHome = document.getElementById("btnBrandHome");
+    if (btnBrandHome) {
+      btnBrandHome.onclick = function() {
+        switchMainView("viewPanoramica");
+      };
+    }
+
+    var btnOpenMonth = document.getElementById("btnOpenMonthView");
+    if (btnOpenMonth) {
+      btnOpenMonth.onclick = function() {
+        currentMonthDate = new Date(currentMonday.getFullYear(), currentMonday.getMonth(), 1);
+        openMonthView();
+      };
+    }
+
+    var btnBackWeek = document.getElementById("btnBackToWeekView");
+    if (btnBackWeek) {
+      btnBackWeek.onclick = function() {
+        switchMainView("viewPanoramica");
+      };
+    }
+
+    var btnPrevM = document.getElementById("btnPrevMonth");
+    if (btnPrevM) {
+      btnPrevM.onclick = function() {
+        currentMonthDate = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() - 1, 1);
+        loadAndRenderMonthGrid();
+      };
+    }
+
+    var btnNextM = document.getElementById("btnNextMonth");
+    if (btnNextM) {
+      btnNextM.onclick = function() {
+        currentMonthDate = new Date(currentMonthDate.getFullYear(), currentMonthDate.getMonth() + 1, 1);
+        loadAndRenderMonthGrid();
+      };
+    }
+
+    var btnCurM = document.getElementById("btnCurrentMonth");
+    if (btnCurM) {
+      btnCurM.onclick = function() {
+        var now = new Date();
+        currentMonthDate = new Date(now.getFullYear(), now.getMonth(), 1);
+        loadAndRenderMonthGrid();
+      };
+    }
+
+    var btnEmailDoc = document.getElementById("btnEmailSelectedDoc");
+    if (btnEmailDoc) {
+      btnEmailDoc.onclick = function() {
+        if (selectedDriveFileId) emailDriveNote(selectedDriveFileId);
+      };
+    }
+
+    renderWeekGrid();
+    renderTasks();
+  });
 </script>
 </body>
 </html>
-<!-- FINE PARTE 3 -->
